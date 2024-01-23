@@ -33,7 +33,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import Page from "@/components/base/page"
+import Page from "@/components/layout"
 import Container from "@/components/ui/container"
 
 const generatePayments = (): Payment[] => {

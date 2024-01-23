@@ -1,4 +1,4 @@
-import Page from "@/components/base/page"
+import Page from "@/components/layout"
 import Container from "@/components/ui/container";
 
 const Home = () => {
