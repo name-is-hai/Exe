@@ -64,6 +64,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 GitHub
             </Button>
+            <Button variant="outline" type="button" disabled={isLoading}>
+                {isLoading ? (
+                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                    <Icons.google className="w-4 h-4 mr-2" />
+                )}{" "}
+                Google
+            </Button>
         </div>
     )
 }
