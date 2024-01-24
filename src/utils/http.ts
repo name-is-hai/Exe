@@ -1,5 +1,4 @@
 import { ApiResponse } from "@/types";
-import { useState } from "react";
 
 
 class HttpClient {
@@ -11,6 +10,7 @@ class HttpClient {
 
     protected async handleResponse(response: Response) {
         if (response.status === 401) {
+            // TODO document why this block is empty
         }
 
         if (!response.ok) {

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/themes/theme-provider"
+import { NavLink } from "react-router-dom"
 interface UserNavProps {
     className?: string
 }
@@ -82,8 +83,7 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                        Log out
-                        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                        <NavLink to={"/login"}>Log Out</NavLink>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
