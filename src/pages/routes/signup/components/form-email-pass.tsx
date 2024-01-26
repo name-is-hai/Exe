@@ -35,6 +35,8 @@ export const FormEmailPassword = () => {
         resolver: zodResolver(schema_email_pass),
         defaultValues: {
             email: "",
+            password: "",
+            confirmPassword: "",
         },
     })
     function onSubmitEmailPass(values: z.infer<typeof schema_email_pass>) {

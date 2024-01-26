@@ -12,7 +12,7 @@ import { FormEmailPassword } from "./form-email-pass";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isUseEmail, setIsUseEmail] = useState<boolean>(false)
 

@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@/components/themes/theme-provider"
 import { Header } from "@/components/layout/Header";
-import { Separator } from "@/components/ui/separator";
 
 function Page({ children }: any) {
     return (
