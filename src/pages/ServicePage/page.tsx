@@ -1,7 +1,7 @@
 import Page from "@/components/layout"
 import Container from "@/components/ui/container";
 
-const Service = () => {
+const ServicePage = () => {
     return (
         <Page>
             <Container className="lg:px-14">
@@ -11,4 +11,4 @@ const Service = () => {
     );
 };
 
-export default Service
+export default ServicePage

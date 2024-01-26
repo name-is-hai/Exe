@@ -33,6 +33,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^3.0.6",
+    "embla-carousel-react": "^8.0.0-rc21",
     "firebase": "^10.7.2",
     "jotai": "^2.6.0",
     "lucide-react": "^0.302.0",

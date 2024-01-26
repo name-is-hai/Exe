@@ -1,7 +1,7 @@
 import Page from "@/components/layout"
 import Container from "@/components/ui/container";
 
-const Home = () => {
+const HomePage  = () => {
     return (
         <Page>
             <Container className="lg:px-14">
@@ -11,4 +11,4 @@ const Home = () => {
     );
 };
 
-export default Home
+export default HomePage
