@@ -10,7 +10,7 @@ export const metadata: any = {
 
 export default function AuthenticationPage() {
     return (
-        <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
             <NavLink
                 to="/examples/authentication"
                 className={cn(
@@ -18,7 +18,7 @@ export default function AuthenticationPage() {
                     "absolute right-4 top-4 md:right-8 md:top-8"
                 )}
             >
-                Login
+                Đăng nhập
             </NavLink>
             <div className="relative flex-col hidden h-full p-10 text-white bg-muted lg:flex dark:border-r">
                 <div className="absolute inset-0 bg-zinc-900" />
@@ -48,28 +48,28 @@ export default function AuthenticationPage() {
                     </blockquote>
                 </div>
             </div>
-            <div className="lg:p-8">
+            <div className="pt-20 lg:p-8">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                     <div className="flex flex-col space-y-2 text-center">
                         <h1 className="text-2xl font-semibold tracking-tight">
-                            Create an account
+                            Tạo tài khoản
                         </h1>
                         <p className="text-sm text-muted-foreground">
-                            Enter your email below to create your account
+                            Hãy nhập email của bạn để đăng ký
                         </p>
                     </div>
                     <UserAuthForm />
                     <p className="px-8 text-sm text-center text-muted-foreground">
                         By clicking continue, you agree to our{" "}
                         <NavLink
-                            to="/terms"
+                            to=""
                             className="underline underline-offset-4 hover:text-primary"
                         >
                             Terms of Service
                         </NavLink>{" "}
                         and{" "}
                         <NavLink
-                            to="/privacy"
+                            to=""
                             className="underline underline-offset-4 hover:text-primary"
                         >
                             Privacy Policy

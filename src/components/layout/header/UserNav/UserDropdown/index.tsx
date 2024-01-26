@@ -25,7 +25,10 @@ interface UserNavProps {
 }
 export function UserNav({ className }: Readonly<UserNavProps>) {
     const { setTheme } = useTheme()
-
+    const handleLogout = () => {
+        localStorage.removeItem('user_token');
+        window.location.reload();
+    };
     return (
         <div className={className}>
             <DropdownMenu>
@@ -82,8 +85,8 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                         </DropdownMenuSub>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <NavLink to={"/login"}>Log Out</NavLink>
+                    <DropdownMenuItem onClick={handleLogout}>
+                        Log Out
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

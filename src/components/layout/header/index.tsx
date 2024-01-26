@@ -19,7 +19,7 @@ export function Header() {
             <h2 className="text-2xl font-bold tracking-tight">Finance Dashboard</h2>
             <NavMenu className="mr-11" />
             {/* <SignInSignUp /> */}
-            {loading ? null : isAuth ? <UserNav className="ml-32" /> : <SignInSignUp />}
+            {loading ? null : isAuth ? <UserNav className="p-3 ml-32" /> : <SignInSignUp />}
         </div>
     )
 }
