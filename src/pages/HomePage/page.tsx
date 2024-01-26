@@ -1,11 +1,13 @@
 import Page from "@/components/layout"
 import Container from "@/components/ui/container";
+import { CarouselDemo } from "./Carousel";
 
-const HomePage  = () => {
+const HomePage = () => {
     return (
         <Page>
             <Container className="lg:px-14">
-                Home
+                HomePage
+                {/* <CarouselDemo/> */}
             </Container>
         </Page>
     );

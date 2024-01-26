@@ -19,12 +19,12 @@ const MenuLink = ({ name, href }: MenuLinkProps) => {
                 { 'text-muted-foreground': !isRouteActive }
             )}
         >
-            <span className="text-sm font-medium text-center transition-colors hover:text-foreground">
-                <span className="mx-2">
+            <span className="text-sm font-medium transition-colors hover:text-foreground">
+                <span>
                     {name}
                 </span>
             </span>
-        </NavLink>
+        </NavLink >
     );
 };
 

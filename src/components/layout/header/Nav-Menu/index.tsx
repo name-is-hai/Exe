@@ -7,7 +7,7 @@ interface NavMenuProps {
 
 
 export const NavMenu = ({ className }: NavMenuProps) => {
-    return (<nav className={cn("space-x-4 lg:space-x-6", className)}>
+    return (<nav className={className}>
         <MenuLink name="Home" href="/" />
         <MenuLink name="Service" href="/service" />
         <MenuLink name="Property" href="/property" />
