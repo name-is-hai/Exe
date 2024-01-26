@@ -1,12 +1,17 @@
 import { ThemeProvider } from "@/components/themes/theme-provider"
 import { Header } from "@/components/layout/Header";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Footer } from "./Footer";
 
 function Page({ children }: any) {
     return (
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
             <div className="flex-col md:flex">
-                <Header />
-                {children}
+                <ScrollArea className="h-screen">
+                    <Header />
+                    {children}
+                    <Footer />
+                </ScrollArea>
             </div>
         </ThemeProvider>
     );
