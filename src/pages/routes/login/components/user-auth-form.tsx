@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useState } from "react"
 
 import { cn } from "@/lib/utils"
 import { z } from 'zod';
@@ -7,47 +7,36 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { PasswordInput } from "@/components/ui/password";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
+import { FormEmailPassword } from "./form-email-pass";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-const schema = z.object({
-    email: z.string().trim().min(1, {
-        message: 'Vui lòng nhập email',
-    }).email({
-        message: 'Email không đúng định dạng',
-    }),
-    password: z.string().trim().min(1, {
-        message: 'Vui lòng nhập mật khẩu',
-    })
-});
-
-export type FormUserAuth = z.infer<typeof schema>;
-
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isUseEmail, setIsUseEmail] = useState<boolean>(false)
 
-    const form = useForm<FormUserAuth>({
-        resolver: zodResolver(schema),
+    const schema_email = z.object({
+        email: z.string().trim().min(1, {
+            message: 'Vui lòng nhập email',
+        }).email({
+            message: 'Email không đúng định dạng',
+        })
+    })
+
+    const form_email = useForm<z.infer<typeof schema_email>>({
+        resolver: zodResolver(schema_email),
         defaultValues: {
             email: "",
-            password: "",
         },
     })
 
-    function onSubmit(values: FormUserAuth) {
+    function onSubmitEmail(values: z.infer<typeof schema_email>) {
         setIsLoading(true)
 
         setTimeout(() => {
             setIsLoading(false)
+            setIsUseEmail(true)
         }, 3000)
         console.log(values);
 
@@ -55,46 +44,39 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     return (
         <div className={cn("grid gap-6", className)} {...props}>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="email@gmail.com" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Mật khẩu</FormLabel>
-                                    <FormControl>
-                                        <PasswordInput placeholder="***********" {...field} />
-                                    </FormControl>
-                                    <FormMessage className="text-sm" />
-                                </FormItem>
-                            )}
-                        />
-                        <Button disabled={isLoading}>
-                            {isLoading && (
-                                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                            )}
-                            Đăng ký bằng email
-                        </Button>
-                    </div>
-                </form>
-            </Form>
-
-            <div className="relative">
+            <div hidden={isUseEmail}>
+                <Form {...form_email}>
+                    <form onSubmit={form_email.handleSubmit(onSubmitEmail)}>
+                        <div className="grid gap-2">
+                            <div>
+                                <FormField
+                                    control={form_email.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="email@gmail.com" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <Button disabled={isLoading}>
+                                {isLoading && (
+                                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                                )}
+                                Đăng ký bằng email
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            </div>
+            <div hidden={!isUseEmail}>
+                <FormEmailPassword />
+            </div>
+            <div className={cn("relative", isUseEmail && "hidden")}>
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
                 </div>
@@ -104,7 +86,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" type="button" disabled={isLoading}>
+            <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
@@ -112,7 +94,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 Số điện thoại
             </Button>
-            <Button variant="outline" type="button" disabled={isLoading}>
+            <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
@@ -120,7 +102,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 Tài khoản Google
             </Button>
-            <Button variant="outline" type="button" disabled={isLoading}>
+            <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
@@ -128,6 +110,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 Tài khoản Facebook
             </Button>
-        </div>
+        </div >
     )
 }
