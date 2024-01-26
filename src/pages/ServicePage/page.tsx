@@ -1,14 +1,14 @@
 import Page from "@/components/layout"
 import Container from "@/components/ui/container";
 
-const Home = () => {
+const Service = () => {
     return (
         <Page>
             <Container className="lg:px-14">
-                aasdfasdf
+                Service
             </Container>
         </Page>
     );
 };
 
-export default Home
+export default Service
