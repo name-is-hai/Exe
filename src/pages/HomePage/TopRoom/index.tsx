@@ -8,6 +8,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
+import { NavLink } from "react-router-dom"
 
 const TopRoom = () => {
     const rooms = [
@@ -41,9 +42,10 @@ const TopRoom = () => {
                 {rooms.map((room, index) => (
                     <CarouselItem key={index} className="md:basis-1/5 basis-1/2">
                         <div className="m-1">
-                            <RoomElement room={room} width={250}
-                                height={330} aspectRatio="portrait" className="md:w-[250px] w-[150px]"
-                            />
+                            <NavLink to={"/room-detail"}>
+                                <RoomElement room={room} aspectRatio="portrait" className="md:w-[250px] w-[150px]"
+                                />
+                            </NavLink>
                         </div>
                     </CarouselItem>
                 ))}

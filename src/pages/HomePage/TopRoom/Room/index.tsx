@@ -3,11 +3,13 @@ import {
     CardContent,
     CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { LucideStar } from "lucide-react"
+import { useState } from "react"
 import { Img } from "react-image"
+import RatingStar from "@/components/ui/rating";
+
 interface RoomElementProps extends React.HTMLAttributes<HTMLDivElement> {
     room: any
     aspectRatio?: "portrait" | "square"
@@ -22,6 +24,7 @@ export function RoomElement({
     className,
     ...props
 }: Readonly<RoomElementProps>) {
+
     return (
         <div className={cn("space-y-3", className)} {...props}>
             <Card className="w-fit">
@@ -36,10 +39,16 @@ export function RoomElement({
                             )} />
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <p>Card Footer</p>
+                <CardFooter className="flex flex-col items-start">
+                    <div>Tên phòng trọ</div>
+                    <CardDescription className="flex flex-row">
+                        <span>Giá:  <data className="text-orange-400" value="100.00">1,000,000đ</data></span>
+                        <div className="flex flex-row items-center ms-6">
+                            <RatingStar isEdit={false} size={13} value={4} />
+                        </div>
+                    </CardDescription>
                 </CardFooter>
             </Card>
-        </div>
+        </div >
     )
 }
