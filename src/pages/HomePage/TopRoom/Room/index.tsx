@@ -7,6 +7,7 @@ import {
 import { cn } from "@/lib/utils"
 import { Img } from "react-image"
 import RatingStar from "@/components/ui/rating";
+import { numberFormat } from "@/lib/currency";
 
 interface RoomElementProps extends React.HTMLAttributes<HTMLDivElement> {
     room: any
@@ -38,9 +39,9 @@ export function RoomElement({
                     </div>
                 </CardContent>
                 <CardFooter className="flex flex-col items-start">
-                    <div>Tên phòng trọ</div>
+                    <div>{room.name}</div>
                     <CardDescription className="flex flex-row">
-                        <span>Giá:  <data className="text-orange-400" value="100.00">1,000,000đ</data></span>
+                        <span>Giá:  <data className="text-orange-400" value="100.00">{numberFormat(room.price)}</data></span>
                         <div className="flex flex-row items-center ms-6">
                             <RatingStar isEdit={false} size={13} value={4} />
                         </div>

@@ -13,8 +13,35 @@ import TopRoom from "../HomePage/TopRoom";
 import { Separator } from "@/components/ui/separator";
 import RatingStar from "@/components/ui/rating";
 import useWindowDimensions from "@/hook/useWindowDimensions";
+import { useState, useEffect } from "react";
+import useQuery from "@/hook/useQuery";
+import http from "@/utils/http";
+import { numberFormat } from '@/lib/currency';
 
 export function RoomDetail() {
+    let query = useQuery();
+
+    const [rooms, setRooms] = useState([]);
+    const [room, setRoom] = useState<any>();
+    useEffect(() => {
+        http.post('/exe/rooms/get-list', {}, false).then((res) => {
+            var images: any = []
+            res.resp?.data.list.forEach((room: any) => {
+                images.push({
+                    name: room.name,
+                    price: room.price,
+                    src: room.image,
+                    alt: room.id
+                })
+            });
+            setRooms(images);
+        });
+
+        http.post('/exe/rooms/detail', { id: parseInt(query.get('id') || '') }, false).then((res) => {
+            setRoom(res.resp?.data)
+        })
+    }, [query]);
+
     let real_width: number
     let real_height: number
     const { width } = useWindowDimensions();
@@ -29,33 +56,12 @@ export function RoomDetail() {
         real_height = 100;
     }
 
-    const rooms = [
-        {
-            src: "https://placehold.co/300x400",
-        },
-        {
-            src: "https://placehold.co/300x400",
-        },
-        {
-            src: "https://placehold.co/300x400",
-        },
-        {
-            src: "https://placehold.co/300x400",
-        },
-        {
-            src: "https://placehold.co/300x400",
-        },
-        {
-            src: "https://placehold.co/300x400",
-        },
-    ]
-
     return (
         <Page>
             <Container className="lg:px-32">
                 <div className="flex flex-col md:justify-between md:pb-20 md:flex-row">
-                    <div className="relative">
-                        <Img src={`https://placehold.co/${real_width}x${400}`} width={real_width} height={400} className="rounded-xl" />
+                    <div className="relative mt-11">
+                        <Img src={room?.image} width={real_width} height={400} className="rounded-xl" />
                         <Carousel
                             opts={{
                                 align: "start",
@@ -68,7 +74,7 @@ export function RoomDetail() {
                                         <div className="m-1">
                                             <Card>
                                                 <CardContent className="flex items-center justify-center p-1">
-                                                    <Img src={`https://placehold.co/${real_width - 200}x${real_height}`} width={100} height={real_height} />
+                                                    <Img src={room?.image} width={100} height={real_height} />
                                                 </CardContent>
                                             </Card>
                                         </div>
@@ -84,10 +90,10 @@ export function RoomDetail() {
                             <div className="text-sm text-muted-foreground">
                                 Mô tả qua về phòng trọ
                             </div>
-                            <h2 className="mt-2 text-3xl font-semibold leading-none">Tên phòng trọ</h2>
+                            <h2 className="mt-2 text-3xl font-semibold leading-none">{room?.name}</h2>
                             <Separator className="my-4" />
                             <div className="flex items-center h-5 text-sm space-x-7">
-                                <div className="text-sm font-medium leading-none">1,000,000đ Trên Tháng</div>
+                                <div className="text-sm font-medium leading-none">{numberFormat(room?.price)} Trên Tháng</div>
                                 <Separator orientation="vertical" />
                                 <div className="flex items-center space-x-3 text-sm font-medium leading-none">
                                     <RatingStar isEdit={false} size={15} value={4} />

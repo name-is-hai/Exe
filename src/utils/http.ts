@@ -42,12 +42,12 @@ class HttpClient {
         return requestConfig;
     }
 
-    protected async makeRequest<T>(
+    protected async makeRequest(
         url: string,
         method: string,
         params?: any,
         needAuth?: boolean,
-    ): Promise<ApiResponse<T>> {
+    ): Promise<ApiResponse> {
         const requestConfig: RequestInit = {
             method,
             headers: {
@@ -59,7 +59,7 @@ class HttpClient {
             requestConfig.body = JSON.stringify(params);
         }
 
-        const result: ApiResponse<T> = {
+        const result: ApiResponse = {
             isLoaded: true,
         };
 
@@ -68,7 +68,7 @@ class HttpClient {
 
             try {
                 const response = await fetch(`${this.baseUrl}${url}`, configWithAuthorization);
-                result.resp = (await this.handleResponse(response)) as T;
+                result.resp = (await this.handleResponse(response));
             } catch (error) {
                 result.error = error as Error;
             } finally {
@@ -77,7 +77,7 @@ class HttpClient {
         } else {
             try {
                 const response = await fetch(`${this.baseUrl}${url}`, requestConfig);
-                result.resp = (await this.handleResponse(response)) as T;
+                result.resp = (await this.handleResponse(response));
             } catch (error) {
                 result.error = error as Error;
             } finally {
@@ -88,7 +88,7 @@ class HttpClient {
         return result;
     }
 
-    async get<T>(url: string, params?: Record<string, string>, needAuth?: boolean): Promise<ApiResponse<T>> {
+    async get(url: string, params?: Record<string, string>, needAuth?: boolean): Promise<ApiResponse> {
         const urlWithParams = new URL(url, this.baseUrl);
         if (params) {
             Object.entries(params).forEach(([key, value]) => {
@@ -96,20 +96,23 @@ class HttpClient {
             });
         }
 
-        return this.makeRequest<T>(urlWithParams.toString(), "GET", needAuth);
+        return this.makeRequest(urlWithParams.toString(), "GET", needAuth);
     }
 
-    async post<T>(url: string, params: any, needAuth?: boolean): Promise<ApiResponse<T>> {
-        return this.makeRequest<T>(url, "POST", params, needAuth);
+    async post(url: string, params: any, needAuth?: boolean): Promise<ApiResponse> {
+        return this.makeRequest(url, "POST", params, needAuth);
     }
 
-    async put<T>(url: string, params: any, needAuth?: boolean): Promise<ApiResponse<T>> {
-        return this.makeRequest<T>(url, "PUT", params, needAuth);
+    async put(url: string, params: any, needAuth?: boolean): Promise<ApiResponse> {
+        return this.makeRequest(url, "PUT", params, needAuth);
     }
 
-    async delete<T>(url: string, needAuth?: boolean): Promise<ApiResponse<T>> {
-        return this.makeRequest<T>(url, "DELETE", needAuth);
+    async delete(url: string, needAuth?: boolean): Promise<ApiResponse> {
+        return this.makeRequest(url, "DELETE", needAuth);
     }
 }
 
-export default HttpClient;
+const http = new HttpClient('https://exe-api.nameishai.id.vn');
+
+
+export default http;

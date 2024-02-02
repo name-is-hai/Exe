@@ -19,15 +19,14 @@ const CarouselRooms = ({ silder, real_width, height }: CarouselRoomsProps) => {
             <Carousel>
                 <div className="relative flex items-center justify-center">
                     <CarouselPrevious />
-                    <CarouselSlideList className={`lg:w-[1350px] md:w-[${real_width}px]`}>
+                    <CarouselSlideList className={`lg:w-[1350px] md:w-[${real_width}px] rounded-2xl`}>
                         {silder.map(({ src, alt }: any, i: any) => (
                             <CarouselSlide key={i}>
-                                <Img className='rounded-2xl'
+                                <Img
                                     key={i}
                                     src={src}
                                     alt={alt}
-                                    width={real_width}
-                                    height={height}
+                                    style={{ width: '100%', height: height }}
                                 />
                             </CarouselSlide>
                         ))}
