@@ -69,6 +69,10 @@ const HomePage = () => {
                 <CarouselRooms silder={slides} height={height} real_width={real_width} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
                 <TopRoom rooms={rooms} />
+                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
+                <TopRoom rooms={rooms} />
+                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
+                <TopRoom rooms={rooms} />
             </Container>
         </Page>
     );
