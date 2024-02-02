@@ -1,7 +1,5 @@
-
 import { Img } from 'react-image';
 import { Carousel, CarouselNext, CarouselPrevious, CarouselSlide, CarouselSlideList } from "@/components/ui/carousel-silder"
-import useWindowDimensions from '@/hook/useWindowDimensions';
 import CardSearch from '../CardSearch';
 import {
     Drawer,
@@ -9,59 +7,27 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from '@/components/ui/button';
+interface CarouselRoomsProps {
+    silder: any
+    real_width: number
+    height: number
+}
 
-export function CarouselDemo() {
-    let real_width: number
-    const { width } = useWindowDimensions();
-    if (width >= 1400) {
-        real_width = 1350;
-    } else if (width < 1400 && width > 600) {
-        real_width = 700;
-    } else {
-        real_width = 326;
-    }
-
-    let hight = 600
-    const slides = [
-        {
-            src: `https://placehold.co/${real_width}x${hight}?text=1`,
-            alt: `Placeholder 1`,
-        },
-        {
-            src: `https://placehold.co/${real_width}x${hight}?text=2`,
-            alt: `Placeholder 2`,
-        },
-        {
-            src: `https://placehold.co/${real_width}x${hight}?text=3`,
-            alt: `Placeholder 3`,
-        },
-        {
-            src: `https://placehold.co/${real_width}x${hight}?text=4`,
-            alt: `Placeholder 4`,
-        },
-        {
-            src: `https://placehold.co/${real_width}x${hight}?text=5`,
-            alt: `Placeholder 5`,
-        },
-        {
-            src: `https://placehold.co/${real_width}x${hight}?text=6`,
-            alt: `Placeholder 6`,
-        }
-    ]
+const CarouselRooms = ({ silder, real_width, height }: CarouselRoomsProps) => {
     return (
         <div className="relative flex flex-col items-center justify-between">
             <Carousel>
                 <div className="relative flex items-center justify-center">
                     <CarouselPrevious />
                     <CarouselSlideList className={`lg:w-[1350px] md:w-[${real_width}px]`}>
-                        {slides.map(({ src, alt }, i) => (
+                        {silder.map(({ src, alt }: any, i: any) => (
                             <CarouselSlide key={i}>
                                 <Img className='rounded-2xl'
                                     key={i}
                                     src={src}
                                     alt={alt}
                                     width={real_width}
-                                    height={hight}
+                                    height={height}
                                 />
                             </CarouselSlide>
                         ))}
@@ -87,3 +53,5 @@ export function CarouselDemo() {
         </div >
     );
 }
+
+export default CarouselRooms

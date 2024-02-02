@@ -5,8 +5,6 @@ import {
     CardFooter,
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { LucideStar } from "lucide-react"
-import { useState } from "react"
 import { Img } from "react-image"
 import RatingStar from "@/components/ui/rating";
 

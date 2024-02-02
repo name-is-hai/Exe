@@ -1,5 +1,5 @@
 import Page from "@/components/layout";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/ui/container";
 import {
     Carousel,
@@ -28,6 +28,27 @@ export function RoomDetail() {
         real_width = 326;
         real_height = 100;
     }
+
+    const rooms = [
+        {
+            src: "https://placehold.co/300x400",
+        },
+        {
+            src: "https://placehold.co/300x400",
+        },
+        {
+            src: "https://placehold.co/300x400",
+        },
+        {
+            src: "https://placehold.co/300x400",
+        },
+        {
+            src: "https://placehold.co/300x400",
+        },
+        {
+            src: "https://placehold.co/300x400",
+        },
+    ]
 
     return (
         <Page>
@@ -80,7 +101,7 @@ export function RoomDetail() {
                     </div>
                 </div>
                 <h1 className="text-2xl font-semibold leading-none tracking-tight my-9">Có thể bạn sẽ hứng thú</h1>
-                <TopRoom />
+                <TopRoom rooms={rooms} />
             </Container>
         </Page>
     )
