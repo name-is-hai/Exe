@@ -29,7 +29,6 @@ const RoomPage = () => {
             endSize: 0
         }
 
-        console.log(formData);
         if (formData.size === '1') {
             body.endSize = 10
         } else if (formData.size === '2') {

@@ -11,9 +11,12 @@ interface CarouselRoomsProps {
     silder: any
     real_width: number
     height: number
+    sizeList: any[]
+    warnList: any[]
+    priceList: any[]
 }
 
-const CarouselRooms = ({ silder, real_width, height }: CarouselRoomsProps) => {
+const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceList }: CarouselRoomsProps) => {
     return (
         <div className="relative flex flex-col items-center justify-between">
             <Carousel>
@@ -33,8 +36,8 @@ const CarouselRooms = ({ silder, real_width, height }: CarouselRoomsProps) => {
                     </CarouselSlideList>
                     <CarouselNext />
                 </div>
-                <div className='hidden lg:-translate-y-1/2 lg:-translate-x-1/2 lg:absolute md:block lg:top-3/4 lg:left-1/2'>
-                    <CardSearch className='rounded-3xl' />
+                <div className='hidden lg:-translate-x-1/2 lg:absolute md:block lg:top-3/4 lg:left-1/2'>
+                    <CardSearch priceList={priceList} sizeList={sizeList} warnList={warnList} className='rounded-3xl' />
                 </div>
                 <div className='absolute block -translate-x-1/2 -translate-y-1/2 left-1/2 md:hidden'>
                     <Drawer>
@@ -44,7 +47,7 @@ const CarouselRooms = ({ silder, real_width, height }: CarouselRoomsProps) => {
                             </Button>
                         </DrawerTrigger>
                         <DrawerContent>
-                            <CardSearch />
+                            <CardSearch priceList={priceList} sizeList={sizeList} warnList={warnList} className='border-none' />
                         </DrawerContent>
                     </Drawer>
                 </div>

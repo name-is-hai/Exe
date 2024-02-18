@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import {
     Card,
     CardContent,
@@ -16,11 +17,15 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
+import { numberFormat } from '@/lib/currency';
 
 type CardSearchProps = {
-    className?: string
+    className?: string,
+    sizeList: any[],
+    warnList: any[],
+    priceList: any[],
 }
-export default function CardSearch({ className }: Readonly<CardSearchProps>) {
+export default function CardSearch({ className, sizeList, warnList, priceList }: Readonly<CardSearchProps>) {
     return (
         <Card className={className}>
             <CardHeader>
@@ -40,38 +45,34 @@ export default function CardSearch({ className }: Readonly<CardSearchProps>) {
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Khu Vực</SelectLabel>
-                                <SelectItem value="apple">Apple</SelectItem>
-                                <SelectItem value="banana">Banana</SelectItem>
-                                <SelectItem value="blueberry">Blueberry</SelectItem>
-                                <SelectItem value="grapes">Grapes</SelectItem>
-                                <SelectItem value="pineapple">Pineapple</SelectItem>
+                                {warnList.map((item: any, index) => (
+                                    <SelectItem key={index} value={item.ward_id}>{item.ward_name}</SelectItem>
+                                ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>
                 </CardContent>
                 <CardContent>
                     <CardDescription className="mb-4">
-                        Số lượng người
+                        Diện tích tìm kiếm
                     </CardDescription>
                     <Select>
                         <SelectTrigger className="w-[230px]">
-                            <SelectValue placeholder="Tìm kiếm theo số người" />
+                            <SelectValue placeholder="Tìm kiếm theo diện tích" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup >
-                                <SelectLabel>Số người</SelectLabel>
-                                <SelectItem value="apple">Apple</SelectItem>
-                                <SelectItem value="banana">Banana</SelectItem>
-                                <SelectItem value="blueberry">Blueberry</SelectItem>
-                                <SelectItem value="grapes">Grapes</SelectItem>
-                                <SelectItem value="pineapple">Pineapple</SelectItem>
+                                <SelectLabel>Diện tích</SelectLabel>
+                                {sizeList.map((item: any, index) => (
+                                    <SelectItem key={index} value={item.value}>{item.title}&nbsp;(&nbsp;<sub>m<sup>2</sup></sub>)</SelectItem>
+                                ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>
                 </CardContent>
                 <CardContent>
                     <CardDescription className="mb-4">
-                        Khoảng Giá
+                        Khoảng giá tìm kiếm
                     </CardDescription>
                     <Select>
                         <SelectTrigger className="w-[230px]">
@@ -80,11 +81,9 @@ export default function CardSearch({ className }: Readonly<CardSearchProps>) {
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Giá</SelectLabel>
-                                <SelectItem value="apple">Apple</SelectItem>
-                                <SelectItem value="banana">Banana</SelectItem>
-                                <SelectItem value="blueberry">Blueberry</SelectItem>
-                                <SelectItem value="grapes">Grapes</SelectItem>
-                                <SelectItem value="pineapple">Pineapple</SelectItem>
+                                {priceList.map((item: any, index) => (
+                                    <SelectItem key={index} value={item.value}>{item.title}</SelectItem>
+                                ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>

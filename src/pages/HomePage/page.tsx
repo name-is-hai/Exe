@@ -9,7 +9,9 @@ import http from "@/utils/http";
 const HomePage = () => {
 
     const [rooms, setRooms] = useState([]);
-    const [roomsTopsize, setRoomsTopSize] = useState([]);
+    const [roomsTopSize, setRoomsTopSize] = useState([]);
+    const [warnList, setWarnList] = useState([]);
+
     useEffect(() => {
         http.post('/exe/rooms/get-list', {}, false).then((res) => {
             var images: any = []
@@ -33,8 +35,25 @@ const HomePage = () => {
             setRooms(images);
             setRoomsTopSize(imagesTopsize)
         });
-
     }, []);
+
+    useEffect(() => {
+        fetch('https://vapi.vnappmob.com/api/province/ward/276').then(res => res.json()).then(res => {
+            setWarnList(res.results)
+        })
+    }, []);
+
+    const sizeList = [
+        { title: 'Dưới 20', value: '20' },
+        { title: 'Từ 20-30', value: '20-30' },
+        { title: 'Trên 30', value: '30' },
+    ]
+    const priceList = [
+        { title: 'Dưới 2 triệu', value: '2' },
+        { title: 'Từ 2 triệu đến 3 triệu', value: '2-3' },
+        { title: 'Từ 3 triệu đến 4 triệu', value: '3-4' },
+        { title: 'Trên 4 triệu', value: '4' },
+    ]
 
     const { width } = useWindowDimensions();
     let real_width: number;
@@ -60,11 +79,11 @@ const HomePage = () => {
     return (
         <Page>
             <Container className="lg:px-14">
-                <CarouselRooms silder={slides} height={height} real_width={real_width} />
+                <CarouselRooms priceList={priceList} sizeList={sizeList} warnList={warnList} silder={slides} height={height} real_width={real_width} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
                 <TopRoom rooms={rooms} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top phòng trọ có giá rẻ nhất</h1>
-                <TopRoom rooms={roomsTopsize} />
+                <TopRoom rooms={roomsTopSize} />
             </Container>
         </Page>
     );
