@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import http from "@/utils/http";
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 const RoomPage = () => {
     const [formData, setFormData] = useState({
@@ -220,7 +221,9 @@ const RoomPage = () => {
                     <div className="md:col-span-2">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             {rooms.map((room: any, index: any) => (
-                                <RoomCard key={index} room={room} height={100} width={400} aspectRatio="square" />
+                                <NavLink key={index} to={`/room-detail?id=${room.alt}`}>
+                                    <RoomCard key={index} room={room} height={100} width={400} aspectRatio="square" />
+                                </NavLink>
                             ))}
                         </div>
                     </div>

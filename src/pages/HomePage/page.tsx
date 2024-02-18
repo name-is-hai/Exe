@@ -9,9 +9,11 @@ import http from "@/utils/http";
 const HomePage = () => {
 
     const [rooms, setRooms] = useState([]);
+    const [roomsTopsize, setRoomsTopSize] = useState([]);
     useEffect(() => {
         http.post('/exe/rooms/get-list', {}, false).then((res) => {
             var images: any = []
+            var imagesTopsize: any = []
             res.resp?.data.list.forEach((room: any) => {
                 images.push({
                     name: room.name,
@@ -20,7 +22,16 @@ const HomePage = () => {
                     alt: room.id
                 })
             });
+            res.resp?.data.list.sort((a: any, b: any) => a.price - b.price).forEach((room: any) => {
+                imagesTopsize.push({
+                    name: room.name,
+                    price: room.price,
+                    src: room.image,
+                    alt: room.id
+                })
+            })
             setRooms(images);
+            setRoomsTopSize(imagesTopsize)
         });
 
     }, []);
@@ -52,10 +63,8 @@ const HomePage = () => {
                 <CarouselRooms silder={slides} height={height} real_width={real_width} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
                 <TopRoom rooms={rooms} />
-                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
-                <TopRoom rooms={rooms} />
-                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
-                <TopRoom rooms={rooms} />
+                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top phòng trọ có giá rẻ nhất</h1>
+                <TopRoom rooms={roomsTopsize} />
             </Container>
         </Page>
     );

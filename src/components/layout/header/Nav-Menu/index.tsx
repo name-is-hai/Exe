@@ -11,7 +11,7 @@ export const NavMenu = ({ className }: NavMenuProps) => {
         <MenuLink name="Trang Chủ" href="/" />
         <MenuLink name="Phòng" href="/room" />
         <MenuLink name="Property" href="/property" />
-        <MenuLink name="Contact" href="/contact" />
+        {/* <MenuLink name="Contact" href="/contact" /> */}
     </nav>)
 }
 
