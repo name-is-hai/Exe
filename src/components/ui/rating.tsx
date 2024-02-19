@@ -88,7 +88,7 @@ function RatingStar(props: Readonly<IRatingStarProps>) {
         count = 5,
         size = 14,
         isEdit = false,
-        // isHalf = false,
+        isHalf = false,
         valueShow = false,
         emptyIcon = <BsStar />,
         halfIcon = <BsStarHalf />,
@@ -96,7 +96,7 @@ function RatingStar(props: Readonly<IRatingStarProps>) {
         activeColor = "#FED900",
         activeColors = [],
         inactiveColor = "#808080",
-        // onChange,
+        onChange,
         style = {},
         classNames = "",
     } = props;
@@ -106,28 +106,28 @@ function RatingStar(props: Readonly<IRatingStarProps>) {
     const [currentValue, setCurrentValue] = useState<number>(value);
     const [color, setColor] = useState<string>(initialColor);
 
-    // const clickHandler = (nextValue: number, e: any) => {
-    //     if (!isEdit) return;
-    //     const value = nextValue;
-    //     if (isHalf) {
-    //         const xPos =
-    //             (e.pageX - e.currentTarget?.getBoundingClientRect()?.left) /
-    //             e.currentTarget?.offsetWidth;
+    const clickHandler = (nextValue: number, e: any) => {
+        if (!isEdit) return;
+        const value = nextValue;
+        if (isHalf) {
+            const xPos =
+                (e.pageX - e.currentTarget?.getBoundingClientRect()?.left) /
+                e.currentTarget?.offsetWidth;
 
-    //         if (xPos <= 0.5) {
-    //             nextValue -= 0.5;
-    //         }
-    //     }
+            if (xPos <= 0.5) {
+                nextValue -= 0.5;
+            }
+        }
 
-    //     setCurrentValue(nextValue);
+        setCurrentValue(nextValue);
 
-    //     // color set
-    //     if (typeof onChange === "function") onChange(nextValue);
-    //     const color = activeColors[value - 1]
-    //         ? activeColors[value - 1]
-    //         : activeColor;
-    //     setColor(color);
-    // };
+        // color set
+        if (typeof onChange === "function") onChange(nextValue);
+        const color = activeColors[value - 1]
+            ? activeColors[value - 1]
+            : activeColor;
+        setColor(color);
+    };
 
     useEffect(() => {
         // Update local state when the value prop changes

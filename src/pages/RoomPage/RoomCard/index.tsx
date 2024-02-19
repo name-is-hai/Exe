@@ -15,6 +15,7 @@ const RoomCard = ({
     aspectRatio,
     width,
     height,
+    ...props
 }: Readonly<RoomCardProps>) => {
     return (
         <>
@@ -30,7 +31,7 @@ const RoomCard = ({
                             )} />
                     </div>
                     <div className="flex flex-col items-start space-y-2">
-                    <div>{room.name}</div>
+                        <div>{room.name}</div>
                         <div className="flex flex-col space-y-2">
                             <span>Giá:  <data className="text-orange-400" value="100.00">{numberFormat(room.price)}</data></span>
                             <div className="flex flex-row items-center">
