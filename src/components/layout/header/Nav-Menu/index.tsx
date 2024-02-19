@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import MenuLink from "./MenuLink";
 
 interface NavMenuProps {

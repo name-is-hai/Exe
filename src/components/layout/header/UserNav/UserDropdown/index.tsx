@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/themes/theme-provider"
-import { NavLink } from "react-router-dom"
 interface UserNavProps {
     className?: string
 }

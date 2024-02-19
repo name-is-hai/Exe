@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Img } from "react-image";
 import RatingStar from "@/components/ui/rating";
@@ -15,8 +15,6 @@ const RoomCard = ({
     aspectRatio,
     width,
     height,
-    className,
-    ...props
 }: Readonly<RoomCardProps>) => {
     return (
         <>
