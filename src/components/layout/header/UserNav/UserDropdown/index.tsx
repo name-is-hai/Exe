@@ -4,18 +4,18 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import {
-    DropdownMenuGroup,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuTrigger,
-    DropdownMenuSub,
-    DropdownMenuSubTrigger,
+    DropdownMenuLabel,
     DropdownMenuPortal,
-    DropdownMenuSubContent
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/themes/theme-provider"

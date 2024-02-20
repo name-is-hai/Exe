@@ -3,14 +3,14 @@ import Container from "@/components/ui/container";
 import RoomCard from "./RoomCard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { HoverCard, HoverCardTrigger, HoverCardContent, HoverCardPortal, HoverCardArrow } from "@/components/ui/hover-card";
-import { Tags, Filter } from "lucide-react";
+import { HoverCard, HoverCardArrow, HoverCardContent, HoverCardPortal, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Filter, Tags } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import http from "@/utils/http";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const RoomPage = () => {
@@ -22,7 +22,7 @@ const RoomPage = () => {
     const [rooms, setRooms] = useState([]);
     useEffect(() => {
 
-        let body = {
+        const body = {
             startPrice: formData.startPrice,
             endPrice: formData.endPrice,
             startSize: 0,
@@ -39,7 +39,7 @@ const RoomPage = () => {
         }
 
         http.post('/exe/rooms/get-list', body, false).then((res) => {
-            var images: any = []
+            const images: any = []
             res.resp?.data.list.forEach((room: any) => {
                 images.push({
                     name: room.name,

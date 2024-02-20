@@ -13,19 +13,19 @@ import TopRoom from "../HomePage/TopRoom";
 import { Separator } from "@/components/ui/separator";
 import RatingStar from "@/components/ui/rating";
 import useWindowDimensions from "@/hook/useWindowDimensions";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import useQuery from "@/hook/useQuery";
 import http from "@/utils/http";
 import { numberFormat } from '@/lib/currency';
 
 export function RoomDetail() {
-    let query = useQuery();
+    const query = useQuery();
 
     const [rooms, setRooms] = useState([]);
     const [room, setRoom] = useState<any>();
     useEffect(() => {
         http.post('/exe/rooms/get-list', {}, false).then((res) => {
-            var images: any = []
+            const images: any = []
             res.resp?.data.list.forEach((room: any) => {
                 images.push({
                     name: room.name,

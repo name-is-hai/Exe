@@ -14,8 +14,8 @@ const HomePage = () => {
 
     useEffect(() => {
         http.post('/exe/rooms/get-list', {}, false).then((res) => {
-            var images: any = []
-            var imagesTopsize: any = []
+            const images: any = []
+            const imagesTopsize: any = []
             res.resp?.data.list.forEach((room: any) => {
                 images.push({
                     name: room.name,
@@ -57,7 +57,7 @@ const HomePage = () => {
 
     const { width } = useWindowDimensions();
     let real_width: number;
-    let height: number = 600;
+    const height: number = 600;
     if (width >= 1400) {
         real_width = 1350;
     } else if (width < 1400 && width > 600) {
