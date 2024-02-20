@@ -5,7 +5,7 @@ import { Footer } from "./Footer";
 
 function Page({ children }: any) {
     return (
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             <div className="flex-col md:flex">
                 <ScrollArea className="h-screen">
                     <Header />
