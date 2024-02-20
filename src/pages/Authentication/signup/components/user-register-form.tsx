@@ -76,7 +76,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
             <div hidden={!isUseEmail}>
                 <FormEmailPassword />
             </div>
-            <div className={cn("relative", isUseEmail && "hidden")}>
+            {/* <div className={cn("relative", isUseEmail && "hidden")}>
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
                 </div>
@@ -85,8 +85,8 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                         Hoặc tiếp tục với
                     </span>
                 </div>
-            </div>
-            <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
+            </div> */}
+            {/* <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
@@ -109,7 +109,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                     <Icons.facebook className="w-6 h-6 mr-2" />
                 )}{" "}
                 Tài khoản Facebook
-            </Button>
+            </Button> */}
         </div >
     )
 }

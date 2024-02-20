@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { cn } from "@/lib/utils"
 import { z } from 'zod';
@@ -9,12 +9,29 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { PasswordInput } from "@/components/ui/password";
+import { signInWithPopup } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, provider } from '@/lib/firebase';
+
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [user] = useAuthState(auth);
 
+    const signInWithGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            location.href = "/";
+        } catch (error) {
+            console.error("Error signing in with Google:", error);
+        }
+    };
+    useEffect(() => {
+        auth.signOut();
+        console.log(user);
+    }, [])
     const schema_auth = z.object({
         email: z.string().trim().min(1, {
             message: 'Vui lòng nhập email',
@@ -102,7 +119,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 Số điện thoại
             </Button>
-            <Button variant="outline" type="button" disabled={isLoading}>
+            <Button onClick={signInWithGoogle} variant="outline" type="button" disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
