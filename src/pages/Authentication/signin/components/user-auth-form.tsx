@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { PasswordInput } from "@/components/ui/password";
 import { signInWithPopup } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, provider } from '@/lib/firebase';
 
 
@@ -18,7 +17,6 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [user] = useAuthState(auth);
 
     const signInWithGoogle = async () => {
         try {
@@ -30,14 +28,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     };
     useEffect(() => {
         auth.signOut();
-        console.log(user);
     }, [])
     const schema_auth = z.object({
-        email: z.string().trim().min(1, {
-            message: 'Vui lòng nhập email',
-        }).email({
-            message: 'Email không đúng định dạng',
-        }),
+        phone: z.string().trim()
+            .min(1, {
+                message: 'Vui lòng nhập số điện thoại',
+            }).max(11, { message: 'Số điện thoại không đúng định dạng', })
+            .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, {
+                message: 'Số điện thoại không đúng định dạng',
+            }),
         password: z.string().trim().min(1, {
             message: 'Vui lòng nhập mật khẩu',
         }),
@@ -46,12 +45,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const form_auth = useForm<z.infer<typeof schema_auth>>({
         resolver: zodResolver(schema_auth),
         defaultValues: {
-            email: "",
+            phone: "",
             password: "",
         },
     })
 
-    function onSubmitEmail(values: z.infer<typeof schema_auth>) {
+    function onSubmitPhone(values: z.infer<typeof schema_auth>) {
         setIsLoading(true)
 
         setTimeout(() => {
@@ -64,16 +63,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     return (
         <div className={cn("grid gap-6", className)} {...props}>
             <Form {...form_auth}>
-                <form onSubmit={form_auth.handleSubmit(onSubmitEmail)}>
+                <form onSubmit={form_auth.handleSubmit(onSubmitPhone)}>
                     <div className="grid gap-2">
                         <FormField
                             control={form_auth.control}
-                            name="email"
+                            name="phone"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Số điện thoại</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="email@gmail.com" {...field} />
+                                        <Input placeholder="0912345678" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -111,14 +110,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" type="button" disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                    <Icons.phone className="w-5 h-5 mr-2" />
-                )}{" "}
-                Số điện thoại
-            </Button>
             <Button onClick={signInWithGoogle} variant="outline" type="button" disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />

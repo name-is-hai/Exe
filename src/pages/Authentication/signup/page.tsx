@@ -23,7 +23,7 @@ export default function RegisterPage() {
                             Tạo tài khoản
                         </h1>
                         <p className="text-sm text-muted-foreground">
-                            Hãy nhập email của bạn để đăng ký
+                            Hãy nhập số điện thoại của bạn để đăng ký
                         </p>
                     </div>
                     <UserRegisterForm />

@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/themes/theme-provider"
 import { Header } from "@/components/layout/Header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Footer } from "./Footer";
+import { Toaster } from "sonner";
 
 function Page({ children }: any) {
     return (
@@ -13,6 +14,7 @@ function Page({ children }: any) {
                     <Footer />
                 </ScrollArea>
             </div>
+            <Toaster richColors />
         </ThemeProvider>
     );
 }

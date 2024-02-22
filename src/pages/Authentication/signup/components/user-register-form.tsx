@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import { toast } from 'sonner'
 import { cn } from "@/lib/utils"
 import { z } from 'zod';
 import { Icons } from "@/components/ui/icons"
@@ -8,55 +8,62 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
-import { FormEmailPassword } from "./form-email-pass";
+import { FormPhonePassword } from "./form-phone-pass";
+import http from "@/utils/http";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isUseEmail, setIsUseEmail] = useState<boolean>(false)
+    const [isUsePhone, setIsUsePhone] = useState<boolean>(false)
 
-    const schema_email = z.object({
-        email: z.string().trim().min(1, {
-            message: 'Vui lòng nhập email',
-        }).email({
-            message: 'Email không đúng định dạng',
-        })
+    const schema_phone = z.object({
+        phone: z.string().trim()
+            .min(1, {
+                message: 'Vui lòng nhập số điện thoại',
+            }).max(11, { message: 'Số điện thoại không đúng định dạng', })
+            .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, {
+                message: 'Số điện thoại không đúng định dạng',
+            }),
     })
 
-    const form_email = useForm<z.infer<typeof schema_email>>({
-        resolver: zodResolver(schema_email),
+    const form_phone = useForm<z.infer<typeof schema_phone>>({
+        resolver: zodResolver(schema_phone),
         defaultValues: {
-            email: "",
+            phone: "",
         },
     })
 
-    function onSubmitEmail(values: z.infer<typeof schema_email>) {
+    function onSubmitPhone(values: z.infer<typeof schema_phone>) {
         setIsLoading(true)
-
-        setTimeout(() => {
+        http.post('/exe/users/phone-check', values, false).then((res) => {
+            if (!res.resp.code) {
+                toast.warning(res.resp.message, { position: "top-right" });
+                setIsLoading(false)
+            } else {
+                setIsUsePhone(true)
+            }
+        }).catch(err => {
             setIsLoading(false)
-            setIsUseEmail(true)
-        }, 3000)
-        console.log(values);
-
+            toast.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        });
     }
 
     return (
         <div className={cn("grid gap-6", className)} {...props}>
-            <div hidden={isUseEmail}>
-                <Form {...form_email}>
-                    <form onSubmit={form_email.handleSubmit(onSubmitEmail)}>
+            <div hidden={isUsePhone}>
+                <Form {...form_phone}>
+                    <form onSubmit={form_phone.handleSubmit(onSubmitPhone)}>
                         <div className="grid gap-2">
                             <div>
                                 <FormField
-                                    control={form_email.control}
-                                    name="email"
+                                    control={form_phone.control}
+                                    name="phone"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Email</FormLabel>
+                                            <FormLabel>Số điện thoại</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="email@gmail.com" {...field} />
+                                                <Input placeholder="0912345678" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -67,49 +74,15 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                                 {isLoading && (
                                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                                 )}
-                                Đăng ký bằng email
+                                Đăng ký bằng số điện thoại
                             </Button>
                         </div>
                     </form>
                 </Form>
             </div>
-            <div hidden={!isUseEmail}>
-                <FormEmailPassword />
+            <div hidden={!isUsePhone}>
+                <FormPhonePassword phone={form_phone.getValues('phone')} />
             </div>
-            {/* <div className={cn("relative", isUseEmail && "hidden")}>
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="px-2 bg-background text-muted-foreground">
-                        Hoặc tiếp tục với
-                    </span>
-                </div>
-            </div> */}
-            {/* <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                    <Icons.phone className="w-5 h-5 mr-2" />
-                )}{" "}
-                Số điện thoại
-            </Button>
-            <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                    <Icons.google className="w-4 h-4 mr-2" />
-                )}{" "}
-                Tài khoản Google
-            </Button>
-            <Button variant="outline" type="button" className={cn(isUseEmail && "hidden")} disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                    <Icons.facebook className="w-6 h-6 mr-2" />
-                )}{" "}
-                Tài khoản Facebook
-            </Button> */}
-        </div >
-    )
+        </div>
+    );
 }

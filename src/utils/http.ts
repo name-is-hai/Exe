@@ -99,11 +99,11 @@ class HttpClient {
         return this.makeRequest(urlWithParams.toString(), "GET", needAuth);
     }
 
-    async post(url: string, params: any, needAuth?: boolean): Promise<ApiResponse> {
+    async post(url: string, params: Object, needAuth?: boolean): Promise<ApiResponse> {
         return this.makeRequest(url, "POST", params, needAuth);
     }
 
-    async put(url: string, params: any, needAuth?: boolean): Promise<ApiResponse> {
+    async put(url: string, params: Object, needAuth?: boolean): Promise<ApiResponse> {
         return this.makeRequest(url, "PUT", params, needAuth);
     }
 
