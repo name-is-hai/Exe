@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, getAuth } from "firebase/auth";
+import { FacebookAuthProvider, GoogleAuthProvider, getAuth } from "firebase/auth";
 import firebaseConfig from "../../firebase.config.ts";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-export { auth, app, provider };
+export { auth, app, googleProvider, facebookProvider };

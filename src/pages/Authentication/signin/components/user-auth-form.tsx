@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { PasswordInput } from "@/components/ui/password";
 import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '@/lib/firebase';
+import { auth, googleProvider, facebookProvider } from '@/lib/firebase';
 
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
@@ -19,12 +19,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const signInWithGoogle = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
+        await signInWithPopup(auth, googleProvider).then(res => {
+            console.log(res);
             location.href = "/";
-        } catch (error) {
+        }).catch((error) => {
             console.error("Error signing in with Google:", error);
-        }
+        })
+    };
+    const signInWithFacebook = async () => {
+        signInWithPopup(auth, facebookProvider).then(res => {
+            console.log(res);
+            location.href = "/";
+        }).catch((error) => {
+            console.error("Error signing in with Facebook:", error);
+        })
     };
     useEffect(() => {
         auth.signOut();
@@ -118,7 +126,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 Tài khoản Google
             </Button>
-            <Button variant="outline" type="button" disabled={isLoading}>
+            <Button onClick={signInWithFacebook} variant="outline" type="button" disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 ) : (

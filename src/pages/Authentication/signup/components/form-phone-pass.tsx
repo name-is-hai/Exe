@@ -13,11 +13,15 @@ import {
     DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
+import { auth } from "@/lib/firebase";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
+// import { signInWithPhoneNumber } from "firebase/auth";
+// import { auth } from "@/lib/firebase";
+
 type FormPhonePasswordProps = {
     phone: string
 }
@@ -25,6 +29,8 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isLoadingOTP, setIsLoadingOTP] = useState<boolean>(false)
     const [openDialog, setOpenDialog] = useState<boolean>(false)
+
+    const [result, setResult] = useState<any>();
     const schema_phone_pass = z.object({
         phone: z.string().trim()
             .min(1, {
@@ -43,9 +49,10 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
         path: ['confirmPassword'],
         message: 'Mật khẩu không trùng nhau '
     });
+
     const schema_otp = z.object({
         otp: z.string().trim().min(1, {
-            message: 'Vui lòng mã otp',
+            message: 'Vui lòng mã OTP',
         })
     })
 
@@ -57,31 +64,41 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
             confirmPassword: "",
         },
     })
+    if (phone) {
+        form_phone_pass.setValue('phone', phone)
+    }
     const form__otp = useForm<z.infer<typeof schema_otp>>({
         resolver: zodResolver(schema_otp),
         defaultValues: {
             otp: "",
         },
     })
-    if (phone) {
-        form_phone_pass.setValue('phone', phone)
-    }
     function onSubmitPhonePass(values: z.infer<typeof schema_phone_pass>) {
-        setIsLoading(true)
-        setOpenDialog(true)
-
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 3000)
-        console.log(values);
+        // setIsLoading(true)
+        let formatPhone
+        if (values.phone.charAt(0) === '0') {
+            formatPhone = "+84" + values.phone.slice(1)
+        } else {
+            formatPhone = values.phone
+        }
+        let verify = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
+        signInWithPhoneNumber(auth, formatPhone, verify).then((result) => {
+            console.log(result);
+            setOpenDialog(true)
+            setResult(result);
+        }).catch((err) => {
+            console.log(err);
+        });
 
     }
     function onSubmitOtp(values: z.infer<typeof schema_otp>) {
         setIsLoadingOTP(true)
-        setTimeout(() => {
+        result.confirm(values.otp).then((result) => {
             setIsLoadingOTP(false)
-        }, 3000)
-        console.log(values);
+            console.log(result);
+        }).catch((err) => {
+            console.log("Incorrect code", err);
+        })
     }
     return (
         <>
@@ -127,6 +144,7 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
                                 </FormItem>
                             )}
                         />
+                        <div id="recaptcha-container"></div>
                         <Button disabled={isLoading}>
                             {isLoading && (
                                 <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
@@ -166,7 +184,7 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
                                         <FormItem>
                                             <FormLabel>Mã OTP</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="0912345678" {...field} />
+                                                <Input {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
