@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { auth } from "@/lib/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { toast } from "sonner";
 
 // import { signInWithPhoneNumber } from "firebase/auth";
 // import { auth } from "@/lib/firebase";
@@ -98,13 +99,15 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
             console.log(result);
         }).catch((err) => {
             console.log("Incorrect code", err);
+            setIsLoadingOTP(false)
+            toast.warning("Mã OTP không chính xác, vui lòng nhập lại", { position: "top-right" });
         })
     }
     return (
         <>
             <Form {...form_phone_pass}>
                 <form onSubmit={form_phone_pass.handleSubmit(onSubmitPhonePass)}>
-                    <div className="grid gap-2">
+                    <div className="grid mx-auto gap-y-2">
                         <FormField
                             control={form_phone_pass.control}
                             name="phone"

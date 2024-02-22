@@ -50,7 +50,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
     }
 
     return (
-        <div className={cn("grid gap-6", className)} {...props}>
+        <div className={cn("grid gap-6 mx-2", className)} {...props}>
             <div hidden={isUsePhone}>
                 <Form {...form_phone}>
                     <form onSubmit={form_phone.handleSubmit(onSubmitPhone)}>
