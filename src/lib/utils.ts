@@ -14,8 +14,12 @@ export const setLSData = (key, value) => {
 
 export const getLSData = (key) => {
   try {
-    return JSON.parse(window.localStorage.getItem(key) || '{}')
+    return JSON.parse(window.localStorage.getItem(key))
   } catch {
     return window.localStorage.getItem(key)
   }
+}
+
+export const removeLSData = (key) => {
+  window.localStorage.removeItem(key)
 }

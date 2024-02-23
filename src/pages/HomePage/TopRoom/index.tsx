@@ -23,7 +23,7 @@ const TopRoom = ({ rooms }: TopRoomProps) => {
                 {rooms.map((room: any, index: any) => (
                     <CarouselItem key={index} className="md:basis-1/5 basis-3/4">
                         <div className="m-1">
-                            <NavLink to={`/room-detail?id=${room.alt}`}>
+                            <NavLink onClick={() => { window.location.href = `/room-detail?id=${room.alt}` }} to={''}>
                                 <RoomElement room={room} aspectRatio="portrait" className="md:w-[250px] w-[150px]"
                                 />
                             </NavLink>

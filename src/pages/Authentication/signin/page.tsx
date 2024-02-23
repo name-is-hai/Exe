@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn, getLSData } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "./components/user-auth-form"
 import { NavLink } from "react-router-dom"
@@ -7,9 +7,11 @@ import { useEffect } from "react"
 
 export default function AuthenticationPage() {
     useEffect(() => {
-        return () => {
-            localStorage.clear();
-        };
+        console.log(getLSData('access_token'));
+
+        if (getLSData('access_token')) {
+            window.location.href = "/";
+        }
     }, []);
     return (
         <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">

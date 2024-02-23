@@ -21,14 +21,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast } from "sonner";
 import http from "@/utils/http";
 
-// import { signInWithPhoneNumber } from "firebase/auth";
-// import { auth } from "@/lib/firebase";
-
-type FormPhonePasswordProps = {
-    phone: string
-}
-export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+export const FormPhonePassword = ({ phone }) => {
     const [isLoadingOTP, setIsLoadingOTP] = useState<boolean>(false)
     const [openDialog, setOpenDialog] = useState<boolean>(false)
 
@@ -111,7 +104,7 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
             register_type: user.providerData[0].providerId,
             photo: user.providerData[0].photoURL,
             email: user.providerData[0].email,
-            phone: "0" + user.providerData[0].phoneNumber.slice(1),
+            phone: user.providerData[0].phoneNumber.replace('+84', '0'),
             password: form_phone_pass.getValues('password')
         }
         http.post('/exe/register', newUser, false).then((res) => {
@@ -173,12 +166,7 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
                             )}
                         />
                         <div id="recaptcha-container"></div>
-                        <Button disabled={isLoading}>
-                            {isLoading && (
-                                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                            )}
-                            Đăng ký
-                        </Button>
+                        <Button>  Đăng ký </Button>
                     </div>
                 </form>
             </Form>
@@ -190,18 +178,6 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
                             Hãy nhập mã OTP đã được gửi đến số điện thoại của bạn.
                         </DialogDescription>
                     </DialogHeader>
-                    {/* <div className="flex items-center space-x-2">
-                        <div className="grid flex-1 gap-2">
-                            <Label htmlFor="link" className="sr-only">
-                                Link
-                            </Label>
-                            <Input
-                                id="link"
-                                defaultValue="https://ui.shadcn.com/docs/installation"
-                                readOnly
-                            />
-                        </div>
-                    </div> */}
                     <Form {...form__otp}>
                         <form onSubmit={form__otp.handleSubmit(onSubmitOtp)}>
                             <div className="grid gap-2">

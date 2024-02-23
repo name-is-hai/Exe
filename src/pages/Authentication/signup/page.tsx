@@ -1,10 +1,16 @@
-import { cn } from "@/lib/utils"
+import { cn, getLSData } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { UserRegisterForm } from "./components/user-register-form"
 import { NavLink } from "react-router-dom"
 import { Icons } from "@/components/ui/icons"
+import { useEffect } from "react"
 
 export default function RegisterPage() {
+    useEffect(() => {
+        if (getLSData('access_token')) {
+            window.location.href = "/";
+        }
+    }, []);
     return (
         <div className="container relative flex-col items-center justify-center h-screen md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
             <NavLink

@@ -6,18 +6,16 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Icons } from "@/components/ui/icons";
 import { Show } from "@/components/utility/Show";
+import { getLSData } from "@/lib/utils";
 
 export function Header() {
     const [isAuth, setIsAuth] = useState(false);
-    const [loading, setLoading] = useState(true);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('user_token');
-        if (storedToken) {
+        if (getLSData('access_token')) {
             setIsAuth(true);
         }
-        setLoading(false);
     }, []);
     useEffect(() => {
         const root = window.document.documentElement;

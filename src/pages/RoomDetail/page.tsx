@@ -58,8 +58,8 @@ export function RoomDetail() {
 
     return (
         <Page>
-            <Container className="lg:px-32">
-                <div className="flex flex-col md:justify-between md:pb-20 md:flex-row">
+            <Container>
+                <div className="flex flex-col md:justify-around md:pb-20 md:flex-row">
                     <div className="relative mt-11">
                         <Img src={room?.image} width={real_width} height={400} className="rounded-xl" />
                         <Carousel
@@ -85,7 +85,7 @@ export function RoomDetail() {
                             <CarouselNext />
                         </Carousel>
                     </div>
-                    <div className="mt-11 md:ms-32 me-auto">
+                    <div className="mt-11 md:ms-32">
                         <div>
                             <div className="text-sm text-muted-foreground">
                                 Mô tả qua về phòng trọ
@@ -106,7 +106,7 @@ export function RoomDetail() {
                         </div>
                     </div>
                 </div>
-                <h1 className="text-2xl font-semibold leading-none tracking-tight my-9">Có thể bạn sẽ hứng thú</h1>
+                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Có thể bạn sẽ hứng thú</h1>
                 <TopRoom rooms={rooms} />
             </Container>
         </Page>

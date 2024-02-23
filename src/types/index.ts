@@ -20,3 +20,12 @@ export type Room = {
     created_date: Date | null; // Assuming created_date is a Date object or null
     image: string;
 }
+
+export type User = {
+    uid: string,
+    display_name?: string,
+    register_type: string,
+    photo?: string,
+    email?: string,
+    phone?: string,
+}

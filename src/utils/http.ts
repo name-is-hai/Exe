@@ -1,3 +1,4 @@
+import { getLSData } from "@/lib/utils";
 import { ApiResponse } from "@/types";
 
 
@@ -30,7 +31,7 @@ class HttpClient {
     }
 
     protected async addAuthorizationHeader(requestConfig: RequestInit): Promise<RequestInit> {
-        const token = localStorage.getItem("access_token");
+        const token = getLSData("access_token");
 
         if (token) {
             requestConfig.headers = {

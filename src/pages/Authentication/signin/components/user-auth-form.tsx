@@ -21,9 +21,6 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    useEffect(() => {
-        auth.signOut();
-    }, [])
     const signInWithGoogle = async () => {
         signInWithPopup(auth, googleProvider).then(res => {
             console.log(res.user);
@@ -115,12 +112,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     function onSubmitPhone(values: z.infer<typeof schema_auth>) {
         setIsLoading(true)
-
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 3000)
-        console.log(values);
-
+        http.post('/exe/login', values, false).then((res) => {
+            if (res.resp.code) {
+                setLSData('access_token', res.resp.data['access-token']);
+                setLSData('user', res.resp.data.user);
+                setIsLoading(false)
+                window.location.href = '/';
+            } else {
+                toast.warning(res.resp.message, { position: 'top-right' })
+                setIsLoading(false)
+            }
+        }).catch(err => {
+            console.error('login not working:', err)
+        })
     }
 
     return (
