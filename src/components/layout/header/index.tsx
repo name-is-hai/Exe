@@ -5,16 +5,17 @@ import { UserNav } from "./UserNav/UserDropdown"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Icons } from "@/components/ui/icons";
+import { Show } from "@/components/utility/Show";
 
 export function Header() {
-    const [isAuth, setIsAuth] = useState('');
+    const [isAuth, setIsAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('user_token');
         if (storedToken) {
-            setIsAuth(storedToken);
+            setIsAuth(true);
         }
         setLoading(false);
     }, []);
@@ -27,7 +28,7 @@ export function Header() {
             <div className="block md:hidden">
                 <Sheet>
                     <SheetTrigger className="flex items-center justify-center">
-                        <Menu className="w-6 h-6" /><Icons.app className="w-10 h-10 ml-2" style={isDarkTheme ? { fill: "white" } : {}} />
+                        <Menu className="w-6 h-6" /><Icons.app className="ml-2 h-9 w-9" style={isDarkTheme ? { fill: "white" } : {}} />
                     </SheetTrigger>
                     <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                         <NavMenu className="flex flex-col items-center" />
@@ -36,7 +37,14 @@ export function Header() {
             </div>
             <h2 className="items-center hidden text-2xl font-bold tracking-tight md:flex"><Icons.app className="mr-2 h-9 w-9" style={isDarkTheme ? { fill: "white" } : {}} />Hòa Lạc House</h2>
             <NavMenu className="hidden mr-11 md:block" />
-            {loading ? null : isAuth ? <UserNav className="p-3 ml-32" /> : <SignInSignUp />}
+            <Show>
+                <Show.When isTrue={isAuth}>
+                    <UserNav className="p-3 ml-32" />
+                </Show.When>
+                <Show.When isTrue={!isAuth}>
+                    <SignInSignUp />
+                </Show.When>
+            </Show>
         </div>
     )
 }

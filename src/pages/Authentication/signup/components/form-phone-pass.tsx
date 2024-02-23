@@ -19,6 +19,7 @@ import {
 import { auth } from "@/lib/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast } from "sonner";
+import http from "@/utils/http";
 
 // import { signInWithPhoneNumber } from "firebase/auth";
 // import { auth } from "@/lib/firebase";
@@ -84,7 +85,6 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
         }
         let verify = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
         signInWithPhoneNumber(auth, formatPhone, verify).then((result) => {
-            console.log(result);
             setOpenDialog(true)
             setResult(result);
         }).catch((err) => {
@@ -96,11 +96,36 @@ export const FormPhonePassword = ({ phone }: FormPhonePasswordProps) => {
         setIsLoadingOTP(true)
         result.confirm(values.otp).then((result) => {
             setIsLoadingOTP(false)
-            console.log(result);
+            createNewUser(result.user)
         }).catch((err) => {
             console.log("Incorrect code", err);
             setIsLoadingOTP(false)
             toast.warning("Mã OTP không chính xác, vui lòng nhập lại", { position: "top-right" });
+        })
+    }
+
+    const createNewUser = (user) => {
+        let newUser = {
+            uid: user.uid,
+            display_name: user.providerData[0].displayName,
+            register_type: user.providerData[0].providerId,
+            photo: user.providerData[0].photoURL,
+            email: user.providerData[0].email,
+            phone: "0" + user.providerData[0].phoneNumber.slice(1),
+            password: form_phone_pass.getValues('password')
+        }
+        http.post('/exe/register', newUser, false).then((res) => {
+            if (!res.resp.code) {
+                toast.error('Tạo tài khoản không thành công', { position: 'top-right' })
+            } else {
+                toast.success('Tạo tài khoản thành công, xin mời đăng nhập', { position: 'top-right' })
+                setOpenDialog(false)
+                setTimeout(() => {
+                    window.location.href = '/signin';
+                }, 1000);
+            }
+        }).catch(err => {
+            console.error('Create user with phone and password not working:', err)
         })
     }
     return (

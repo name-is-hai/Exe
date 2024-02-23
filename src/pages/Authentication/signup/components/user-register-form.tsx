@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { FormPhonePassword } from "./form-phone-pass";
 import http from "@/utils/http";
+import { Show } from "@/components/utility/Show";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -71,9 +72,11 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                                 />
                             </div>
                             <Button disabled={isLoading}>
-                                {isLoading && (
-                                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                                )}
+                                <Show>
+                                    <Show.When isTrue={isLoading}>
+                                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                                    </Show.When>
+                                </Show>
                                 Đăng ký bằng số điện thoại
                             </Button>
                         </div>

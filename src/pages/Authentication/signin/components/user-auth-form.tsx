@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { cn } from "@/lib/utils"
+import { cn, setLSData } from "@/lib/utils"
 import { z } from 'zod';
 import { Icons } from "@/components/ui/icons"
 import { Button } from "@/components/ui/button"
@@ -11,6 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from 
 import { PasswordInput } from "@/components/ui/password";
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider, facebookProvider } from '@/lib/firebase';
+import { toast } from "sonner";
+import http from "@/utils/http";
+import { Show } from "@/components/utility/Show";
 
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
@@ -18,25 +21,77 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
+    useEffect(() => {
+        auth.signOut();
+    }, [])
     const signInWithGoogle = async () => {
-        await signInWithPopup(auth, googleProvider).then(res => {
-            console.log(res);
-            location.href = "/";
+        signInWithPopup(auth, googleProvider).then(res => {
+            console.log(res.user);
+            let user = res.user as any
+            if (user) {
+                let newUser = {
+                    uid: user.uid,
+                    display_name: user.providerData[0].displayName,
+                    register_type: user.providerData[0].providerId,
+                    photo: user.providerData[0].photoURL,
+                    email: user.providerData[0].email,
+                    phone: user.providerData[0].phoneNumber,
+                }
+                setLSData('access_token', user.accessToken);
+                setLSData('user', newUser);
+                createNewUser(user, newUser);
+            }
         }).catch((error) => {
             console.error("Error signing in with Google:", error);
+            if ('auth/user-disabled' === error.code) {
+                toast.warning('Tài khoản Facabook của bạn có email đã được sử dụng', { position: 'top-right' })
+            }
         })
     };
     const signInWithFacebook = async () => {
         signInWithPopup(auth, facebookProvider).then(res => {
-            console.log(res);
-            location.href = "/";
+            let user = res.user as any
+            if (user) {
+                let newUser = {
+                    uid: user.uid,
+                    display_name: user.providerData[0].displayName,
+                    register_type: user.providerData[0].providerId,
+                    photo: user.providerData[0].photoURL,
+                    email: user.providerData[0].email,
+                    phone: user.providerData[0].phoneNumber,
+                }
+                setLSData('access_token', user.accessToken);
+                setLSData('user', newUser);
+                createNewUser(user, newUser);
+            }
         }).catch((error) => {
             console.error("Error signing in with Facebook:", error);
+            if ('auth/account-exists-with-different-credential' === error.code) {
+                toast.warning('Tài khoản Facabook của bạn đã sử dụng email đã tồn tại', { position: 'top-right' })
+            }
         })
     };
-    useEffect(() => {
-        auth.signOut();
-    }, [])
+
+    const createNewUser = (user, newUser) => {
+        http.post('/exe/users/uid-check', { uid: user.uid }, false).then((res) => {
+            if (res.resp.code) {
+                http.post('/exe/register', newUser, false).then((res) => {
+                    if (!res.resp.code) {
+                        toast.error('Tạo tài khoản không thành công', { position: 'top-right' })
+                    } else {
+                        window.location.href = '/';
+                    }
+                }).catch(err => {
+                    console.error('Create user with not working:', err)
+                })
+            } else {
+                window.location.href = '/';
+            }
+        }).catch(err => {
+            console.error('check uid not working:', err)
+        })
+    }
+
     const schema_auth = z.object({
         phone: z.string().trim()
             .min(1, {
@@ -100,9 +155,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                             )}
                         />
                         <Button disabled={isLoading}>
-                            {isLoading && (
-                                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                            )}
+                            <Show>
+                                <Show.When isTrue={isLoading}>
+                                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                                </Show.When>
+                            </Show>
                             Đăng nhập
                         </Button>
                     </div>
@@ -119,19 +176,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </div>
             </div>
             <Button onClick={signInWithGoogle} variant="outline" type="button" disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                    <Icons.google className="w-4 h-4 mr-2" />
-                )}{" "}
+                <Show>
+                    <Show.When isTrue={isLoading}>
+                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                    </Show.When>
+                    <Show.Else >
+                        <Icons.google className="w-4 h-4 mr-2" />
+                    </Show.Else>
+                </Show>
                 Tài khoản Google
             </Button>
             <Button onClick={signInWithFacebook} variant="outline" type="button" disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                    <Icons.facebook className="w-6 h-6 mr-2" />
-                )}{" "}
+                <Show>
+                    <Show.When isTrue={isLoading}>
+                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                    </Show.When>
+                    <Show.Else >
+                        <Icons.facebook className="w-6 h-6 mr-2" />
+                    </Show.Else>
+                </Show>
                 Tài khoản Facebook
             </Button>
         </div >

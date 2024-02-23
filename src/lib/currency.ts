@@ -1,1 +1,0 @@
-export const numberFormat = (value: any) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);

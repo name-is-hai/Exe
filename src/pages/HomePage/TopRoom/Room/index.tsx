@@ -7,7 +7,7 @@ import {
 import { cn } from "@/lib/utils"
 import { Img } from "react-image"
 import RatingStar from "@/components/ui/rating";
-import { numberFormat } from "@/lib/currency";
+import { numberFormat } from "@/lib/utils";
 
 interface RoomElementProps extends React.HTMLAttributes<HTMLDivElement> {
     room: any

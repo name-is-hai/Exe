@@ -16,7 +16,7 @@ import useWindowDimensions from "@/hook/useWindowDimensions";
 import { useEffect, useState } from "react";
 import useQuery from "@/hook/useQuery";
 import http from "@/utils/http";
-import { numberFormat } from '@/lib/currency';
+import { numberFormat } from '@/lib/utils';
 
 export function RoomDetail() {
     const query = useQuery();
