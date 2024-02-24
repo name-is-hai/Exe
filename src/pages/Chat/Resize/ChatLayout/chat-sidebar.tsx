@@ -1,23 +1,24 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 import { Show } from "@/components/utility/Show";
 import { cn } from "@/lib/utils";
-import { Message } from "@/types";
+import { Message, UserMessage } from "@/types";
 import { MessageSquare } from "lucide-react";
-import { NavLink } from "react-router-dom";
 interface SidebarProps {
   isCollapsed: boolean;
   links: {
+    uid: string;
     name: string;
     messages: Message[];
     avatar: string;
     variant: "secondary" | "ghost";
   }[];
+  onClick?: (selectedUser: UserMessage) => void;
   isMobile: boolean;
 }
 
-export function ChatSidebar({ links, isCollapsed, isMobile }: Readonly<SidebarProps>) {
+export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<SidebarProps>) {
 
   return (
     <div
@@ -41,9 +42,8 @@ export function ChatSidebar({ links, isCollapsed, isMobile }: Readonly<SidebarPr
               <TooltipProvider key={index}>
                 <Tooltip key={index} delayDuration={0}>
                   <TooltipTrigger asChild>
-                    <NavLink
-                      onClick={() => window.location.href = '/chat?uid=K46iAaLqPsYkAjTXW80RItov4Hq2'}
-                      to="#"
+                    <Button
+                      onClick={() => onClick(link)}
                       className={cn(
                         buttonVariants({ variant: link.variant, size: "icon" }),
                         "h-9 w-11 md:h-16 md:w-16",
@@ -59,9 +59,9 @@ export function ChatSidebar({ links, isCollapsed, isMobile }: Readonly<SidebarPr
                           height={6}
                           className="h-9 w-9 "
                         />
-                      </Avatar>{" "}
+                      </Avatar>
                       <span className="sr-only">{link.name}</span>
-                    </NavLink>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent
                     side="right"
@@ -73,10 +73,9 @@ export function ChatSidebar({ links, isCollapsed, isMobile }: Readonly<SidebarPr
               </TooltipProvider>
             </Show.When>
             <Show.Else>
-              <NavLink
-                onClick={() => window.location.href = '/chat?uid=K46iAaLqPsYkAjTXW80RItov4Hq2'}
+              <Button
+                onClick={() => onClick(link)}
                 key={index}
-                to="#"
                 className={cn(
                   buttonVariants({ variant: link.variant, size: "lg" }),
                   link.variant === "secondary" &&
@@ -102,7 +101,7 @@ export function ChatSidebar({ links, isCollapsed, isMobile }: Readonly<SidebarPr
                     </span>
                   )}
                 </div>
-              </NavLink>
+              </Button>
             </Show.Else>
           </Show>
         )}

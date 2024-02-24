@@ -1,7 +1,7 @@
 
 export const userData = [
     {
-        uid: 'oRfd3rovwoNjgQLEojtiuipG1Ih1',
+        uid: 'K46iAaLqPsYkAjTXW80RItov4Hq2',
         avatar: 'https://shadcn-chat.vercel.app/User1.png',
         messages: [
             {

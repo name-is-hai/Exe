@@ -5,6 +5,7 @@ import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password";
 import { auth } from "@/lib/firebase";
+import { setDocsUserChats } from "@/services/firebase.service";
 import http from "@/utils/http";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
@@ -99,6 +100,7 @@ export const FormPhonePassword = ({ phone }) => {
             phone: user.providerData[0].phoneNumber.replace('+84', '0'),
             password: form_phone_pass.getValues('password')
         }
+        setDocsUserChats([user.uid], {})
         http.post('/exe/register', newUser, false).then((res) => {
             if (!res.resp.code) {
                 toast.error('Tạo tài khoản không thành công', { position: 'top-right' })

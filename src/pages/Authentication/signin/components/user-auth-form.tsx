@@ -7,6 +7,7 @@ import { Show } from "@/components/utility/Show";
 import { auth, facebookProvider, googleProvider } from '@/lib/firebase';
 import { cn } from "@/lib/utils";
 import { setAccessToken, setCurrentUser } from "@/services/authen.service";
+import { setDocsUserChats } from "@/services/firebase.service";
 import http from "@/utils/http";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInWithPopup } from 'firebase/auth';
@@ -23,7 +24,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     const signInWithGoogle = async () => {
         signInWithPopup(auth, googleProvider).then(res => {
-            console.log(res.user);
             const user = res.user as any
             if (user) {
                 const newUser = {
@@ -72,6 +72,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const createNewUser = (user, newUser) => {
         http.post('/exe/users/uid-check', { uid: user.uid }, false).then((res) => {
             if (res.resp.code) {
+                setDocsUserChats([user.uid], {})
                 http.post('/exe/register', newUser, false).then((res) => {
                     if (!res.resp.code) {
                         toast.error('Tạo tài khoản không thành công', { position: 'top-right' })

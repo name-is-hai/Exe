@@ -2,13 +2,15 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { useQuery } from "@/hook/useQuery";
 import { fireStore } from "@/lib/firebase";
 import { cn, getLSData, setLSData } from "@/lib/utils";
-import { User, UserMessage } from "@/types";
+import { Message, QueryChatsResp, User, UserMessage } from "@/types";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { userData } from "../data";
 import { Chat } from "./chat";
 import { ChatSidebar } from "./chat-sidebar";
+import { getCurrentUser } from "@/services/authen.service";
+import { sendDocMessage, getDocsChats, setQueryChats, subscribeToQueryChats, updateDocsMessage, setDocsChats, setQueryUserChats, subscribeToQueryUserChats } from "@/services/firebase.service";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -22,43 +24,25 @@ export function ChatLayout({
   navCollapsedSize,
 }: Readonly<ChatLayoutProps>) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
+  const [listChats, setListChats] = React.useState<QueryChatsResp[]>([]);
   const [selectedUser, setSelectedUser] = React.useState<UserMessage>({
-    uid: "", name: "", avatar: '', messages: []
+    uid: 'K46iAaLqPsYkAjTXW80RItov4Hq2',
+    avatar: 'https://lh3.googleusercontent.com/a/ACg8ocKOQF42k5Bp0-uJrFzlLgnE7vVrI4qfQy1e_3a5qpdS_Q=s96-c',
+    name: 'Trọ Nga Hoàng'
   });
   const [message, setMessages] = React.useState([]);
   const [isMobile, setIsMobile] = useState(false);
 
+  const user = getCurrentUser();
   const queryParam = useQuery();
 
-
-  useEffect(() => {
-    const user = getLSData('user') as User;
-    const q = query(
-      collection(fireStore, 'messages', user.uid, queryParam.get('uid') ?? user.uid))
-      
-    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-      const fetchedMessages = [];
-      QuerySnapshot.forEach((doc) => {
-        fetchedMessages.push({ ...doc.data(), id: doc.id });
-      });
-      const sortedMessages = fetchedMessages.sort(
-        (a, b) => a.created_at - b.created_at
-      );
-      sortedMessages.forEach(mess => {
-        mess.name = user.display_name ?? user.phone;
-        mess.avatar = mess.avatar ?? 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png';
-      })
-      const selectedUser: UserMessage = {
-        uid: 'oRfd3rovwoNjgQLEojtiuipG1Ih1',
-        avatar: 'https://shadcn-chat.vercel.app/User1.png',
-        name: 'Trọ Nga Hoàng',
-        messages: sortedMessages
-      }
-      setSelectedUser(selectedUser)
-      setMessages(sortedMessages);
-      return () => unsubscribe;
-    })
-  }, [])
+  const sendMessage = async (newMessage: Message) => {
+    try {
+      await sendDocMessage([user.uid, queryParam.get('uid') ?? user.uid], newMessage)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const checkScreenWidth = () => {
@@ -70,9 +54,44 @@ export function ChatLayout({
       window.removeEventListener("resize", checkScreenWidth);
     };
   }, []);
+  useEffect(() => {
+    const unsubscribe = subscribeToQueryChats(setQueryChats([user.uid, queryParam.get('uid') ?? user.uid]), (data) => {
+      const sortedMessages = data.sort(
+        (a, b) => a.created_at - b.created_at
+      );
+      setMessages(sortedMessages);
+    })
+    return () => {
+      unsubscribe();
+    };
+  }, [selectedUser.uid])
+
+  useEffect(() => {
+    const unsubscribe = subscribeToQueryUserChats(setQueryUserChats([user.uid]), (data) => {
+      setListChats(data)
+    })
+    return () => {
+      unsubscribe();
+    };
+  }, [user.uid]);
+
+  useEffect(() => {
+    const combinedId = user.uid > selectedUser.uid ? user.uid + selectedUser.uid : selectedUser.uid + user.uid
+    getDocsChats([combinedId]).then(res => {
+      if (!res.exists()) {
+        let currentUser: UserMessage = { uid: user.uid, name: user.display_name ?? user.phone, avatar: user.photo ?? 'https://shadcn-chat.vercel.app/User1.png' }
+        setDocsChats([combinedId], { message: [] })
+        updateDocsMessage(combinedId, currentUser, selectedUser)
+        updateDocsMessage(combinedId, selectedUser, currentUser)
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  }, [selectedUser])
 
   const getUser = (user) => {
     setSelectedUser(user)
+    console.log(user);
   }
 
   return (
@@ -104,12 +123,14 @@ export function ChatLayout({
         <ScrollArea className="h-[40rem]">
           <ChatSidebar
             isCollapsed={isCollapsed || isMobile}
-            links={userData.map((user) => ({
-              name: user.name,
+            links={listChats.map((user) => ({
+              uid: user.userInfo.uid,
+              name: user.userInfo.name,
               messages: message ?? [],
-              avatar: user.avatar,
-              variant: selectedUser.name === user.name ? "secondary" : "ghost",
+              avatar: user.userInfo.avatar,
+              variant: selectedUser.name === user.userInfo.name ? "secondary" : "ghost",
             }))}
+            onClick={getUser}
             isMobile={isMobile}
           />
         </ScrollArea>
@@ -120,6 +141,7 @@ export function ChatLayout({
           <Chat
             messages={message}
             selectedUser={selectedUser}
+            sendMessage={sendMessage}
             isMobile={isMobile}
           />
         </ScrollArea>

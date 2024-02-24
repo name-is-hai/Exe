@@ -41,6 +41,19 @@ export type Message = {
 export type UserMessage = {
     uid: string
     avatar: string
-    messages: Message[]
+    messages?: Message[]
     name: string
+}
+
+export type QueryChatsResp = {
+    id: string;
+    userInfo: {
+        uid: string;
+        name: string;
+        avatar: string;
+    };
+    date: {
+        seconds: number;
+        nanoseconds: number;
+    };
 }

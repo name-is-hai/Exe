@@ -12,12 +12,7 @@ interface ChatMessageProps {
   isMobile: boolean;
 }
 
-export function ChatMessage({
-  messages,
-  selectedUser,
-  sendMessage,
-  isMobile
-}: Readonly<ChatMessageProps>) {
+export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: Readonly<ChatMessageProps>) {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (messagesContainerRef.current) {
