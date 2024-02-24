@@ -5,6 +5,7 @@ import AuthenticationPage from "./pages/Authentication/signin/page";
 import RoomPage from "./pages/RoomPage/page";
 import ContactPage from "./pages/ContactPage/page";
 import { RoomDetail } from "./pages/RoomDetail/page";
+import ChatPage from "./pages/Chat/page";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/signin" element={<AuthenticationPage />} />
         <Route path="/signup" element={<RegisterPage />} />
+        <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>
   );

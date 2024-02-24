@@ -23,6 +23,7 @@ import { auth } from "@/lib/firebase"
 import { useEffect, useState } from "react"
 import { getLSData, removeLSData } from "@/lib/utils"
 import { User } from "@/types"
+import { NavLink } from "react-router-dom"
 interface UserNavProps {
     className?: string
 }
@@ -60,19 +61,9 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        {/* <DropdownMenuItem>
-                            Profile
-                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Billing
-                            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Settings
-                            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                        </DropdownMenuItem> */}
-                        <DropdownMenuItem>Chat</DropdownMenuItem>
+                        <NavLink to={'/chat'}>
+                            <DropdownMenuItem>Chat</DropdownMenuItem>
+                        </NavLink>
                         <DropdownMenuSeparator />
                         <DropdownMenuSub>
                             <DropdownMenuSubTrigger>

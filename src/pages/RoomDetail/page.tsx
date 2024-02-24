@@ -16,7 +16,9 @@ import useWindowDimensions from "@/hook/useWindowDimensions";
 import { useEffect, useState } from "react";
 import useQuery from "@/hook/useQuery";
 import http from "@/utils/http";
-import { numberFormat } from '@/lib/utils';
+import { getLSData, numberFormat } from '@/lib/utils';
+import { Button } from "@/components/ui/button";
+import { MessageCircleDashed } from "lucide-react";
 
 export function RoomDetail() {
     const query = useQuery();
@@ -98,10 +100,17 @@ export function RoomDetail() {
                                 <div className="flex items-center space-x-3 text-sm font-medium leading-none">
                                     <RatingStar isEdit={false} size={15} value={4} />
                                     <div>4.3</div>
+                                    <Button onClick={() => {
+                                        if (getLSData('user')) {
+                                            window.location.href = `/chat?uid=${room?.uid}`
+                                        } else {
+                                            window.location.href = `/signin`
+                                        }
+                                    }} className="rounded-full" size="icon"><MessageCircleDashed /></Button>
                                 </div>
                             </div>
                             <div className="mt-5 text-sm text-muted-foreground md:w-[500px]">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis egestas pretium aenean pharetra magna ac. Blandit libero volutpat sed cras ornare arcu dui vivamus arcu. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Massa ultricies mi quis hendrerit dolor magna eget est. Ut porttitor leo a diam sollicitudin tempor id eu. Ac odio tempor orci dapibus. Et leo duis ut diam quam nulla porttitor massa id. Amet porttitor eget dolor morbi non arcu risus quis. Lacus vel facilisis volutpat est velit egestas dui id. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Sodales ut eu sem integer vitae justo eget. Quisque sagittis purus sit amet volutpat consequat. Quis varius quam quisque id diam vel quam.
+                                {room?.description}
                             </div>
                         </div>
                     </div>
@@ -109,6 +118,6 @@ export function RoomDetail() {
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Có thể bạn sẽ hứng thú</h1>
                 <TopRoom rooms={rooms} />
             </Container>
-        </Page>
+        </Page >
     )
 }
