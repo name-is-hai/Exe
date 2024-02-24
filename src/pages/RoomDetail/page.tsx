@@ -102,7 +102,8 @@ export function RoomDetail() {
                                     <div>4.3</div>
                                     <Button onClick={() => {
                                         if (getLSData('user')) {
-                                            window.location.href = `/chat?uid=${room?.uid}`
+                                            window.location.href = `/chat?uid=K46iAaLqPsYkAjTXW80RItov4Hq2`
+                                            // window.location.href = `/chat?uid=${room?.uid}`
                                         } else {
                                             window.location.href = `/signin`
                                         }

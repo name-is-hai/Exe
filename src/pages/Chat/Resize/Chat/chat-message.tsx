@@ -1,5 +1,5 @@
 import { UserData } from "../data";
-import { cn } from "@/lib/utils";
+import { cn, getLSData } from "@/lib/utils";
 import React, { useRef, useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import ChatBottombar from "./chat-bottombar";
@@ -56,11 +56,11 @@ export function ChatMessage({
               }}
               className={cn(
                 "flex flex-col gap-2 p-4 whitespace-pre-wrap",
-                message.uid !== selectedUser.uid ? "items-end" : "items-start"
+                (getLSData('user').uid === message.uid) ? "items-end" : "items-start"
               )}
             >
               <div className="flex items-center gap-3">
-                {message.uid === selectedUser.uid && (
+                {message.uid !== selectedUser.uid && (
                   <Avatar className="flex items-center justify-center">
                     <AvatarImage
                       src={message.avatar}
@@ -73,7 +73,7 @@ export function ChatMessage({
                 <span className="max-w-xs p-3 rounded-md bg-accent">
                   {message.message}
                 </span>
-                {message.uid !== selectedUser.uid && (
+                {message.uid === selectedUser.uid && (
                   <Avatar className="flex items-center justify-center">
                     <AvatarImage
                       src={message.avatar}
