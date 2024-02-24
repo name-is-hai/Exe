@@ -1,12 +1,8 @@
-import { Img } from 'react-image';
-import { Carousel, CarouselNext, CarouselPrevious, CarouselSlide, CarouselSlideList } from "@/components/ui/carousel-silder"
-import CardSearch from '../CardSearch';
-import {
-    Drawer,
-    DrawerContent,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
 import { Button } from '@/components/ui/button';
+import { Carousel, CarouselNext, CarouselPrevious, CarouselSlide, CarouselSlideList } from "@/components/ui/carousel-silder";
+import { Drawer, DrawerContent, DrawerTrigger, } from "@/components/ui/drawer";
+import { Img } from 'react-image';
+import CardSearch from '../CardSearch';
 interface CarouselRoomsProps {
     silder: any
     real_width: number

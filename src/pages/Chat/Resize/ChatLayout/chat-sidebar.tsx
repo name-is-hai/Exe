@@ -1,17 +1,11 @@
-import { MoreHorizontal, PenBox } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { NavLink } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 import { Show } from "@/components/utility/Show";
-import { MessageSquare } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Message } from "@/types";
+import { MessageSquare } from "lucide-react";
+import { NavLink } from "react-router-dom";
 interface SidebarProps {
   isCollapsed: boolean;
   links: {

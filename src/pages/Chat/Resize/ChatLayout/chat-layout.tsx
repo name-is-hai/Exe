@@ -1,24 +1,14 @@
-import {
-  query,
-  collection,
-  orderBy,
-  onSnapshot,
-  limit,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { cn, getLSData, setLSData } from "@/lib/utils";
-import { ChatSidebar } from "./chat-sidebar";
-import { Chat } from "./chat";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { useQuery } from "@/hook/useQuery";
 import { fireStore } from "@/lib/firebase";
-import { userData } from "../data";
-import useQuery from "@/hook/useQuery";
+import { cn, getLSData, setLSData } from "@/lib/utils";
 import { User, UserMessage } from "@/types";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { userData } from "../data";
+import { Chat } from "./chat";
+import { ChatSidebar } from "./chat-sidebar";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -45,6 +35,7 @@ export function ChatLayout({
     const user = getLSData('user') as User;
     const q = query(
       collection(fireStore, 'messages', user.uid, queryParam.get('uid') ?? user.uid))
+      
     const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
       const fetchedMessages = [];
       QuerySnapshot.forEach((doc) => {
@@ -57,7 +48,7 @@ export function ChatLayout({
         mess.name = user.display_name ?? user.phone;
         mess.avatar = mess.avatar ?? 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png';
       })
-      let selectedUser: UserMessage = {
+      const selectedUser: UserMessage = {
         uid: 'oRfd3rovwoNjgQLEojtiuipG1Ih1',
         avatar: 'https://shadcn-chat.vercel.app/User1.png',
         name: 'Trọ Nga Hoàng',

@@ -1,9 +1,10 @@
-import { cn, getLSData } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import { UserRegisterForm } from "./components/user-register-form"
-import { NavLink } from "react-router-dom"
 import { Icons } from "@/components/ui/icons"
+import { cn, getLSData } from "@/lib/utils"
 import { useEffect } from "react"
+import { NavLink } from "react-router-dom"
+
+import { UserRegisterForm } from "./components/user-register-form"
 
 export default function RegisterPage() {
     useEffect(() => {

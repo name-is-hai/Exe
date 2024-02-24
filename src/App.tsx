@@ -1,11 +1,11 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import HomePage from "./pages/HomePage/page"
-import RegisterPage from "./pages/Authentication/signup/page";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthenticationPage from "./pages/Authentication/signin/page";
-import RoomPage from "./pages/RoomPage/page";
-import ContactPage from "./pages/ContactPage/page";
-import { RoomDetail } from "./pages/RoomDetail/page";
+import RegisterPage from "./pages/Authentication/signup/page";
 import ChatPage from "./pages/Chat/page";
+import ContactPage from "./pages/ContactPage/page";
+import HomePage from "./pages/HomePage/page";
+import { RoomDetail } from "./pages/RoomDetail/page";
+import RoomPage from "./pages/RoomPage/page";
 
 
 function App() {

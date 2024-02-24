@@ -1,10 +1,10 @@
-import Page from "@/components/layout"
+import Page from "@/components/layout";
 import Container from "@/components/ui/container";
+import useWindowDimensions from "@/hook/useWindowDimensions";
+import http from "@/utils/http";
+import { useEffect, useState } from "react";
 import CarouselRooms from "./Carousel";
 import TopRoom from "./TopRoom";
-import useWindowDimensions from "@/hook/useWindowDimensions";
-import { useEffect, useState } from "react";
-import http from "@/utils/http";
 
 const HomePage = () => {
 

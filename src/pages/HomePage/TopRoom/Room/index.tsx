@@ -1,12 +1,13 @@
+import { Img } from "react-image"
+
 import {
     Card,
     CardContent,
     CardDescription,
     CardFooter,
 } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import { Img } from "react-image"
 import RatingStar from "@/components/ui/rating";
+import { cn } from "@/lib/utils"
 import { numberFormat } from "@/lib/utils";
 
 interface RoomElementProps extends React.HTMLAttributes<HTMLDivElement> {

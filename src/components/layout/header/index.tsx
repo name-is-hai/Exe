@@ -1,12 +1,14 @@
+import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import { Icons } from "@/components/ui/icons";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Show } from "@/components/utility/Show";
+import { getLSData } from "@/lib/utils";
+
 import { NavMenu } from "./Nav-Menu"
 import { SignInSignUp } from "./UserNav/SignInSignUp"
 import { UserNav } from "./UserNav/UserDropdown"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import { Icons } from "@/components/ui/icons";
-import { Show } from "@/components/utility/Show";
-import { getLSData } from "@/lib/utils";
 
 export function Header() {
     const [isAuth, setIsAuth] = useState(false);

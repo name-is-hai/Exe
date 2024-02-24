@@ -1,4 +1,5 @@
-import { RoomElement } from "./Room"
+import { NavLink } from "react-router-dom"
+
 import {
     Carousel,
     CarouselContent,
@@ -6,7 +7,8 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
-import { NavLink } from "react-router-dom"
+
+import { RoomElement } from "./Room"
 interface TopRoomProps {
     rooms: any;
 }

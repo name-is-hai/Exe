@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react"
-
-import { cn, setLSData } from "@/lib/utils"
-import { z } from 'zod';
-import { Icons } from "@/components/ui/icons"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
+import { Icons } from "@/components/ui/icons";
+import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password";
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider, facebookProvider } from '@/lib/firebase';
-import { toast } from "sonner";
-import http from "@/utils/http";
 import { Show } from "@/components/utility/Show";
+import { auth, facebookProvider, googleProvider } from '@/lib/firebase';
+import { cn } from "@/lib/utils";
+import { setAccessToken, setCurrentUser } from "@/services/authen.service";
+import http from "@/utils/http";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signInWithPopup } from 'firebase/auth';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from 'zod';
 
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
@@ -24,9 +24,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const signInWithGoogle = async () => {
         signInWithPopup(auth, googleProvider).then(res => {
             console.log(res.user);
-            let user = res.user as any
+            const user = res.user as any
             if (user) {
-                let newUser = {
+                const newUser = {
                     uid: user.uid,
                     display_name: user.providerData[0].displayName,
                     register_type: user.providerData[0].providerId,
@@ -34,8 +34,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     email: user.providerData[0].email,
                     phone: user.providerData[0].phoneNumber,
                 }
-                setLSData('access_token', user.accessToken);
-                setLSData('user', newUser);
+                setAccessToken(user.accessToken)
+                setCurrentUser(newUser)
                 createNewUser(user, newUser);
             }
         }).catch((error) => {
@@ -47,9 +47,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     };
     const signInWithFacebook = async () => {
         signInWithPopup(auth, facebookProvider).then(res => {
-            let user = res.user as any
+            const user = res.user as any
             if (user) {
-                let newUser = {
+                const newUser = {
                     uid: user.uid,
                     display_name: user.providerData[0].displayName,
                     register_type: user.providerData[0].providerId,
@@ -57,8 +57,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     email: user.providerData[0].email,
                     phone: user.providerData[0].phoneNumber,
                 }
-                setLSData('access_token', user.accessToken);
-                setLSData('user', newUser);
+                setAccessToken(user.accessToken)
+                setCurrentUser(newUser)
                 createNewUser(user, newUser);
             }
         }).catch((error) => {
@@ -114,8 +114,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setIsLoading(true)
         http.post('/exe/login', values, false).then((res) => {
             if (res.resp.code) {
-                setLSData('access_token', res.resp.data['access-token']);
-                setLSData('user', res.resp.data.user);
+                setAccessToken(res.resp.data['access-token'])
+                setCurrentUser(res.resp.data.user)
                 setIsLoading(false)
                 window.location.href = '/';
             } else {

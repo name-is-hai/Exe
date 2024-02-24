@@ -1,8 +1,13 @@
+import { useEffect, useState } from "react"
+import { NavLink } from "react-router-dom"
+
+import { useTheme } from "@/components/themes/theme-provider"
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,33 +16,25 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { useTheme } from "@/components/themes/theme-provider"
-import { auth } from "@/lib/firebase"
-import { useEffect, useState } from "react"
-import { getLSData, removeLSData } from "@/lib/utils"
+import { getCurrentUser, logOut } from "@/services/authen.service"
 import { User } from "@/types"
-import { NavLink } from "react-router-dom"
 interface UserNavProps {
     className?: string
 }
 export function UserNav({ className }: Readonly<UserNavProps>) {
     const { setTheme } = useTheme()
-    const [user, setUser] = useState<User>(getLSData('user'));
+    const [user, setUser] = useState<User>(getCurrentUser());
     const handleLogout = () => {
-        removeLSData('access_token');
-        removeLSData('user');
-        auth.signOut();
+        logOut()
         window.location.href = '/';
     };
     useEffect(() => {
-        setUser(getLSData('user'));
+        setUser(getCurrentUser());
     }, [])
     return (
         <div className={className}>

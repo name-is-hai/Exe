@@ -1,21 +1,15 @@
-import {
-  FileImage,
-  Paperclip,
-  SendHorizontal,
-  ThumbsUp,
-} from "lucide-react";
-import React, { useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
-import { cn, getLSData } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
-import { EmojiPicker } from "../emoji-picker";
-import { NavLink } from "react-router-dom";
 import { Show } from "@/components/utility/Show";
-import { auth, fireStore } from "@/lib/firebase";
+import { useQuery } from "@/hook/useQuery";
+import { fireStore } from "@/lib/firebase";
+import { cn, getLSData } from "@/lib/utils";
 import { Message, User } from "@/types";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import useQuery from "@/hook/useQuery";
+import { addDoc, collection } from "firebase/firestore";
+import { AnimatePresence, motion } from "framer-motion";
+import { FileImage, Paperclip, SendHorizontal, ThumbsUp } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { EmojiPicker } from "../emoji-picker";
 
 interface ChatBottombarProps {
   sendMessage: (newMessage: Message) => void;

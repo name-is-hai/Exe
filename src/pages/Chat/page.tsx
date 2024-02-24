@@ -1,7 +1,6 @@
 import Page from "@/components/layout";
-import Container from "@/components/ui/container";
 import { getLSData } from "@/lib/utils";
-import { ChatLayout } from "./Resize/Chat/chat-layout";
+import { ChatLayout } from "./Resize/ChatLayout/chat-layout";
 
 const ChatPage = () => {
     const layout = getLSData("react-resizable-panels:layout");

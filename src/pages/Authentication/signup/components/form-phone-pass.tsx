@@ -1,25 +1,17 @@
-import { useState } from "react"
-
-import { z } from 'zod';
-import { Icons } from "@/components/ui/icons"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
+import { Icons } from "@/components/ui/icons";
+import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
 import { auth } from "@/lib/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { toast } from "sonner";
 import http from "@/utils/http";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from 'zod';
 
 export const FormPhonePassword = ({ phone }) => {
     const [isLoadingOTP, setIsLoadingOTP] = useState<boolean>(false)
@@ -76,7 +68,7 @@ export const FormPhonePassword = ({ phone }) => {
         } else {
             formatPhone = values.phone
         }
-        let verify = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
+        const verify = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
         signInWithPhoneNumber(auth, formatPhone, verify).then((result) => {
             setOpenDialog(true)
             setResult(result);
@@ -98,7 +90,7 @@ export const FormPhonePassword = ({ phone }) => {
     }
 
     const createNewUser = (user) => {
-        let newUser = {
+        const newUser = {
             uid: user.uid,
             display_name: user.providerData[0].displayName,
             register_type: user.providerData[0].providerId,

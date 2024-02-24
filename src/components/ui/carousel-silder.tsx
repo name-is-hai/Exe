@@ -1,13 +1,14 @@
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import React, {
   ReactNode,
   createContext,
   useContext,
   useState,
 } from 'react';
+
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface CarouselContextProps {
   currentSlide: number;

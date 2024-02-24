@@ -1,8 +1,10 @@
-import { ThemeProvider } from "@/components/themes/theme-provider"
-import { Header } from "@/components/layout/Header";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Footer } from "./Footer";
 import { Toaster } from "sonner";
+
+import { Header } from "@/components/layout/Header";
+import { ThemeProvider } from "@/components/themes/theme-provider"
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { Footer } from "./Footer";
 
 function Page({ children }: any) {
     return (

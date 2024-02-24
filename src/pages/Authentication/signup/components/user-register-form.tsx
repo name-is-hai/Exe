@@ -1,16 +1,17 @@
-import { useState } from "react"
-import { toast } from 'sonner'
-import { cn } from "@/lib/utils"
-import { z } from 'zod';
-import { Icons } from "@/components/ui/icons"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
-import { FormPhonePassword } from "./form-phone-pass";
-import http from "@/utils/http";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
+import { Icons } from "@/components/ui/icons";
+import { Input } from "@/components/ui/input";
 import { Show } from "@/components/utility/Show";
+import { cn } from "@/lib/utils";
+import http from "@/utils/http";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from 'sonner';
+import { z } from 'zod';
+
+import { FormPhonePassword } from "./form-phone-pass";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 

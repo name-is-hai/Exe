@@ -1,10 +1,6 @@
-import React from 'react'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { UserData } from '../data';
-import { Info, Phone, Video } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
-import { NavLink } from 'react-router-dom';
+
 
 interface ChatTopbarProps {
   selectedUser: UserData;

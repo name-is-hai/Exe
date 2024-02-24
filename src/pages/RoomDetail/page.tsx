@@ -1,24 +1,18 @@
 import Page from "@/components/layout";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel";
 import Container from "@/components/ui/container";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
+import RatingStar from "@/components/ui/rating";
+import { Separator } from "@/components/ui/separator";
+import { useQuery } from "@/hook/useQuery";
+import useWindowDimensions from "@/hook/useWindowDimensions";
+import { getLSData, numberFormat } from '@/lib/utils';
+import http from "@/utils/http";
+import { MessageCircleDashed } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Img } from "react-image";
 import TopRoom from "../HomePage/TopRoom";
-import { Separator } from "@/components/ui/separator";
-import RatingStar from "@/components/ui/rating";
-import useWindowDimensions from "@/hook/useWindowDimensions";
-import { useEffect, useState } from "react";
-import useQuery from "@/hook/useQuery";
-import http from "@/utils/http";
-import { getLSData, numberFormat } from '@/lib/utils';
-import { Button } from "@/components/ui/button";
-import { MessageCircleDashed } from "lucide-react";
 
 export function RoomDetail() {
     const query = useQuery();

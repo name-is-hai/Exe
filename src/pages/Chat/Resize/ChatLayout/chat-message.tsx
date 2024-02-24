@@ -1,10 +1,9 @@
-import { UserData } from "../data";
-import { cn, getLSData } from "@/lib/utils";
-import React, { useRef, useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import ChatBottombar from "./chat-bottombar";
-import { AnimatePresence, motion } from "framer-motion";
+import { cn, getLSData } from "@/lib/utils";
 import { Message, UserMessage } from "@/types";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useRef } from "react";
+import ChatBottombar from "./chat-bottombar";
 
 interface ChatMessageProps {
   messages?: Message[];

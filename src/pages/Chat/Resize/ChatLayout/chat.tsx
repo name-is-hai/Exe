@@ -1,8 +1,7 @@
-import { UserData } from "../data";
-import ChatTopbar from "./chat-topbar";
-import { ChatMessage } from "./chat-message";
-import React from "react";
 import { Message, UserMessage } from "@/types";
+import React from "react";
+import { ChatMessage } from "./chat-message";
+import ChatTopbar from "./chat-topbar";
 
 interface ChatProps {
   messages: Message[]
