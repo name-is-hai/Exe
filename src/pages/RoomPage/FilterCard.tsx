@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import { InputCurrency } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { HoverCard, HoverCardTrigger, HoverCardPortal, HoverCardContent, HoverCardArrow } from "@/components/ui/hover-card"
 import { Label } from "@/components/ui/label"
@@ -44,13 +44,11 @@ export const FilterCard = ({ formData, handleChange }: FilterCardProps) => {
                 <CardContent className="grid grid-cols-2 gap-4">
                     <div className="flex justify-center gap-4">
                         <div>Từ:</div>
-                        <Input name="startPrice" type="number" value={formData.startPrice}
-                            onChange={handleChange} className="h-6" />
+                        <InputCurrency name="startPrice" intlConfig={{ locale: 'vi-VN', currency: 'VND' }} value={formData.startPrice} onChange={handleChange} className="h-6" />
                     </div>
                     <div className="flex justify-center gap-4">
                         <div>Đến:</div>
-                        <Input name="endPrice" type="number" value={formData.endPrice}
-                            onChange={handleChange} className="h-6" />
+                        <InputCurrency name="endPrice" intlConfig={{ locale: 'vi-VN', currency: 'VND' }} value={formData.endPrice} onChange={handleChange} className="h-6" />
                     </div>
                 </CardContent>
             </Card>

@@ -1,18 +1,11 @@
-import { Filter, Tags } from "lucide-react";
+import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-
 import Page from "@/components/layout/page"
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Container from "@/components/ui/container";
-import { HoverCard, HoverCardArrow, HoverCardContent, HoverCardPortal, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import http from "@/utils/http";
-
 import RoomCard from "./RoomCard";
 import { FilterCard } from "./FilterCard";
 import { useScreenDetector } from "@/hook/useScreenDetector";
@@ -63,7 +56,7 @@ const RoomPage = () => {
     const handleChange = (event: any) => {
         if (event.target) {
             const { name, value, type, checked } = event.target;
-            const newValue = type === 'checkbox' ? checked : value;
+            const newValue = type === 'checkbox' ? checked : name === 'endPrice' || name === 'startPrice' ? Number(value.replace(/\D/g, "")) : value;
             setFormData(prevFormData => ({
                 ...prevFormData,
                 [name]: newValue
@@ -74,6 +67,8 @@ const RoomPage = () => {
                 size: event
             }));
         }
+
+        console.log(formData);
 
         if (isMobile) {
             setIsSheetOpen(false)
