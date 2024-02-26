@@ -1,4 +1,4 @@
-import Page from "@/components/layout"
+import Page from "@/components/layout/page"
 import { Button } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"

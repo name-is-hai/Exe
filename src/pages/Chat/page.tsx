@@ -1,4 +1,4 @@
-import Page from "@/components/layout";
+import Page from "@/components/layout/page";
 import { getLSData } from "@/lib/utils";
 import { ChatLayout } from "./chat-layout";
 

@@ -7,8 +7,8 @@ import { Show } from "@/components/utility/Show";
 import { cn, getLSData } from "@/lib/utils";
 
 import { NavMenu } from "./Nav-Menu"
-import { SignInSignUp } from "./UserNav/SignInSignUp"
-import { UserNav } from "./UserNav/UserDropdown"
+import { SignInSignUp } from "./SignInSignUp"
+import { UserNav } from "./UserDropDown"
 import { useTheme } from "@/components/themes/theme-provider";
 import { useScreenDetector } from "@/hook/useScreenDetector";
 

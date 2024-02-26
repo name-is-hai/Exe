@@ -2,7 +2,7 @@ import { Filter, Tags } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import Page from "@/components/layout"
+import Page from "@/components/layout/page"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Container from "@/components/ui/container";

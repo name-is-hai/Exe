@@ -1,4 +1,4 @@
-import Page from "@/components/layout";
+import Page from "@/components/layout/page";
 import Container from "@/components/ui/container";
 import useWindowDimensions from "@/hook/useWindowDimensions";
 import http from "@/utils/http";
