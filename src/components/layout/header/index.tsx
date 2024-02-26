@@ -9,10 +9,12 @@ import { getLSData } from "@/lib/utils";
 import { NavMenu } from "./Nav-Menu"
 import { SignInSignUp } from "./UserNav/SignInSignUp"
 import { UserNav } from "./UserNav/UserDropdown"
+import { useTheme } from "@/components/themes/theme-provider";
 
 export function Header() {
     const [isAuth, setIsAuth] = useState(false);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const { theme } = useTheme();
 
     useEffect(() => {
         if (getLSData('access_token')) {
@@ -20,9 +22,8 @@ export function Header() {
         }
     }, []);
     useEffect(() => {
-        const root = window.document.documentElement;
-        setIsDarkTheme(root.classList.contains("dark") ? true : false);
-    }, [isDarkTheme])
+        setIsDarkTheme(theme === "dark");
+    }, [theme])
     return (
         <div className="flex items-center justify-between px-6 py-3 bg-primary-900">
             <div className="block md:hidden">
