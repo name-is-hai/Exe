@@ -7,7 +7,7 @@ import RatingStar from "@/components/ui/rating";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@/hook/useQuery";
 import useWindowDimensions from "@/hook/useWindowDimensions";
-import { getLSData, numberFormat } from '@/lib/utils';
+import { getLSData, numberCurrencyFormat } from '@/lib/utils';
 import http from "@/utils/http";
 import { MessageCircleDashed } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -89,7 +89,7 @@ export function RoomDetail() {
                             <h2 className="mt-2 text-3xl font-semibold leading-none">{room?.name}</h2>
                             <Separator className="my-4" />
                             <div className="flex items-center h-5 text-sm space-x-7">
-                                <div className="text-sm font-medium leading-none">Chỉ Từ: {numberFormat(room?.price)} / Tháng</div>
+                                <div className="text-sm font-medium leading-none">Chỉ Từ: {numberCurrencyFormat(room?.price)} / Tháng</div>
                                 <Separator orientation="vertical" />
                                 <div className="flex items-center space-x-3 text-sm font-medium leading-none">
                                     <RatingStar isEdit={false} size={15} value={4} />
