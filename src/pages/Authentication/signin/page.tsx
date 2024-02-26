@@ -3,7 +3,7 @@ import { Icons } from "@/components/ui/icons"
 import { cn, getLSData } from "@/lib/utils"
 import { useEffect } from "react"
 import { NavLink } from "react-router-dom"
-import { UserAuthForm } from "./components/user-auth-form"
+import { UserAuthForm } from "./user-auth-form"
 
 export default function AuthenticationPage() {
     useEffect(() => {

@@ -19,17 +19,21 @@ import {
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
+    DropdownMenuCheckboxItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { getCurrentUser, logOut } from "@/services/authen.service"
 import { User } from "@/types"
 import { Check } from "lucide-react"
+import { useScreenDetector } from "@/hook/useScreenDetector"
 interface UserNavProps {
     className?: string
 }
 export function UserNav({ className }: Readonly<UserNavProps>) {
     const { setTheme, theme } = useTheme()
     const [user, setUser] = useState<User>(getCurrentUser());
+    const { isMobile } = useScreenDetector();
+
     const handleLogout = () => {
         logOut()
         window.location.href = '/';
@@ -48,7 +52,7 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                         </Avatar>
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuContent className="w-56" align="start" forceMount>
                     <DropdownMenuLabel className="font-normal">
                         <div className="flex flex-col space-y-1">
                             <p className="text-sm font-medium leading-none">{user.display_name ?? "Người xa lạ"}</p>
@@ -68,16 +72,16 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                                 Theme
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("light")}>
-                                        <div>Sáng</div>{theme === 'light' && < Check />}
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("dark")}>
-                                        <div>Tối</div> {theme === 'dark' && < Check />}
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("system")}>
-                                        <div>Hệ thống</div> {theme === 'system' && < Check />}
-                                    </DropdownMenuItem>
+                                <DropdownMenuSubContent sideOffset={isMobile && -120}>
+                                    <DropdownMenuCheckboxItem checked={theme === 'light'} onClick={() => setTheme("light")}>
+                                        Sáng
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem checked={theme === 'dark'} onClick={() => setTheme("dark")}>
+                                        Tối
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem checked={theme === 'system'} onClick={() => setTheme("system")}>
+                                        Hệ thống
+                                    </DropdownMenuCheckboxItem>
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
                         </DropdownMenuSub>
@@ -88,6 +92,6 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-        </div>
+        </div >
     )
 }

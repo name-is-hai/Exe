@@ -5,7 +5,7 @@ import { Message } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, ThumbsUp } from "lucide-react";
 import React, { useRef, useState } from "react";
-import { EmojiPicker } from "../emoji-picker";
+import { EmojiPicker } from "./emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { getCurrentUser } from "@/services/authen.service";
 

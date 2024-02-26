@@ -4,7 +4,7 @@ import { cn, getLSData } from "@/lib/utils"
 import { useEffect } from "react"
 import { NavLink } from "react-router-dom"
 
-import { UserRegisterForm } from "./components/user-register-form"
+import { UserRegisterForm } from "./user-register-form"
 
 export default function RegisterPage() {
     useEffect(() => {

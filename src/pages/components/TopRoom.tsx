@@ -8,7 +8,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 
-import { RoomElement } from "../Room"
+import { RoomElement } from "./Room"
 import { useEffect, useState } from "react";
 import { useScreenDetector } from "@/hook/useScreenDetector";
 interface TopRoomProps {
