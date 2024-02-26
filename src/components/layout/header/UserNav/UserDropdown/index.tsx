@@ -76,7 +76,7 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                                         <div>Tối</div> {theme === 'dark' && < Check />}
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => setTheme("system")}>
-                                        Hệ thống
+                                        <div>Hệ thống</div> {theme === 'system' && < Check />}
                                     </DropdownMenuItem>
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
