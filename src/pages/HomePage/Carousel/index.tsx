@@ -17,7 +17,7 @@ interface CarouselRoomsProps {
 
 const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceList }: CarouselRoomsProps) => {
     const plugin = useRef(
-        Autoplay({ delay: 5000, stopOnInteraction: true })
+        Autoplay({ delay: 3000, stopOnInteraction: true })
     )
     const [isMobile, setIsMobile] = useState(false);
 
@@ -40,10 +40,10 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
                 <div className={`lg:w-[1350px] md:w-[${real_width}px]`} >
                     {!isMobile && <CarouselPrevious />}
                     <CarouselContent>
-                        {silder.map(({ src, alt }: any, i: any) => (
-                            <CarouselItem key={i}>
+                        {silder.map(({ src, alt }: any, index: any) => (
+                            <CarouselItem key={index}>
                                 <Img className='rounded-2xl'
-                                    key={i}
+                                    key={index}
                                     src={src}
                                     alt={alt}
                                     style={{ width: '100%', height: height, objectFit: 'cover' }}
