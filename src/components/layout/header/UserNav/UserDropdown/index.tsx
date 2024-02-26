@@ -23,11 +23,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { getCurrentUser, logOut } from "@/services/authen.service"
 import { User } from "@/types"
+import { Check } from "lucide-react"
 interface UserNavProps {
     className?: string
 }
 export function UserNav({ className }: Readonly<UserNavProps>) {
-    const { setTheme } = useTheme()
+    const { setTheme, theme } = useTheme()
     const [user, setUser] = useState<User>(getCurrentUser());
     const handleLogout = () => {
         logOut()
@@ -68,11 +69,11 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                                 <DropdownMenuSubContent>
-                                    <DropdownMenuItem onClick={() => setTheme("light")}>
-                                        Sáng
+                                    <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("light")}>
+                                        <div>Sáng</div>{theme === 'light' && < Check />}
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                        Tối
+                                    <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("dark")}>
+                                        <div>Tối</div> {theme === 'dark' && < Check />}
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => setTheme("system")}>
                                         Hệ thống
