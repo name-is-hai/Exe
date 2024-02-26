@@ -113,7 +113,7 @@ const ContactPage = () => {
                                                 <FormItem>
                                                     <FormLabel>Thông điệp</FormLabel>
                                                     <FormControl>
-                                                        <Textarea placeholder="Hãy điền thông điệp bạn muốn gửi đến chúng tôi." {...field} rows={5} />
+                                                        <Textarea placeholder="Hãy điền thông điệp bạn muốn gửi đến chúng tôi." {...field} rows={5} className="resize-none" />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
