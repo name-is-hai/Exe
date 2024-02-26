@@ -4,17 +4,20 @@ import { useEffect, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Show } from "@/components/utility/Show";
-import { getLSData } from "@/lib/utils";
+import { cn, getLSData } from "@/lib/utils";
 
 import { NavMenu } from "./Nav-Menu"
 import { SignInSignUp } from "./UserNav/SignInSignUp"
 import { UserNav } from "./UserNav/UserDropdown"
 import { useTheme } from "@/components/themes/theme-provider";
+import { useScreenDetector } from "@/hook/useScreenDetector";
 
 export function Header() {
     const [isAuth, setIsAuth] = useState(false);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const { isMobile } = useScreenDetector();
     const { theme } = useTheme();
+
 
     useEffect(() => {
         if (getLSData('access_token')) {
@@ -22,7 +25,11 @@ export function Header() {
         }
     }, []);
     useEffect(() => {
-        setIsDarkTheme(theme === "dark");
+        if (theme === "system") {
+            setIsDarkTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+        } else {
+            setIsDarkTheme(theme === "dark");
+        }
     }, [theme])
     return (
         <div className="flex items-center justify-between px-6 py-3 bg-primary-900">
@@ -40,7 +47,7 @@ export function Header() {
             <NavMenu className="hidden mr-11 md:block" />
             <Show>
                 <Show.When isTrue={isAuth}>
-                    <UserNav className="p-3 ml-32" />
+                    <UserNav className={cn("p-3 ml-32", isMobile && 'pr-0')} />
                 </Show.When>
                 <Show.When isTrue={!isAuth}>
                     <SignInSignUp />

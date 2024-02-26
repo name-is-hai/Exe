@@ -5,6 +5,7 @@ import { Img } from 'react-image';
 import CardSearch from '../CardSearch';
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useRef, useState } from 'react';
+import { useScreenDetector } from '@/hook/useScreenDetector';
 
 interface CarouselRoomsProps {
     silder: any
@@ -19,18 +20,8 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
     const plugin = useRef(
         Autoplay({ delay: 3000, stopOnInteraction: true })
     )
-    const [isMobile, setIsMobile] = useState(false);
+    const { isMobile } = useScreenDetector();
 
-    useEffect(() => {
-        const checkScreenWidth = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        checkScreenWidth();
-        window.addEventListener("resize", checkScreenWidth);
-        return () => {
-            window.removeEventListener("resize", checkScreenWidth);
-        };
-    }, []);
     return (
         <div className="relative flex flex-col items-center justify-between">
             <Carousel plugins={[plugin.current]}

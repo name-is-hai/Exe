@@ -6,12 +6,12 @@ import { Message, QueryChatsResp, User, UserMessage } from "@/types";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { collection, getDocs, onSnapshot, query, serverTimestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { userData } from "../data";
 import { Chat } from "./chat";
 import { ChatSidebar } from "./chat-sidebar";
 import { getCurrentUser } from "@/services/authen.service";
 import { sendDocMessage, getDocsChats, setQueryChats, subscribeToQueryChats, updateDocsUserChats, setDocsChats, setQueryUserChats, subscribeToQueryUserChats } from "@/services/firebase.service";
 import { Show } from "@/components/utility/Show";
+import { useScreenDetector } from "@/hook/useScreenDetector";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -28,7 +28,7 @@ export function ChatLayout({
   const [listChats, setListChats] = React.useState<QueryChatsResp[]>([]);
   const [selectedUser, setSelectedUser] = React.useState<UserMessage>();
   const [message, setMessages] = React.useState([]);
-  const [isMobile, setIsMobile] = useState(false);
+  const { isMobile } = useScreenDetector();
 
   const user = getCurrentUser();
   const queryParam = useQuery();
@@ -124,17 +124,6 @@ export function ChatLayout({
       unsubscribe();
     };
   }, [user.uid]);
-
-  useEffect(() => {
-    const checkScreenWidth = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkScreenWidth();
-    window.addEventListener("resize", checkScreenWidth);
-    return () => {
-      window.removeEventListener("resize", checkScreenWidth);
-    };
-  }, []);
 
   const getUser = (user) => {
     setSelectedUser(user)

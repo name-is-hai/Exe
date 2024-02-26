@@ -10,22 +10,12 @@ import {
 
 import { RoomElement } from "../Room"
 import { useEffect, useState } from "react";
+import { useScreenDetector } from "@/hook/useScreenDetector";
 interface TopRoomProps {
     rooms: any;
 }
 const TopRoom = ({ rooms }: TopRoomProps) => {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkScreenWidth = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        checkScreenWidth();
-        window.addEventListener("resize", checkScreenWidth);
-        return () => {
-            window.removeEventListener("resize", checkScreenWidth);
-        };
-    }, []);
+    const { isMobile } = useScreenDetector();
     return (
         <Carousel opts={{
             align: "start",

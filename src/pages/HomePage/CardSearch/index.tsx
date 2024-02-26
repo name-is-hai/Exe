@@ -10,6 +10,10 @@ type CardSearchProps = {
     priceList: any[],
 }
 export default function CardSearch({ className, sizeList, warnList, priceList }: Readonly<CardSearchProps>) {
+    const findRoom = () => {
+
+    }
+
     return (
         <Card className={className}>
             <CardHeader>
@@ -73,7 +77,7 @@ export default function CardSearch({ className, sizeList, warnList, priceList }:
                     </Select>
                 </CardContent>
                 <CardContent>
-                    <Button><Search className="me-4" /> Tìm Kiếm</Button>
+                    <Button onClick={findRoom}><Search className="me-4" /> Tìm Kiếm</Button>
                 </CardContent>
             </div>
         </Card>

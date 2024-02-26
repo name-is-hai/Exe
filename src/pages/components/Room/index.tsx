@@ -1,5 +1,4 @@
 import { Img } from "react-image"
-
 import {
     Card,
     CardContent,
