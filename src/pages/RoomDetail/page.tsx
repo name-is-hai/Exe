@@ -12,7 +12,7 @@ import http from "@/utils/http";
 import { MessageCircleDashed } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Img } from "react-image";
-import TopRoom from "../HomePage/TopRoom";
+import TopRoom from "../components/TopRoom";
 
 export function RoomDetail() {
     const query = useQuery();

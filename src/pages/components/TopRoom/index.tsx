@@ -8,19 +8,31 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 
-import { RoomElement } from "./Room"
+import { RoomElement } from "../Room"
+import { useEffect, useState } from "react";
 interface TopRoomProps {
     rooms: any;
 }
-
 const TopRoom = ({ rooms }: TopRoomProps) => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkScreenWidth = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        checkScreenWidth();
+        window.addEventListener("resize", checkScreenWidth);
+        return () => {
+            window.removeEventListener("resize", checkScreenWidth);
+        };
+    }, []);
     return (
         <Carousel opts={{
             align: "start",
         }}
             className="w-[300px] md:w-[1300px] mx-auto"
         >
-            <CarouselPrevious />
+            {!isMobile && <CarouselPrevious />}
             <CarouselContent>
                 {rooms.map((room: any, index: any) => (
                     <CarouselItem key={index} className="md:basis-1/5 basis-3/4">
@@ -33,7 +45,7 @@ const TopRoom = ({ rooms }: TopRoomProps) => {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselNext />
+            {!isMobile && <CarouselNext />}
         </Carousel>
     )
 }
