@@ -75,7 +75,7 @@ export function UserNav({ className }: Readonly<UserNavProps>) {
                                     <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("dark")}>
                                         <div>Tối</div> {theme === 'dark' && < Check />}
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setTheme("system")}>
+                                    <DropdownMenuItem className="flex justify-between" onClick={() => setTheme("system")}>
                                         <div>Hệ thống</div> {theme === 'system' && < Check />}
                                     </DropdownMenuItem>
                                 </DropdownMenuSubContent>
