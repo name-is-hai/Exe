@@ -50,15 +50,14 @@ export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: R
               }}
               className={cn(
                 "flex flex-col gap-2 p-4 whitespace-pre-wrap",
-                (getLSData('user').uid === message.uid) ? "items-end" : "items-start"
+                (getLSData('user').uid === message.senderId) ? "items-end" : "items-start"
               )}
             >
               <div className="flex items-center gap-3">
-                {message.uid !== selectedUser.uid && (
+                {message.senderId === selectedUser.uid && (
                   <Avatar className="flex items-center justify-center">
                     <AvatarImage
-                      src={message.avatar}
-                      alt={message.name}
+                      src={getLSData('user').uid === message.senderId ? (getLSData('user').photo ?? "https://shadcn-chat.vercel.app/User1.png") : selectedUser.avatar}
                       width={6}
                       height={6}
                     />
@@ -67,11 +66,10 @@ export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: R
                 <span className="max-w-xs p-3 rounded-md bg-accent">
                   {message.message}
                 </span>
-                {message.uid === selectedUser.uid && (
+                {message.senderId !== selectedUser.uid && (
                   <Avatar className="flex items-center justify-center">
                     <AvatarImage
-                      src={message.avatar}
-                      alt={message.name}
+                      src={getLSData('user').uid === message.senderId ? (getLSData('user').photo ?? "https://shadcn-chat.vercel.app/User1.png") : selectedUser.avatar}
                       width={6}
                       height={6}
                     />

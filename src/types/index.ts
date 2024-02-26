@@ -31,11 +31,10 @@ export type User = {
 }
 
 export type Message = {
-    uid: string
-    avatar: string
-    name: string
-    message: string
-    created_at?: any
+    id: number,
+    message: any,
+    senderId: string,
+    created_at: number
 }
 
 export type UserMessage = {
@@ -52,6 +51,10 @@ export type QueryChatsResp = {
         name: string;
         avatar: string;
     };
+    lastMessage: {
+        name: string;
+        text: string;
+    }
     date: {
         seconds: number;
         nanoseconds: number;

@@ -10,8 +10,8 @@ interface SidebarProps {
   links: {
     uid: string;
     name: string;
-    messages: Message[];
     avatar: string;
+    lastMessage: { name: string, text: string }
     variant: "secondary" | "ghost";
   }[];
   onClick?: (selectedUser: UserMessage) => void;
@@ -22,8 +22,7 @@ export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<
 
   return (
     <div
-      data-collapsed={isCollapsed}
-      className="relative group flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2 "
+      className="relative flex flex-col h-full gap-4 p-2 group"
     >
       <div className={cn("flex items-center justify-between px-1 border-b", isMobile ? "py-5" : "py-3 pb-5")}>
         <div className="flex items-center gap-2 text-2xl">
@@ -35,21 +34,17 @@ export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<
           </Show>
         </div>
       </div>
-      <nav className="grid gap-1 ps-0 pe-2 group-[[data-collapsed=true]]:justify-start group-[[data-collapsed=true]]:pe-2 group-[[data-collapsed=true]]:ps-0">
+      <div className="grid gap-1 ps-0 pe-2">
         {links.map((link, index) =>
           <Show key={index} >
             <Show.When isTrue={isCollapsed || isMobile}>
               <TooltipProvider key={index}>
                 <Tooltip key={index} delayDuration={0}>
                   <TooltipTrigger asChild>
-                    <Button
+                    <Button variant={link.variant}
+                      size={'icon'}
                       onClick={() => onClick(link)}
-                      className={cn(
-                        buttonVariants({ variant: link.variant, size: "icon" }),
-                        "h-9 w-11 md:h-16 md:w-16",
-                        link.variant === "secondary" &&
-                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-                      )}
+                      className={"h-11 w-11 md:h-13 md:w-16"}
                     >
                       <Avatar className="flex items-center justify-center">
                         <AvatarImage
@@ -57,7 +52,7 @@ export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<
                           alt={link.avatar}
                           width={6}
                           height={6}
-                          className="h-9 w-9 "
+                          className="w-10 h-10"
                         />
                       </Avatar>
                       <span className="sr-only">{link.name}</span>
@@ -74,16 +69,13 @@ export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<
             </Show.When>
             <Show.Else>
               <Button
+                variant={link.variant}
+                size={'lg'}
                 onClick={() => onClick(link)}
                 key={index}
-                className={cn(
-                  buttonVariants({ variant: link.variant, size: "lg" }),
-                  link.variant === "secondary" &&
-                  "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
-                  "justify-start gap-4"
-                )}
+                className={"justify-start gap-x-4"}
               >
-                <Avatar className="flex items-center justify-center">
+                <Avatar className="flex items-center justify-start">
                   <AvatarImage
                     src={link.avatar}
                     alt={link.avatar}
@@ -94,10 +86,10 @@ export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<
                 </Avatar>
                 <div className="flex flex-col max-w-28">
                   <span>{link.name}</span>
-                  {link.messages.length > 0 && (
-                    <span className="text-xs truncate text-zinc-300 ">
-                      {link.messages[link.messages.length - 1].name.split(" ")[0]}
-                      : {link.messages[link.messages.length - 1].message}
+                  {link.lastMessage && (
+                    <span className="text-xs text-left truncate text-zinc-300 ">
+                      {link.lastMessage.name.split(" ")[0]}
+                      : {link.lastMessage.text}
                     </span>
                   )}
                 </div>
@@ -105,7 +97,7 @@ export function ChatSidebar({ links, isCollapsed, isMobile, onClick }: Readonly<
             </Show.Else>
           </Show>
         )}
-      </nav>
-    </div>
+      </div>
+    </div >
   );
 }

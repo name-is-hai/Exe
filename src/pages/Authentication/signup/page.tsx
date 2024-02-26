@@ -62,9 +62,7 @@ export default function RegisterPage() {
                 <div className="relative z-20 mt-auto">
                     <blockquote className="space-y-2">
                         <p className="text-lg">
-                            &ldquo;This library has saved me countless hours of work and
-                            helped me deliver stunning designs to my clients faster than
-                            ever before.&rdquo;
+                            &ldquo;Hòa Lạc House - Kết nối sinh viên đến với một mái nhà mới - nhà trọ không chỉ là nơi ở, mà còn là nơi thú vị để chia sẻ kinh nghiệm, học hỏi và phát triển cùng nhau.&rdquo;
                         </p>
                         <footer className="text-sm">Sofia Davis</footer>
                     </blockquote>

@@ -1,11 +1,7 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Show } from "@/components/utility/Show";
-import { useQuery } from "@/hook/useQuery";
-import { fireStore } from "@/lib/firebase";
-import { cn, getLSData } from "@/lib/utils";
-import { Message, User } from "@/types";
-import { addDoc, collection } from "firebase/firestore";
+import { Message } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, ThumbsUp } from "lucide-react";
 import React, { useRef, useState } from "react";
@@ -32,11 +28,10 @@ export default function ChatBottombar({
   const handleThumbsUp = () => {
     const user = getCurrentUser();
     sendMessage({
-      uid: user.uid,
-      name: user.display_name ?? user.phone,
+      id: Date.now(),
       message: "👍",
+      senderId: user.uid,
       created_at: Date.now(),
-      avatar: user.photo ?? 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png',
     })
     setMessage("");
   };
@@ -45,11 +40,10 @@ export default function ChatBottombar({
     if (message.trim()) {
       const user = getCurrentUser();
       sendMessage({
-        uid: user.uid,
+        id: Date.now(),
+        senderId: user.uid,
         message: message.trim(),
         created_at: Date.now(),
-        avatar: user.photo ?? 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png',
-        name: user.display_name ?? user.phone
       })
       setMessage("");
       if (inputRef.current) {
@@ -75,15 +69,12 @@ export default function ChatBottombar({
       <div className="flex">
         <Popover>
           <PopoverTrigger asChild>
-            <div
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-                "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-              )}
+            <Button
+              variant="ghost" size="icon"
+              className={"h-9 w-9"}
             >
               <PlusCircle size={20} className="text-muted-foreground" />
-            </div>
+            </Button>
           </PopoverTrigger>
           <PopoverContent
             side="top"
@@ -91,39 +82,30 @@ export default function ChatBottombar({
             <Show>
               <Show.When isTrue={message.trim() || isMobile}>
                 <div className="flex gap-2">
-                  <div
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "h-9 w-9",
-                      "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-                    )}
+                  <Button
+                    variant="ghost" size="icon"
+                    className={"h-9 w-9"}
                   >
                     <Mic size={20} className="text-muted-foreground" />
-                  </div>
+                  </Button>
                   {BottombarIcons.map((icon, index) => (
-                    <div
+                    <Button
+                      variant="ghost" size="icon"
                       key={index}
-                      className={cn(
-                        buttonVariants({ variant: "ghost", size: "icon" }),
-                        "h-9 w-9",
-                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-                      )}
+                      className={"h-9 w-9"}
                     >
                       <icon.icon size={20} className="text-muted-foreground" />
-                    </div>
+                    </Button>
                   ))}
                 </div>
               </Show.When>
               <Show.Else>
-                <div
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "h-9 w-9",
-                    "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-                  )}
+                <Button
+                  variant="ghost" size="icon"
+                  className={"h-9 w-9"}
                 >
                   <Mic size={20} className="text-muted-foreground" />
-                </div>
+                </Button>
               </Show.Else>
             </Show>
           </PopoverContent>
@@ -132,16 +114,14 @@ export default function ChatBottombar({
           <Show.When isTrue={!message.trim() && !isMobile}>
             <div className="flex">
               {BottombarIcons.map((icon, index) => (
-                <div
+                <Button
+                  variant={'ghost'}
+                  size="icon"
                   key={index}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "h-9 w-9",
-                    "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-                  )}
+                  className={"h-9 w-9"}
                 >
                   <icon.icon size={20} className="text-muted-foreground" />
-                </div>
+                </Button>
               ))}
             </div>
           </Show.When>
@@ -184,28 +164,22 @@ export default function ChatBottombar({
         </motion.div>
         <Show>
           <Show.When isTrue={message.trim()}>
-            <div
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-                "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0"
-              )}
+            <Button
+              variant="ghost" size="icon"
+              className={"h-9 w-9"}
               onClick={handleSend}
             >
               <SendHorizontal size={20} className="text-muted-foreground" />
-            </div>
+            </Button>
           </Show.When>
           <Show.Else>
-            <div
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-                "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0"
-              )}
+            <Button
+              variant="ghost" size="icon"
+              className={"h-9 w-9"}
               onClick={handleThumbsUp}
             >
               <ThumbsUp size={20} className="text-muted-foreground" />
-            </div>
+            </Button>
           </Show.Else>
         </Show>
       </AnimatePresence>

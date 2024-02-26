@@ -1,5 +1,5 @@
 import {
-    DocumentData, DocumentReference, DocumentSnapshot, Query, QueryConstraint, QueryDocumentSnapshot, QuerySnapshot, addDoc, collection, doc, getDoc, onSnapshot, query, serverTimestamp, setDoc, updateDoc
+    DocumentData, DocumentReference, DocumentSnapshot, QueryConstraint, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc
 } from "firebase/firestore";
 
 import { fireStore } from "@/lib/firebase";
@@ -16,27 +16,16 @@ export const setDocsUserChats = (path: string[], message: any) => {
     return setDoc(doc(fireStore, "userChats", ...path), message);
 }
 
-export const updateDocsMessage = (combinedId: string, sendUser: UserMessage, recivedUser: UserMessage) => {
-    return updateDoc(doc(fireStore, "userChats", sendUser.uid), {
-        [combinedId + ".userInfo"]: {
-            uid: recivedUser.uid,
-            name: recivedUser.name,
-            avatar: recivedUser.avatar,
-        },
-        [combinedId + ".date"]: serverTimestamp(),
-    });
+export const updateDocsUserChats = (combinedId: string, path: string, message: any) => {
+    return updateDoc(doc(fireStore, "userChats", path), message);
 }
 
-export const sendDocMessage = (path: string[], message: any) => {
-    return addDoc(collection(fireStore, 'chats', ...path), message);
+export const sendDocMessage = (path: string[], message: Object) => {
+    return updateDoc(doc(fireStore, 'chats', ...path), { message: arrayUnion(message) });
 }
 
 export const setQueryUserChats = (path: string[]) => {
     return doc(fireStore, 'userChats', ...path)
-}
-
-export const setQueryChats = (path: string[], condition?: QueryConstraint[]) => {
-    return condition ? query(collection(fireStore, 'chats', ...path), ...condition) : query(collection(fireStore, 'chats', ...path))
 }
 
 export const subscribeToQueryUserChats = (query: DocumentReference<DocumentData, DocumentData>, callback: (data: QueryChatsResp[]) => void) => {
@@ -58,14 +47,13 @@ export const subscribeToQueryUserChats = (query: DocumentReference<DocumentData,
     return unsubscribe;
 };
 
-export const subscribeToQueryChats = (query: Query<DocumentData, DocumentData>, callback: (data: any[]) => void) => {
-    const unsubscribe = onSnapshot(query, (snapshot: QuerySnapshot<DocumentData>) => {
-        const fetchedQuery: any[] = [];
-        snapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-            fetchedQuery.push({ ...doc.data(), id: doc.id });
-        });
-        callback(fetchedQuery);
-    });
+export const setQueryChats = (path: string[], condition?: QueryConstraint[]) => {
+    return doc(fireStore, 'chats', ...path)
+}
 
+export const subscribeToQueryChats = (query: DocumentReference<DocumentData, DocumentData>, callback: (data: DocumentData) => void) => {
+    const unsubscribe = onSnapshot(query, (snapshot: DocumentSnapshot<DocumentData, DocumentData>) => {
+        callback(snapshot.data());
+    });
     return unsubscribe;
 };
