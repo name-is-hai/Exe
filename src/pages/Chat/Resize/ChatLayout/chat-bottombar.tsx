@@ -66,7 +66,7 @@ export default function ChatBottombar({
 
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2">
-      <div className="flex">
+      {/* <div className="flex">
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -126,7 +126,7 @@ export default function ChatBottombar({
             </div>
           </Show.When>
         </Show>
-      </div>
+      </div> */}
       <AnimatePresence initial={false}>
         <motion.div
           key="input"

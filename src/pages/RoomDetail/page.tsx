@@ -89,7 +89,7 @@ export function RoomDetail() {
                             <h2 className="mt-2 text-3xl font-semibold leading-none">{room?.name}</h2>
                             <Separator className="my-4" />
                             <div className="flex items-center h-5 text-sm space-x-7">
-                                <div className="text-sm font-medium leading-none">{numberFormat(room?.price)} Trên Tháng</div>
+                                <div className="text-sm font-medium leading-none">Chỉ Từ: {numberFormat(room?.price)} / Tháng</div>
                                 <Separator orientation="vertical" />
                                 <div className="flex items-center space-x-3 text-sm font-medium leading-none">
                                     <RatingStar isEdit={false} size={15} value={4} />

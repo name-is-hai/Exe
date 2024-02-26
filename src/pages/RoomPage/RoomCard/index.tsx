@@ -34,7 +34,7 @@ const RoomCard = ({
                     <div className="flex flex-col items-start space-y-2">
                         <div>{room.name}</div>
                         <div className="flex flex-col space-y-2">
-                            <span>Giá:  <data className="text-orange-400" value="100.00">{numberFormat(room.price)}</data></span>
+                            <span>Giá chỉ từ:  <data className="text-orange-400" value="100.00">{numberFormat(room.price)}</data></span>
                             <div className="flex flex-row items-center">
                                 <RatingStar isEdit={false} size={13} value={4} />
                             </div>
