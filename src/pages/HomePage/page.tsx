@@ -4,7 +4,7 @@ import useWindowDimensions from "@/hook/useWindowDimensions";
 import http from "@/utils/http";
 import { useEffect, useState } from "react";
 import CarouselRooms from "./Carousel";
-import TopRoom from "../components/TopRoom";
+import TopRoom from "../components/top-room";
 
 const HomePage = () => {
 

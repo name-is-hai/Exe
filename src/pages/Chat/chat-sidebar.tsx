@@ -1,9 +1,9 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 import { Show } from "@/components/utility/Show";
 import { cn } from "@/lib/utils";
-import { Message, UserMessage } from "@/types";
+import { UserMessage } from "@/types";
 import { MessageSquare } from "lucide-react";
 interface SidebarProps {
   isCollapsed: boolean;

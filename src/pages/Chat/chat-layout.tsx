@@ -1,11 +1,10 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { useQuery } from "@/hook/useQuery";
-import { fireStore } from "@/lib/firebase";
-import { cn, getLSData, setLSData } from "@/lib/utils";
-import { Message, QueryChatsResp, User, UserMessage } from "@/types";
+import { cn, setLSData } from "@/lib/utils";
+import { Message, QueryChatsResp, UserMessage } from "@/types";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { collection, getDocs, onSnapshot, query, serverTimestamp } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { serverTimestamp } from "firebase/firestore";
+import React, { useEffect } from "react";
 import { Chat } from "./chat";
 import { ChatSidebar } from "./chat-sidebar";
 import { getCurrentUser } from "@/services/authen.service";
@@ -27,7 +26,7 @@ export function ChatLayout({
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const [listChats, setListChats] = React.useState<QueryChatsResp[]>([]);
   const [selectedUser, setSelectedUser] = React.useState<UserMessage>();
-  const [message, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState([]);
   const { isMobile } = useScreenDetector();
 
   const user = getCurrentUser();
@@ -176,7 +175,7 @@ export function ChatLayout({
           <Show>
             <Show.When isTrue={selectedUser}>
               <Chat
-                messages={message}
+                messages={messages}
                 selectedUser={selectedUser}
                 sendMessage={sendMessage}
                 isMobile={isMobile}

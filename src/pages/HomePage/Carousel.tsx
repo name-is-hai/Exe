@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel"
 import { Drawer, DrawerContent, DrawerTrigger, } from "@/components/ui/drawer";
 import { Img } from 'react-image';
-import CardSearch from './CardSearch';
+import CardSearch from './card-search';
 import Autoplay from "embla-carousel-autoplay"
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useScreenDetector } from '@/hook/useScreenDetector';
 
 interface CarouselRoomsProps {
