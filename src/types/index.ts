@@ -1,11 +1,12 @@
 export type ApiResponse = {
-    resp?: {
-        code: number
-        data?: any
-        message: string
-    };
+    resp?: CustomeResponse;
     isLoaded: boolean
     error?: Error
+};
+export type CustomeResponse = {
+    code: number
+    data?: any
+    message: string
 };
 
 export type Room = {

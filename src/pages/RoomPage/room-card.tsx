@@ -1,5 +1,5 @@
 import { Img } from "react-image";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import RatingStar from "@/components/ui/rating";
 import { cn } from "@/lib/utils";
 import { numberCurrencyFormat } from "@/lib/utils";
@@ -18,13 +18,13 @@ const RoomCard = ({
 }: Readonly<RoomCardProps>) => {
     return (
         <Card className="md:w-96">
-            <CardContent className="flex items-center justify-start space-x-4">
-                <div className="mt-3 overflow-hidden rounded-lg">
+            <CardContent className="flex items-center justify-start p-5 space-x-4">
+                <div className="overflow-hidden rounded-lg">
                     <Img src={room.src}
                         width={width}
                         height={height}
                         className={cn(
-                            "h-auto w-auto object-cover transition-all hover:scale-110",
+                            "object-cover transition-all hover:scale-110",
                             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
                         )} />
                 </div>

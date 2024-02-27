@@ -89,7 +89,7 @@ class HttpClient {
         return result;
     }
 
-    async get(url: string, params?: Record<string, string>, needAuth?: boolean): Promise<ApiResponse> {
+    async get(url: string, params?: string, needAuth?: boolean): Promise<ApiResponse> {
         const urlWithParams = new URL(url, this.baseUrl);
         if (params) {
             Object.entries(params).forEach(([key, value]) => {
@@ -108,8 +108,8 @@ class HttpClient {
         return this.makeRequest(url, "PUT", params, needAuth);
     }
 
-    async delete(url: string, needAuth?: boolean): Promise<ApiResponse> {
-        return this.makeRequest(url, "DELETE", needAuth);
+    async delete(url: string, params?: string, needAuth?: boolean): Promise<ApiResponse> {
+        return this.makeRequest(url, "DELETE", params, needAuth);
     }
 }
 

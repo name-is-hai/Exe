@@ -12,6 +12,7 @@ import { useScreenDetector } from "@/hook/useScreenDetector";
 import { Show } from "@/components/utility/Show";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@/hook/useQuery";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const RoomPage = () => {
     const query = useQuery()
@@ -63,6 +64,7 @@ const RoomPage = () => {
                 })
             });
             setRooms(images);
+            // setRooms([...images, ...images, ...images, ...images]);
         });
 
     }, [formData]);
@@ -130,21 +132,24 @@ const RoomPage = () => {
                         </div>
                     </div>
                     <div className="md:col-span-2">
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <Show>
-                                <Show.When isTrue={rooms.length}>
-                                    {rooms.map((room: any, index: any) => (
-                                        <NavLink key={index} to={`/room-detail?id=${room.alt}`}>
-                                            <RoomCard key={index} room={room} height={100} width={400} aspectRatio="square" />
-                                        </NavLink>
-                                    ))}
-                                </Show.When>
-                                <Show.Else>
-                                    <h4 className="text-sm font-medium leading-none text-center">Không tìm thấy phòng trọ nào</h4>
-                                    <Separator />
-                                </Show.Else>
-                            </Show>
-                        </div>
+                        <ScrollArea className="h-screen" type="scroll">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <Show>
+                                    <Show.When isTrue={rooms.length}>
+                                        {rooms.map((room: any, index: any) => (
+                                            <NavLink key={index} to={`/room-detail?id=${room.alt}`}>
+                                                <RoomCard key={index} room={room} width={100} aspectRatio="square" />
+                                            </NavLink>
+                                        ))}
+
+                                    </Show.When>
+                                    <Show.Else>
+                                        <h4 className="text-sm font-medium leading-none text-center">Không tìm thấy phòng trọ nào</h4>
+                                        <Separator />
+                                    </Show.Else>
+                                </Show>
+                            </div>
+                        </ScrollArea>
                     </div>
                 </div>
             </Container>

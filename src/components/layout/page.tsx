@@ -10,7 +10,7 @@ function Page({ children }: any) {
     return (
         <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             <div className="flex-col md:flex">
-                <ScrollArea className="h-screen">
+                <ScrollArea className="h-screen" type="scroll">
                     <Header />
                     {children}
                     <Footer />
