@@ -3,7 +3,7 @@ import http from '@/utils/http';
 import { useEffect, useState } from 'react';
 function useApi(url, method, key?, params?, needAuth = false) {
     const [data, setData] = useState<CustomeResponse>(null);
-    const [loading, setLoading] = useState(true);
+    const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -30,14 +30,14 @@ function useApi(url, method, key?, params?, needAuth = false) {
             } catch (error) {
                 setError(error);
             } finally {
-                setLoading(false);
+                setLoaded(true);
             }
         }
 
         fetchData();
     }, []);
 
-    return { data, loading, error };
+    return { data, loaded, error };
 }
 
 const useGet = (url: string, params?: string, key?, needAuth = false) => {

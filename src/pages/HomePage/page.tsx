@@ -5,12 +5,16 @@ import http from "@/utils/http";
 import { useEffect, useState } from "react";
 import { CarouselRooms } from "./carousel";
 import { TopRoom } from "../components/top-room";
+import { usePost } from "@/hook/useApi";
 
 const HomePage = () => {
 
     const [rooms, setRooms] = useState([]);
     const [roomsTopSize, setRoomsTopSize] = useState([]);
     const [warnList, setWarnList] = useState([]);
+    // const { data, error, loaded } = usePost('/exe/rooms/get-list', {})
+    // console.log(loaded);
+    // console.log(data);
 
     const findRoom = (value: any) => {
         const search = {};
