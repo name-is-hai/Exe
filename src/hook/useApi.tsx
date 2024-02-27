@@ -7,34 +7,29 @@ function useApi(url, method, key?, params?, needAuth = false) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                let response: ApiResponse;
-                switch (method.toUpperCase()) {
-                    case 'GET':
-                        response = await http.get(url, params, needAuth);
-                        break;
-                    case 'POST':
-                        response = await http.post(url, params, needAuth);
-                        break;
-                    case 'PUT':
-                        response = await http.put(url, params, needAuth);
-                        break;
-                    case 'DELETE':
-                        response = await http.delete(url, params, needAuth);
-                        break;
-                    default:
-                        throw new Error(`Unsupported method: ${method}`);
-                }
-                setData(response.resp);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoaded(true);
-            }
+        let response;
+        switch (method.toUpperCase()) {
+            case 'GET':
+                response = http.get(url, params, needAuth);
+                break;
+            case 'POST':
+                response = http.post(url, params, needAuth);
+                break;
+            case 'PUT':
+                response = http.put(url, params, needAuth);
+                break;
+            case 'DELETE':
+                response = http.delete(url, params, needAuth);
+                break;
+            default:
+                throw new Error(`Unsupported method: ${method}`);
         }
-
-        fetchData();
+        response.then(resp => {
+            setData(resp.resp);
+            setLoaded(true);
+        }).catch(err => {
+            setError(err);
+        })
     }, []);
 
     return { data, loaded, error };

@@ -12,9 +12,9 @@ const HomePage = () => {
     const [rooms, setRooms] = useState([]);
     const [roomsTopSize, setRoomsTopSize] = useState([]);
     const [warnList, setWarnList] = useState([]);
-    // const { data, error, loaded } = usePost('/exe/rooms/get-list', {})
-    // console.log(loaded);
+    // const { data} = usePost('/exe/rooms/get-list', {},'rooom')
     // console.log(data);
+    // console.log(loaded);
 
     const findRoom = (value: any) => {
         const search = {};
