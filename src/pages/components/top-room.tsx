@@ -1,15 +1,6 @@
 import { NavLink } from "react-router-dom"
-
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
-
-import { RoomElement } from "./Room"
-import { useEffect, useState } from "react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel"
+import { RoomElement } from "./room"
 import { useScreenDetector } from "@/hook/useScreenDetector";
 interface TopRoomProps {
     rooms: any;
@@ -40,4 +31,4 @@ const TopRoom = ({ rooms }: TopRoomProps) => {
     )
 }
 
-export default TopRoom
+export { TopRoom }

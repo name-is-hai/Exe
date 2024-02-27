@@ -11,24 +11,36 @@ import { FilterCard } from "./filter-card";
 import { useScreenDetector } from "@/hook/useScreenDetector";
 import { Show } from "@/components/utility/Show";
 import { Separator } from "@/components/ui/separator";
+import { useQuery } from "@/hook/useQuery";
 
 const RoomPage = () => {
+    const query = useQuery()
+    let searchparams;
+    if (query.get('search')) searchparams = JSON.parse(atob(query.get('search')))
     const [formData, setFormData] = useState({
-        startPrice: 1000000,
-        endPrice: 9000000,
-        size: '0',
+        startPrice: searchparams?.price ? searchparams.price[0] : 1000000,
+        endPrice: searchparams?.price ? searchparams.price[1] : 9000000,
+        size: searchparams?.size ? searchparams.size : '0',
+        ward: searchparams?.ward ? searchparams.ward : "",
     });
     const [rooms, setRooms] = useState([]);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const { isMobile } = useScreenDetector();
+    const [warnList, setWarnList] = useState([]);
 
+    useEffect(() => {
+        fetch('https://vapi.vnappmob.com/api/province/ward/276').then(res => res.json()).then(res => {
+            setWarnList(res.results)
+        })
+    }, []);
     useEffect(() => {
 
         const body = {
             startPrice: formData.startPrice,
             endPrice: formData.endPrice,
             startSize: 0,
-            endSize: 0
+            endSize: 0,
+            ward: formData.ward
         }
 
         if (formData.size === '1') {
@@ -56,6 +68,8 @@ const RoomPage = () => {
     }, [formData]);
 
     const handleChange = (event: any) => {
+        console.log(event);
+
         if (event.target) {
             const { name, value, type, checked } = event.target;
             const newValue = type === 'checkbox' ? checked : name === 'endPrice' || name === 'startPrice' ? Number(value.replace(/\D/g, "")) : value;
@@ -69,6 +83,11 @@ const RoomPage = () => {
                 ...prevFormData,
                 startPrice: Number(startPrice),
                 endPrice: Number(endPrice)
+            }));
+        } else if (event.length === 5) {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                ward: event,
             }));
         }
         else {
@@ -99,7 +118,7 @@ const RoomPage = () => {
                             <SheetContent side="left">
                                 <div>
                                     <div className="space-y-4">
-                                        <FilterCard isMobile={isMobile} handleChange={handleChange} formData={formData} />
+                                        <FilterCard warnList={warnList} isMobile={isMobile} handleChange={handleChange} formData={formData} />
                                     </div>
                                 </div>
                             </SheetContent>
@@ -107,7 +126,7 @@ const RoomPage = () => {
                     </div>
                     <div className="hidden md:block">
                         <div className="px-10 space-y-4">
-                            <FilterCard isMobile={isMobile} handleChange={handleChange} formData={formData} />
+                            <FilterCard warnList={warnList} isMobile={isMobile} handleChange={handleChange} formData={formData} />
                         </div>
                     </div>
                     <div className="md:col-span-2">

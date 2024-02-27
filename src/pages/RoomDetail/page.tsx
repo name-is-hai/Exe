@@ -9,13 +9,14 @@ import { useQuery } from "@/hook/useQuery";
 import useWindowDimensions from "@/hook/useWindowDimensions";
 import { getLSData, numberCurrencyFormat } from '@/lib/utils';
 import http from "@/utils/http";
-import { MessageCircleDashed } from "lucide-react";
+import {  MapPinned, MessageCircleDashed } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Img } from "react-image";
-import TopRoom from "../components/top-room";
+import { TopRoom } from "../components/top-room";
 
 export function RoomDetail() {
     const query = useQuery();
+    const { width } = useWindowDimensions();
 
     const [rooms, setRooms] = useState([]);
     const [room, setRoom] = useState<any>();
@@ -40,7 +41,6 @@ export function RoomDetail() {
 
     let real_width: number
     let real_height: number
-    const { width } = useWindowDimensions();
     if (width >= 1400) {
         real_width = 600;
         real_height = 400;
@@ -87,6 +87,7 @@ export function RoomDetail() {
                                 Mô tả qua về phòng trọ
                             </div>
                             <h2 className="mt-2 text-3xl font-semibold leading-none">{room?.name}</h2>
+                            <h2 className="flex items-center mt-2 text-sm font-medium leading-none"><MapPinned className="w-5 h-5" />{room?.address}</h2>
                             <Separator className="my-4" />
                             <div className="flex items-center h-5 text-sm space-x-7">
                                 <div className="text-sm font-medium leading-none">Chỉ Từ: {numberCurrencyFormat(room?.price)} / Tháng</div>

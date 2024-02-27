@@ -14,9 +14,10 @@ interface CarouselRoomsProps {
     sizeList: any[]
     warnList: any[]
     priceList: any[]
+    findRoom: (value: any) => void
 }
 
-const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceList }: CarouselRoomsProps) => {
+const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceList, findRoom }: CarouselRoomsProps) => {
     const plugin = useRef(
         Autoplay({ delay: 3000, stopOnInteraction: true })
     )
@@ -45,7 +46,7 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
                     {!isMobile && <CarouselNext />}
                 </div>
                 <div className='hidden lg:-translate-x-1/2 lg:absolute md:block lg:top-3/4 lg:left-1/2'>
-                    <CardSearch priceList={priceList} sizeList={sizeList} warnList={warnList} className='rounded-3xl' />
+                    <CardSearch findRoom={findRoom} priceList={priceList} sizeList={sizeList} warnList={warnList} className='rounded-3xl' />
                 </div>
                 <div className='absolute block -translate-x-1/2 -translate-y-1/2 left-1/2 md:hidden'>
                     <Drawer>
@@ -55,7 +56,7 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
                             </Button>
                         </DrawerTrigger>
                         <DrawerContent>
-                            <CardSearch priceList={priceList} sizeList={sizeList} warnList={warnList} className='border-none' />
+                            <CardSearch findRoom={findRoom} priceList={priceList} sizeList={sizeList} warnList={warnList} className='border-none' />
                         </DrawerContent>
                     </Drawer>
                 </div>
@@ -64,4 +65,4 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
     );
 }
 
-export default CarouselRooms
+export { CarouselRooms }

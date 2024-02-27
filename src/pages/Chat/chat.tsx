@@ -9,7 +9,7 @@ interface ChatProps {
   isMobile: boolean;
 }
 
-export function Chat({ messages, selectedUser, isMobile, sendMessage }: ChatProps) {
+export function Chat({ messages, selectedUser, isMobile, sendMessage }: Readonly<ChatProps>) {
   return (
     <div className="flex flex-col justify-between w-full h-full">
       <ChatTopbar selectedUser={selectedUser} />

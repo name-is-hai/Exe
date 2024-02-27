@@ -1,10 +1,5 @@
 import { Img } from "react-image"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, } from "@/components/ui/card"
 import RatingStar from "@/components/ui/rating";
 import { cn } from "@/lib/utils"
 import { numberCurrencyFormat } from "@/lib/utils";

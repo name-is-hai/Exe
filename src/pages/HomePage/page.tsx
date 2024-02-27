@@ -3,14 +3,33 @@ import Container from "@/components/ui/container";
 import useWindowDimensions from "@/hook/useWindowDimensions";
 import http from "@/utils/http";
 import { useEffect, useState } from "react";
-import CarouselRooms from "./Carousel";
-import TopRoom from "../components/top-room";
+import { CarouselRooms } from "./carousel";
+import { TopRoom } from "../components/top-room";
 
 const HomePage = () => {
 
     const [rooms, setRooms] = useState([]);
     const [roomsTopSize, setRoomsTopSize] = useState([]);
     const [warnList, setWarnList] = useState([]);
+
+    const findRoom = (value: any) => {
+        const search = {};
+        const priceMappings = {
+            '1': [1000000, 2000000],
+            '2': [2000000, 3000000],
+            '3': [3000000, 4000000],
+            '4': [4000000, 10000000],
+        };
+        if (priceMappings.hasOwnProperty(value.price)) {
+            value.price = priceMappings[value.price];
+        }
+        for (const property in value) {
+            if (value[property]) {
+                search[property] = value[property]
+            }
+        }
+        window.location.href = `/room?search=${btoa(JSON.stringify(search))}`
+    }
 
     useEffect(() => {
         http.post('/exe/rooms/get-list', {}, false).then((res) => {
@@ -44,16 +63,22 @@ const HomePage = () => {
     }, []);
 
     const sizeList = [
-        { title: 'Dưới 20', value: '20' },
-        { title: 'Từ 20-30', value: '20-30' },
-        { title: 'Trên 30', value: '30' },
+        { title: 'Dưới 20', value: '1' },
+        { title: 'Từ 20-30', value: '2' },
+        { title: 'Trên 30', value: '3' },
     ]
     const priceList = [
-        { title: 'Dưới 2 triệu', value: '2' },
-        { title: 'Từ 2 triệu đến 3 triệu', value: '2-3' },
-        { title: 'Từ 3 triệu đến 4 triệu', value: '3-4' },
+        { title: 'Dưới 2 triệu', value: '1' },
+        { title: 'Từ 2 triệu đến 3 triệu', value: '2' },
+        { title: 'Từ 3 triệu đến 4 triệu', value: '3' },
         { title: 'Trên 4 triệu', value: '4' },
     ]
+    // const priceList = [
+    //     { title: 'Dưới 2 triệu', value: [1000000, 2000000] },
+    //     { title: 'Từ 2 triệu đến 3 triệu', value: [2000000, 3000000] },
+    //     { title: 'Từ 3 triệu đến 4 triệu', value: [3000000, 4000000] },
+    //     { title: 'Trên 4 triệu', value: [4000000, 10000000] },
+    // ]
 
     const { width } = useWindowDimensions();
     let real_width: number;
@@ -79,7 +104,7 @@ const HomePage = () => {
     return (
         <Page>
             <Container className="lg:px-14">
-                <CarouselRooms priceList={priceList} sizeList={sizeList} warnList={warnList} silder={slides} height={height} real_width={real_width} />
+                <CarouselRooms findRoom={findRoom} priceList={priceList} sizeList={sizeList} warnList={warnList} silder={slides} height={height} real_width={real_width} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
                 <TopRoom rooms={rooms} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top phòng trọ có giá rẻ nhất</h1>

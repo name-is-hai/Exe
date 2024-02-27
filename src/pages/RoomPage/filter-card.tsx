@@ -8,15 +8,19 @@ import { Slider } from "@/components/ui/slider"
 import { Show } from "@/components/utility/Show"
 import { numberCurrencyFormat } from "@/lib/utils"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue, } from "@/components/ui/select"
+
 interface FilterCardProps {
     formData: any
-    isMobile: boolean,
+    isMobile: boolean
+    warnList: any[]
     handleChange: (event: any) => void
 }
-export const FilterCard = ({ formData, isMobile, handleChange }: FilterCardProps) => {
+export const FilterCard = ({ formData, isMobile, warnList, handleChange }: FilterCardProps) => {
     const [openPopOver, setOpenPopOver] = useState(false);
     const [currentValue, setCurrentValue] = useState([formData.startPrice, formData.endPrice]);
+
     function sliderPriceChange(value: number[]): void {
         setCurrentValue(value);
         setOpenPopOver(true)
@@ -49,6 +53,26 @@ export const FilterCard = ({ formData, isMobile, handleChange }: FilterCardProps
                     </HoverCardContent>
                 </HoverCardPortal>
             </HoverCard>
+            <Card>
+                <CardHeader>
+                    <div className="text-sm font-medium">Khu vực:</div>
+                </CardHeader>
+                <CardContent className="flex justify-center gap-4">
+                    <Select name="ward" value={formData.ward} onValueChange={handleChange}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Tìm kiếm theo khu vực" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Khu Vực</SelectLabel>
+                                {warnList.map((item: any, index) => (
+                                    <SelectItem key={index} value={item.ward_id}>{item.ward_name}</SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </CardContent>
+            </Card>
             <Card>
                 <CardHeader>
                     <div className="text-sm font-medium">Khoảng giá:</div>
@@ -94,7 +118,7 @@ export const FilterCard = ({ formData, isMobile, handleChange }: FilterCardProps
                     <div className="text-sm font-medium">Diện tích:</div>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4">
-                    <RadioGroup defaultValue={formData.size} onValueChange={handleChange}>
+                    <RadioGroup name="size" defaultValue={formData.size} onValueChange={handleChange}>
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="1" id="r1" />
                             <Label className="font-normal" htmlFor="r1">Nhỏ hơn&nbsp;&nbsp;20<sub>M<sup>2</sup></sub></Label>
