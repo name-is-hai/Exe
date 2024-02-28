@@ -1,8 +1,8 @@
-import { Img } from "react-image";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import RatingStar from "@/components/ui/rating";
-import { cn } from "@/lib/utils";
-import { numberCurrencyFormat } from "@/lib/utils";
+import { cn, numberCurrencyFormat } from "@/lib/utils";
+import { Blur } from "transitions-kit";
+import { AsyncImage } from "loadable-image";
 
 interface RoomCardProps extends React.HTMLAttributes<HTMLDivElement> {
     room: any
@@ -12,21 +12,21 @@ interface RoomCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 const RoomCard = ({
     room,
-    aspectRatio,
-    width,
-    height,
+    aspectRatio = "square",
 }: Readonly<RoomCardProps>) => {
     return (
         <Card className="md:w-96">
-            <CardContent className="flex items-center justify-start p-5 space-x-4">
+            <CardContent className="flex items-center justify-start p-3 space-x-4">
                 <div className="overflow-hidden rounded-lg">
-                    <Img src={room.src}
-                        width={width}
-                        height={height}
+                    <AsyncImage
                         className={cn(
                             "object-cover transition-all hover:scale-110",
                             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
-                        )} />
+                        )}
+                        style={{ width: '120px', height: '100px' }}
+                        Transition={Blur}
+                        src={room.src}
+                    />
                 </div>
                 <div className="flex flex-col items-start space-y-2">
                     <div>{room.name}</div>

@@ -1,20 +1,29 @@
 import Page from "@/components/layout/page";
 import Container from "@/components/ui/container";
-import useWindowDimensions from "@/hook/useWindowDimensions";
-import http from "@/utils/http";
-import { useEffect, useState } from "react";
-import { CarouselRooms } from "./carousel";
-import { TopRoom } from "../components/top-room";
 import { usePost } from "@/hook/useApi";
+import useWindowDimensions from "@/hook/useWindowDimensions";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { TopRoom } from "../components/top-room";
+import { CarouselRooms } from "./carousel";
 
 const HomePage = () => {
+    const { data, error, isLoading } = usePost(['roomlist'], '/exe/rooms/get-list')
+    const { data: wards, error: errorWards, isLoading: isLoadingWards } = useQuery({
+        queryKey: ['ward'],
+        queryFn: async () => {
+            try {
+                const respone = await fetch('https://vapi.vnappmob.com/api/province/ward/276')
+                return respone.json()
+            } catch (error) {
+                throw new Error('Failed to fetch ward')
+            }
+        },
+    })
 
-    const [rooms, setRooms] = useState([]);
-    const [roomsTopSize, setRoomsTopSize] = useState([]);
-    const [warnList, setWarnList] = useState([]);
-    // const { data} = usePost('/exe/rooms/get-list', {},'rooom')
-    // console.log(data);
-    // console.log(loaded);
+    if (error || errorWards) {
+        toast.error('Something went wrong and we are fixing it, please come back later!', { position: 'bottom-center' })
+    }
 
     const findRoom = (value: any) => {
         const search = {};
@@ -35,11 +44,17 @@ const HomePage = () => {
         window.location.href = `/room?search=${btoa(JSON.stringify(search))}`
     }
 
-    useEffect(() => {
-        http.post('/exe/rooms/get-list', {}, false).then((res) => {
-            const images: any = []
-            const imagesTopsize: any = []
-            res.resp?.data.list.forEach((room: any) => {
+    const clearWards = (data) => {
+        let ward = []
+        if (!isLoadingWards) {
+            ward = data.results
+        }
+        return ward
+    }
+    const clearTopRooms = (data) => {
+        const images: any = []
+        if (!isLoading) {
+            data.data.list.forEach((room: any) => {
                 images.push({
                     name: room.name,
                     price: room.price,
@@ -47,24 +62,23 @@ const HomePage = () => {
                     alt: room.id
                 })
             });
-            res.resp?.data.list.sort((a: any, b: any) => a.price - b.price).forEach((room: any) => {
-                imagesTopsize.push({
+        };
+        return images;
+    }
+    const clearTopSize = (data) => {
+        const images: any = []
+        if (!isLoading) {
+            data.data.list.forEach((room: any) => {
+                images.push({
                     name: room.name,
                     price: room.price,
                     src: room.image,
                     alt: room.id
                 })
-            })
-            setRooms(images);
-            setRoomsTopSize(imagesTopsize)
-        });
-    }, []);
-
-    useEffect(() => {
-        fetch('https://vapi.vnappmob.com/api/province/ward/276').then(res => res.json()).then(res => {
-            setWarnList(res.results)
-        })
-    }, []);
+            });
+        }
+        return images;
+    }
 
     const sizeList = [
         { title: 'Dưới 20', value: '1' },
@@ -77,12 +91,6 @@ const HomePage = () => {
         { title: 'Từ 3 triệu đến 4 triệu', value: '3' },
         { title: 'Trên 4 triệu', value: '4' },
     ]
-    // const priceList = [
-    //     { title: 'Dưới 2 triệu', value: [1000000, 2000000] },
-    //     { title: 'Từ 2 triệu đến 3 triệu', value: [2000000, 3000000] },
-    //     { title: 'Từ 3 triệu đến 4 triệu', value: [3000000, 4000000] },
-    //     { title: 'Trên 4 triệu', value: [4000000, 10000000] },
-    // ]
 
     const { width } = useWindowDimensions();
     let real_width: number;
@@ -108,11 +116,11 @@ const HomePage = () => {
     return (
         <Page>
             <Container className="lg:px-14">
-                <CarouselRooms findRoom={findRoom} priceList={priceList} sizeList={sizeList} warnList={warnList} silder={slides} height={height} real_width={real_width} />
+                <CarouselRooms findRoom={findRoom} priceList={priceList} sizeList={sizeList} warnList={clearWards(wards)} silder={slides} height={height} real_width={real_width} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
-                <TopRoom rooms={rooms} />
+                <TopRoom rooms={clearTopRooms(data)} isLoading={isLoading} />
                 <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top phòng trọ có giá rẻ nhất</h1>
-                <TopRoom rooms={roomsTopSize} />
+                <TopRoom rooms={clearTopSize(data)} isLoading={isLoading} />
             </Container>
         </Page>
     );

@@ -2,10 +2,13 @@ import { NavLink } from "react-router-dom"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel"
 import { RoomElement } from "./room"
 import { useScreenDetector } from "@/hook/useScreenDetector";
+import { Show } from "@/components/utility/Show";
+import { SkeletonCard } from "./skeleton-card";
 interface TopRoomProps {
     rooms: any;
+    isLoading: boolean
 }
-const TopRoom = ({ rooms }: TopRoomProps) => {
+const TopRoom = ({ rooms, isLoading }: TopRoomProps) => {
     const { isMobile } = useScreenDetector();
     return (
         <Carousel opts={{
@@ -15,16 +18,24 @@ const TopRoom = ({ rooms }: TopRoomProps) => {
         >
             {!isMobile && <CarouselPrevious />}
             <CarouselContent>
-                {rooms.map((room: any, index: any) => (
-                    <CarouselItem key={index} className="md:basis-1/5 basis-3/4">
-                        <div className="m-1">
-                            <NavLink onClick={() => { window.location.href = `/room-detail?id=${room.alt}` }} to={''}>
-                                <RoomElement room={room} aspectRatio="portrait" className="md:w-[250px] w-[150px]"
-                                />
-                            </NavLink>
-                        </div>
-                    </CarouselItem>
-                ))}
+                <Show>
+                    <Show.When isTrue={!isLoading}>
+                        {rooms.map((room: any, index: any) => (
+                            <CarouselItem key={index} className="md:basis-1/5 basis-3/4">
+                                <NavLink onClick={() => { window.location.href = `/room-detail?id=${room.alt}` }} to={''}>
+                                    <RoomElement room={room} aspectRatio="portrait" />
+                                </NavLink>
+                            </CarouselItem>
+                        ))}
+                    </Show.When>
+                    <Show.Else>
+                        {Array(6).fill('').map((_, index: any) => (
+                            <CarouselItem key={index} className="md:basis-1/5 basis-3/4">
+                                <SkeletonCard />
+                            </CarouselItem>
+                        ))}
+                    </Show.Else>
+                </Show>
             </CarouselContent>
             {!isMobile && <CarouselNext />}
         </Carousel>

@@ -1,41 +1,37 @@
-import { Filter } from "lucide-react";
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import Page from "@/components/layout/page"
+import Page from "@/components/layout/page";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import http from "@/utils/http";
-import RoomCard from "./room-card";
-import { FilterCard } from "./filter-card";
-import { useScreenDetector } from "@/hook/useScreenDetector";
-import { Show } from "@/components/utility/Show";
-import { Separator } from "@/components/ui/separator";
-import { useQuery } from "@/hook/useQuery";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Show } from "@/components/utility/Show";
+import { usePost } from "@/hook/useApi";
+import { useQueryParams } from "@/hook/useQuery";
+import { useScreenDetector } from "@/hook/useScreenDetector";
+import { useQuery } from "@tanstack/react-query";
+import { Filter } from "lucide-react";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { toast } from "sonner";
+import { FilterCard } from "./filter-card";
+import RoomCard from "./room-card";
+import { SkeletonPageRoom } from "./skeleton-page-room";
 
 const RoomPage = () => {
-    const query = useQuery()
+
     let searchparams;
+    const query = useQueryParams()
     if (query.get('search')) searchparams = JSON.parse(atob(query.get('search')))
+
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const { isMobile } = useScreenDetector();
     const [formData, setFormData] = useState({
         startPrice: searchparams?.price ? searchparams.price[0] : 1000000,
         endPrice: searchparams?.price ? searchparams.price[1] : 9000000,
         size: searchparams?.size ? searchparams.size : '0',
         ward: searchparams?.ward ? searchparams.ward : "",
     });
-    const [rooms, setRooms] = useState([]);
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const { isMobile } = useScreenDetector();
-    const [warnList, setWarnList] = useState([]);
-
-    useEffect(() => {
-        fetch('https://vapi.vnappmob.com/api/province/ward/276').then(res => res.json()).then(res => {
-            setWarnList(res.results)
-        })
-    }, []);
-    useEffect(() => {
-
+    const clearPlayload = (formData) => {
         const body = {
             startPrice: formData.startPrice,
             endPrice: formData.endPrice,
@@ -53,9 +49,21 @@ const RoomPage = () => {
             body.startSize = 31
         }
 
-        http.post('/exe/rooms/get-list', body, false).then((res) => {
-            const images: any = []
-            res.resp?.data.list.forEach((room: any) => {
+        return body as Object;
+    }
+
+    const clearWards = (data) => {
+        let ward = []
+        if (!isLoadingWards) {
+            ward = data.results
+        }
+        return ward
+    }
+
+    const clearTopRooms = (data) => {
+        const images: any = []
+        if (!isLoading) {
+            data.data.list.forEach((room: any) => {
                 images.push({
                     name: room.name,
                     price: room.price,
@@ -63,15 +71,37 @@ const RoomPage = () => {
                     alt: room.id
                 })
             });
-            setRooms(images);
-            // setRooms([...images, ...images, ...images, ...images]);
-        });
+        };
+        return images;
+    }
 
-    }, [formData]);
+    const notFound = (data) => {
+        let notFound: any = false
+        if (!isLoading) {
+            notFound = data.data.list.length > 0 ? true : false
+        };
+        console.log(notFound);
+        return notFound;
+    }
+
+    const { data, error, isLoading } = usePost(['roomlist', formData], '/exe/rooms/get-list', clearPlayload(formData))
+    const { data: wards, error: errorWards, isLoading: isLoadingWards } = useQuery({
+        queryKey: ['ward'],
+        queryFn: async () => {
+            try {
+                const respone = await fetch('https://vapi.vnappmob.com/api/province/ward/276')
+                return respone.json()
+            } catch (error) {
+                throw new Error('Failed to fetch ward')
+            }
+        },
+    })
+
+    if (error || errorWards) {
+        toast.error('Something went wrong and we are fixing it, please come back later!', { position: 'bottom-center' })
+    }
 
     const handleChange = (event: any) => {
-        console.log(event);
-
         if (event.target) {
             const { name, value, type, checked } = event.target;
             const newValue = type === 'checkbox' ? checked : name === 'endPrice' || name === 'startPrice' ? Number(value.replace(/\D/g, "")) : value;
@@ -120,7 +150,7 @@ const RoomPage = () => {
                             <SheetContent side="left">
                                 <div>
                                     <div className="space-y-4">
-                                        <FilterCard warnList={warnList} isMobile={isMobile} handleChange={handleChange} formData={formData} />
+                                        <FilterCard warnList={clearWards(wards)} isMobile={isMobile} handleChange={handleChange} formData={formData} />
                                     </div>
                                 </div>
                             </SheetContent>
@@ -128,26 +158,31 @@ const RoomPage = () => {
                     </div>
                     <div className="hidden md:block">
                         <div className="px-10 space-y-4">
-                            <FilterCard warnList={warnList} isMobile={isMobile} handleChange={handleChange} formData={formData} />
+                            <FilterCard warnList={clearWards(wards)} isMobile={isMobile} handleChange={handleChange} formData={formData} />
                         </div>
                     </div>
                     <div className="md:col-span-2">
                         <ScrollArea className="h-screen" type="scroll">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <Show>
-                                    <Show.When isTrue={rooms.length}>
-                                        {rooms.map((room: any, index: any) => (
+                                    <Show.When isTrue={!isLoading && notFound(data)}>
+                                        {clearTopRooms(data).map((room: any, index: any) => (
                                             <NavLink key={index} to={`/room-detail?id=${room.alt}`}>
-                                                <RoomCard key={index} room={room} width={100} aspectRatio="square" />
+                                                <RoomCard room={room} aspectRatio="square" />
                                             </NavLink>
                                         ))}
-
+                                    </Show.When>
+                                    <Show.When isTrue={isLoading && !notFound(data)}>
+                                        {Array(8).fill('').map((_, index: any) => (
+                                            <SkeletonPageRoom key={index} />
+                                        ))}
                                     </Show.When>
                                     <Show.Else>
                                         <h4 className="text-sm font-medium leading-none text-center">Không tìm thấy phòng trọ nào</h4>
                                         <Separator />
                                     </Show.Else>
                                 </Show>
+
                             </div>
                         </ScrollArea>
                     </div>

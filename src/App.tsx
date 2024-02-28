@@ -6,21 +6,25 @@ import ContactPage from "./pages/ContactPage/page";
 import HomePage from "./pages/HomePage/page";
 import { RoomDetail } from "./pages/RoomDetail/page";
 import RoomPage from "./pages/RoomPage/page";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/room" element={<RoomPage />} />
-        <Route path="/room-detail" element={<RoomDetail />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/signin" element={<AuthenticationPage />} />
-        <Route path="/signup" element={<RegisterPage />} />
-        <Route path="/chat" element={<ChatPage />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/room" element={<RoomPage />} />
+          <Route path="/room-detail" element={<RoomDetail />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/signin" element={<AuthenticationPage />} />
+          <Route path="/signup" element={<RegisterPage />} />
+          <Route path="/chat" element={<ChatPage />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

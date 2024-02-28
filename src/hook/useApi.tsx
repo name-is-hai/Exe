@@ -1,52 +1,99 @@
-import { ApiResponse, CustomeResponse } from '@/types';
-import http from '@/utils/http';
-import { useEffect, useState } from 'react';
-function useApi(url, method, key?, params?, needAuth = false) {
-    const [data, setData] = useState<CustomeResponse>(null);
-    const [loaded, setLoaded] = useState(false);
-    const [error, setError] = useState(null);
+import { getAccessToken } from '@/services/authen.service';
+import { CustomeResponse } from '@/types';
+import { useQuery } from '@tanstack/react-query';
 
-    useEffect(() => {
-        let response;
-        switch (method.toUpperCase()) {
-            case 'GET':
-                response = http.get(url, params, needAuth);
-                break;
-            case 'POST':
-                response = http.post(url, params, needAuth);
-                break;
-            case 'PUT':
-                response = http.put(url, params, needAuth);
-                break;
-            case 'DELETE':
-                response = http.delete(url, params, needAuth);
-                break;
-            default:
-                throw new Error(`Unsupported method: ${method}`);
-        }
-        response.then(resp => {
-            setData(resp.resp);
-            setLoaded(true);
-        }).catch(err => {
-            setError(err);
-        })
-    }, []);
+const BASE_URL = 'https://exe-api.nameishai.id.vn'
 
-    return { data, loaded, error };
+const addAuthorizationHeader = (requestConfig: RequestInit) => {
+    const token = getAccessToken();
+
+    if (token) {
+        requestConfig.headers = {
+            ...requestConfig.headers,
+            Authorization: `Bearer ${token}`,
+        };
+    }
+    return requestConfig;
 }
 
-const useGet = (url: string, params?: string, key?, needAuth = false) => {
-    return useApi(url, 'GET', key, params, needAuth)
-};
-const usePost = (url: string, params: Object, key?, needAuth = false) => {
-    return useApi(url, 'POST', key, params, needAuth)
-};
-const usePut = (url: string, params: Object, key?, needAuth = false) => {
-    return useApi(url, 'PUT', key, params, needAuth)
-};
-const useDelete = (url: string, params: string, key?, needAuth = false) => {
-    return useApi(url, 'DELETE', key, params, needAuth)
-};
+const makeRequest = (url: string, method: 'POST' | 'GET' | 'PUT' | 'DELETE', params?: any, needAuth?: boolean): Promise<Response> => {
+    const requestConfig: RequestInit = {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+    if (params) {
+        requestConfig.body = JSON.stringify(params);
+    }
+    let response;
+    if (needAuth) {
+        const configWithAuthorization = addAuthorizationHeader(requestConfig);
+        response = fetch(`${BASE_URL}${url}`, configWithAuthorization);
+    } else {
+        response = fetch(`${BASE_URL}${url}`, requestConfig);
+    }
+    return response;
+}
 
-export { useGet, usePost, usePut, useDelete };
+const useGet = (queryKey: [string, ...any[]], url: string, params: string | '' = '', needAuth = false) => {
+    return useQuery({
+        queryKey: queryKey,
+        queryFn: async () => {
+            try {
+                const respone = await makeRequest(url, 'GET', params, needAuth)
+                return respone.json() as Promise<CustomeResponse>
+            } catch (error) {
+                throw new Error('Failed to fetch ' + queryKey[0])
+            }
+        },
+    })
+}
+const usePost = (queryKey: [string, ...any[]], url: string, params: Object | {} = {}, needAuth = false) => {
+    return useQuery({
+        queryKey: queryKey,
+        queryFn: async () => {
+            try {
+                const respone = await makeRequest(url, 'POST', params, needAuth)
+                return respone.json() as Promise<CustomeResponse>
+            } catch (error) {
+                throw new Error('Failed to fetch ' + queryKey[0])
+            }
 
+        },
+        enabled: true,
+        retry: 3,
+        staleTime: 0,
+        refetchOnWindowFocus: false,
+        refetchInterval: false,
+        refetchOnMount: true,
+    })
+}
+const usePut = (queryKey: [string, ...any[]], url: string, params: Object | {} = {}, needAuth = false) => {
+    return useQuery({
+        queryKey: queryKey,
+        queryFn: async () => {
+            makeRequest(url, 'PUT', params, needAuth).then((res) => {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch ' + queryKey[0])
+                }
+                return res.json() as Promise<CustomeResponse>
+            })
+        },
+    })
+}
+const useDelete = (queryKey: [string, ...any[]], url: string, params: string | '' = '', needAuth = false) => {
+    return useQuery({
+        queryKey: queryKey,
+        queryFn: async () => {
+            makeRequest(url, 'DELETE', params, needAuth).then((res) => {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch ' + queryKey[0])
+                }
+                return res.json() as Promise<CustomeResponse>
+            })
+        },
+    })
+}
+
+export { useGet, usePost, usePut, useDelete }

@@ -1,5 +1,5 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { useQuery } from "@/hook/useQuery";
+import { useQueryParams } from "@/hook/useQuery";
 import { cn, setLSData } from "@/lib/utils";
 import { Message, QueryChatsResp, UserMessage } from "@/types";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
@@ -30,7 +30,7 @@ export function ChatLayout({
   const { isMobile } = useScreenDetector();
 
   const user = getCurrentUser();
-  const queryParam = useQuery();
+  const queryParam = useQueryParams();
 
   //gửi tin nhắn
   const sendMessage = async (newMessage: Message) => {

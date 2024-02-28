@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel"
 import { Drawer, DrawerContent, DrawerTrigger, } from "@/components/ui/drawer";
-import { Img } from 'react-image';
+import { AsyncImage } from 'loadable-image'
+import { Blur } from 'transitions-kit'
 import CardSearch from './card-search';
 import Autoplay from "embla-carousel-autoplay"
 import { useRef } from 'react';
@@ -34,10 +35,11 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
                     <CarouselContent>
                         {silder.map(({ src, alt }: any, index: any) => (
                             <CarouselItem key={index}>
-                                <Img className='rounded-2xl'
-                                    key={index}
+                                <AsyncImage
+                                    className='rounded-2xl'
                                     src={src}
                                     alt={alt}
+                                    Transition={Blur}
                                     style={{ width: '100%', height: height, objectFit: 'cover' }}
                                 />
                             </CarouselItem>
