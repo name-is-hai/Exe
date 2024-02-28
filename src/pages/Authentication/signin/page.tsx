@@ -7,8 +7,6 @@ import { UserAuthForm } from "./user-auth-form"
 
 export default function AuthenticationPage() {
     useEffect(() => {
-        console.log(getLSData('access_token'));
-
         if (getLSData('access_token')) {
             window.location.href = "/";
         }

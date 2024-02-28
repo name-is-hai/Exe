@@ -80,7 +80,6 @@ const RoomPage = () => {
         if (!isLoading) {
             notFound = data.data.list.length > 0 ? true : false
         };
-        console.log(notFound);
         return notFound;
     }
 
