@@ -22,7 +22,7 @@ const TopRoom = ({ rooms, isLoading }: TopRoomProps) => {
                     <Show.When isTrue={!isLoading}>
                         {rooms.map((room: any, index: any) => (
                             <CarouselItem key={index} className="md:basis-1/5 basis-3/4">
-                                <NavLink onClick={() => { window.location.href = `/room-detail?id=${room.alt}` }} to={''}>
+                                <NavLink to={`/room-detail?id=${room.alt}`}>
                                     <RoomElement room={room} aspectRatio="portrait" />
                                 </NavLink>
                             </CarouselItem>
