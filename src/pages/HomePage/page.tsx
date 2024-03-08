@@ -59,7 +59,7 @@ const HomePage = () => {
                     name: room.name,
                     price: room.price,
                     src: room.image,
-                    alt: room.id
+                    alt: room.rooms_id
                 })
             });
         };
@@ -73,7 +73,7 @@ const HomePage = () => {
                     name: room.name,
                     price: room.price,
                     src: room.image,
-                    alt: room.id
+                    alt: room.rooms_id
                 })
             });
         }

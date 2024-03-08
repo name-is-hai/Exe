@@ -3,6 +3,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, Di
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
 import { PasswordInput } from "@/components/ui/password";
 import { auth } from "@/lib/firebase";
 import { setDocsUserChats } from "@/services/firebase.service";
@@ -174,15 +175,33 @@ export const FormPhonePassword = ({ phone }) => {
                     </DialogHeader>
                     <Form {...form__otp}>
                         <form onSubmit={form__otp.handleSubmit(onSubmitOtp)}>
-                            <div className="grid gap-2">
+                            <div className="grid gap-2 place-items-center">
                                 <FormField
                                     control={form__otp.control}
                                     name="otp"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Mã OTP</FormLabel>
+                                            {/* <FormLabel>Mã OTP</FormLabel> */}
                                             <FormControl>
-                                                <Input {...field} />
+                                                <InputOTP
+                                                    maxLength={6}
+                                                    render={({ slots }) => (
+                                                        <>
+                                                            <InputOTPGroup>
+                                                                {slots.slice(0, 3).map((slot, index) => (
+                                                                    <InputOTPSlot key={index} {...slot} />
+                                                                ))}{" "}
+                                                            </InputOTPGroup>
+                                                            <InputOTPSeparator />
+                                                            <InputOTPGroup>
+                                                                {slots.slice(3).map((slot, index) => (
+                                                                    <InputOTPSlot key={index + 3} {...slot} />
+                                                                ))}
+                                                            </InputOTPGroup>
+                                                        </>
+                                                    )}
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

@@ -68,7 +68,7 @@ const RoomPage = () => {
                     name: room.name,
                     price: room.price,
                     src: room.image,
-                    alt: room.id
+                    alt: room.rooms_id
                 })
             });
         };
