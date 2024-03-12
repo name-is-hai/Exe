@@ -1,6 +1,6 @@
-import { Message, UserMessage } from "@/types";
-import { ChatMessage } from "./chat-message";
-import ChatTopbar from "./chat-topbar";
+import { Message, UserMessage } from '@/types';
+import { ChatMessage } from './chat-message';
+import ChatTopbar from './chat-topbar';
 
 interface ChatProps {
   messages: Message[];

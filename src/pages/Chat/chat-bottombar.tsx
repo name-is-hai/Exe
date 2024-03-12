@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Show } from "@/components/utility/Show";
-import { Message } from "@/types";
-import { AnimatePresence, motion } from "framer-motion";
-import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, ThumbsUp } from "lucide-react";
-import React, { useRef, useState } from "react";
-import { EmojiPicker } from "./emoji-picker";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { getCurrentUser } from "@/services/authen.service";
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Show } from '@/components/utility/Show';
+import { Message } from '@/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, ThumbsUp } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { EmojiPicker } from './emoji-picker';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { getCurrentUser } from '@/services/authen.service';
 
 interface ChatBottombarProps {
   sendMessage: (newMessage: Message) => void;
@@ -16,10 +16,8 @@ interface ChatBottombarProps {
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
-export default function ChatBottombar({
-  sendMessage, isMobile,
-}: Readonly<ChatBottombarProps>) {
-  const [message, setMessage] = useState("");
+export default function ChatBottombar({ sendMessage, isMobile }: Readonly<ChatBottombarProps>) {
+  const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
@@ -29,11 +27,11 @@ export default function ChatBottombar({
     const user = getCurrentUser();
     sendMessage({
       id: Date.now(),
-      message: "👍",
+      message: '👍',
       senderId: user.uid,
       created_at: Date.now(),
-    })
-    setMessage("");
+    });
+    setMessage('');
   };
 
   const handleSend = () => {
@@ -44,8 +42,8 @@ export default function ChatBottombar({
         senderId: user.uid,
         message: message.trim(),
         created_at: Date.now(),
-      })
-      setMessage("");
+      });
+      setMessage('');
       if (inputRef.current) {
         inputRef.current.focus();
       }
@@ -53,14 +51,14 @@ export default function ChatBottombar({
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       handleSend();
     }
 
-    if (event.key === "Enter" && event.shiftKey) {
+    if (event.key === 'Enter' && event.shiftKey) {
       event.preventDefault();
-      setMessage((prev) => prev + "\n");
+      setMessage((prev) => prev + '\n');
     }
   };
 
@@ -138,7 +136,7 @@ export default function ChatBottombar({
           transition={{
             opacity: { duration: 0.05 },
             layout: {
-              type: "spring",
+              type: 'spring',
               bounce: 0.15,
             },
           }}
@@ -154,35 +152,45 @@ export default function ChatBottombar({
             className="flex items-center w-full h-10 border rounded-full resize-none bg-background"
           ></Textarea>
           <div className="absolute bottom-[6px] right-2">
-            <EmojiPicker onChange={(value) => {
-              setMessage(message + value)
-              if (inputRef.current) {
-                inputRef.current.focus();
-              }
-            }} />
+            <EmojiPicker
+              onChange={(value) => {
+                setMessage(message + value);
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                }
+              }}
+            />
           </div>
         </motion.div>
         <Show>
           <Show.When isTrue={message.trim()}>
             <Button
-              variant="ghost" size="icon"
-              className={"h-9 w-9"}
+              variant="ghost"
+              size="icon"
+              className={'h-9 w-9'}
               onClick={handleSend}
             >
-              <SendHorizontal size={20} className="text-muted-foreground" />
+              <SendHorizontal
+                size={20}
+                className="text-muted-foreground"
+              />
             </Button>
           </Show.When>
           <Show.Else>
             <Button
-              variant="ghost" size="icon"
-              className={"h-9 w-9"}
+              variant="ghost"
+              size="icon"
+              className={'h-9 w-9'}
               onClick={handleThumbsUp}
             >
-              <ThumbsUp size={20} className="text-muted-foreground" />
+              <ThumbsUp
+                size={20}
+                className="text-muted-foreground"
+              />
             </Button>
           </Show.Else>
         </Show>
       </AnimatePresence>
-    </div >
+    </div>
   );
 }

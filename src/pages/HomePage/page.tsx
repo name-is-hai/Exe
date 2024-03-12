@@ -1,129 +1,151 @@
-import Page from "@/components/layout/page";
-import Container from "@/components/ui/container";
-import { usePost } from "@/hook/useApi";
-import useWindowDimensions from "@/hook/useWindowDimensions";
-import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { TopRoom } from "../components/top-room";
-import { CarouselRooms } from "./carousel";
+import Page from '@/components/layout/page';
+import Container from '@/components/ui/container';
+import { usePost } from '@/hook/useApi';
+import useWindowDimensions from '@/hook/useWindowDimensions';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { TopRoom } from '../components/top-room';
+import { CarouselRooms } from './carousel';
 
 const HomePage = () => {
-    const { data, error, isLoading } = usePost(['roomlist'], '/exe/rooms/get-list')
-    const { data: wards, error: errorWards, isLoading: isLoadingWards } = useQuery({
-        queryKey: ['ward'],
-        queryFn: async () => {
-            try {
-                const respone = await fetch('https://vapi.vnappmob.com/api/province/ward/276')
-                return respone.json()
-            } catch (error) {
-                throw new Error('Failed to fetch ward')
-            }
-        },
-    })
+  const { data, error, isLoading } = usePost(['roomlist'], '/exe/rooms/get-list');
+  const {
+    data: wards,
+    error: errorWards,
+    isLoading: isLoadingWards,
+  } = useQuery({
+    queryKey: ['ward'],
+    queryFn: async () => {
+      try {
+        const respone = await fetch('https://vapi.vnappmob.com/api/province/ward/276');
+        return respone.json();
+      } catch (error) {
+        throw new Error('Failed to fetch ward');
+      }
+    },
+  });
 
-    if (error || errorWards) {
-        toast.error('Something went wrong and we are fixing it, please come back later!', { position: 'bottom-center' })
-    }
+  if (error || errorWards) {
+    toast.error('Something went wrong and we are fixing it, please come back later!', {
+      position: 'bottom-center',
+    });
+  }
 
-    const findRoom = (value: any) => {
-        const search = {};
-        const priceMappings = {
-            '1': [1000000, 2000000],
-            '2': [2000000, 3000000],
-            '3': [3000000, 4000000],
-            '4': [4000000, 10000000],
-        };
-        if (priceMappings.hasOwnProperty(value.price)) {
-            value.price = priceMappings[value.price];
-        }
-        for (const property in value) {
-            if (value[property]) {
-                search[property] = value[property]
-            }
-        }
-        window.location.href = `/room?search=${btoa(JSON.stringify(search))}`
+  const findRoom = (value: any) => {
+    const search = {};
+    const priceMappings = {
+      '1': [1000000, 2000000],
+      '2': [2000000, 3000000],
+      '3': [3000000, 4000000],
+      '4': [4000000, 10000000],
+    };
+    if (priceMappings.hasOwnProperty(value.price)) {
+      value.price = priceMappings[value.price];
     }
+    for (const property in value) {
+      if (value[property]) {
+        search[property] = value[property];
+      }
+    }
+    window.location.href = `/room?search=${btoa(JSON.stringify(search))}`;
+  };
 
-    const clearWards = (data) => {
-        let ward = []
-        if (!isLoadingWards) {
-            ward = data.results
-        }
-        return ward
+  const clearWards = (data) => {
+    let ward = [];
+    if (!isLoadingWards) {
+      ward = data.results;
     }
-    const clearTopRooms = (data) => {
-        const images: any = []
-        if (!isLoading) {
-            data.data.list.forEach((room: any) => {
-                images.push({
-                    name: room.name,
-                    price: room.price,
-                    src: room.image,
-                    alt: room.rooms_id
-                })
-            });
-        };
-        return images;
+    return ward;
+  };
+  const clearTopRooms = (data) => {
+    const images: any = [];
+    if (!isLoading) {
+      data.data.list.forEach((room: any) => {
+        images.push({
+          name: room.name,
+          price: room.price,
+          src: room.image,
+          alt: room.rooms_id,
+        });
+      });
     }
-    const clearTopSize = (data) => {
-        const images: any = []
-        if (!isLoading) {
-            data.data.list.forEach((room: any) => {
-                images.push({
-                    name: room.name,
-                    price: room.price,
-                    src: room.image,
-                    alt: room.rooms_id
-                })
-            });
-        }
-        return images;
+    return images;
+  };
+  const clearTopSize = (data) => {
+    const images: any = [];
+    if (!isLoading) {
+      data.data.list.forEach((room: any) => {
+        images.push({
+          name: room.name,
+          price: room.price,
+          src: room.image,
+          alt: room.rooms_id,
+        });
+      });
     }
+    return images;
+  };
 
-    const sizeList = [
-        { title: 'Dưới 20', value: '1' },
-        { title: 'Từ 20-30', value: '2' },
-        { title: 'Trên 30', value: '3' },
-    ]
-    const priceList = [
-        { title: 'Dưới 2 triệu', value: '1' },
-        { title: 'Từ 2 triệu đến 3 triệu', value: '2' },
-        { title: 'Từ 3 triệu đến 4 triệu', value: '3' },
-        { title: 'Trên 4 triệu', value: '4' },
-    ]
+  const sizeList = [
+    { title: 'Dưới 20', value: '1' },
+    { title: 'Từ 20-30', value: '2' },
+    { title: 'Trên 30', value: '3' },
+  ];
+  const priceList = [
+    { title: 'Dưới 2 triệu', value: '1' },
+    { title: 'Từ 2 triệu đến 3 triệu', value: '2' },
+    { title: 'Từ 3 triệu đến 4 triệu', value: '3' },
+    { title: 'Trên 4 triệu', value: '4' },
+  ];
 
-    const { width } = useWindowDimensions();
-    let real_width: number;
-    const height: number = 600;
-    if (width >= 1400) {
-        real_width = 1350;
-    } else if (width < 1400 && width > 600) {
-        real_width = 700;
-    } else {
-        real_width = 326;
-    }
+  const { width } = useWindowDimensions();
+  let real_width: number;
+  const height: number = 600;
+  if (width >= 1400) {
+    real_width = 1350;
+  } else if (width < 1400 && width > 600) {
+    real_width = 700;
+  } else {
+    real_width = 326;
+  }
 
-    const slides = [
-        {
-            src: `https://firebasestorage.googleapis.com/v0/b/exe-final.appspot.com/o/boarding-houses%2Fimage%2F7_1706809901189.jpg?alt=media&token=6fbbc037-81f8-4f8a-aae2-e976166866f3`,
-            alt: `Placeholder 1`,
-        },
-        {
-            src: `https://firebasestorage.googleapis.com/v0/b/exe-final.appspot.com/o/boarding-houses%2Fimage%2F7_1706810025561.jpg?alt=media&token=87aed554-4ec9-4990-8ae3-e26f04886bf6`,
-            alt: `Placeholder 2`,
-        },
-    ]
-    return (
-        <Page>
-            <Container className="lg:px-14">
-                <CarouselRooms findRoom={findRoom} priceList={priceList} sizeList={sizeList} warnList={clearWards(wards)} silder={slides} height={height} real_width={real_width} />
-                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
-                <TopRoom rooms={clearTopRooms(data)} isLoading={isLoading} />
-                <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top phòng trọ có giá rẻ nhất</h1>
-                <TopRoom rooms={clearTopSize(data)} isLoading={isLoading} />
-            </Container>
-        </Page>
-    );
+  const slides = [
+    {
+      src: 'https://firebasestorage.googleapis.com/v0/b/exe-final.appspot.com/o/boarding-houses%2Fimage%2F7_1706809901189.jpg?alt=media&token=6fbbc037-81f8-4f8a-aae2-e976166866f3',
+      alt: 'Placeholder 1',
+    },
+    {
+      src: 'https://firebasestorage.googleapis.com/v0/b/exe-final.appspot.com/o/boarding-houses%2Fimage%2F7_1706810025561.jpg?alt=media&token=87aed554-4ec9-4990-8ae3-e26f04886bf6',
+      alt: 'Placeholder 2',
+    },
+  ];
+  return (
+    <Page>
+      <Container className="lg:px-14">
+        <CarouselRooms
+          findRoom={findRoom}
+          priceList={priceList}
+          sizeList={sizeList}
+          warnList={clearWards(wards)}
+          silder={slides}
+          height={height}
+          real_width={real_width}
+        />
+        <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">Top recommend phòng trọ</h1>
+        <TopRoom
+          rooms={clearTopRooms(data)}
+          isLoading={isLoading}
+        />
+        <h1 className="text-2xl font-semibold leading-none tracking-tight text-center my-9">
+          Top phòng trọ có giá rẻ nhất
+        </h1>
+        <TopRoom
+          rooms={clearTopSize(data)}
+          isLoading={isLoading}
+        />
+      </Container>
+    </Page>
+  );
 };
 
-export default HomePage
+export default HomePage;

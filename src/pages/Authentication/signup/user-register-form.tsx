@@ -1,92 +1,104 @@
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
-import { Icons } from "@/components/ui/icons";
-import { Input } from "@/components/ui/input";
-import { Show } from "@/components/utility/Show";
-import { cn } from "@/lib/utils";
-import http from "@/utils/http";
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Icons } from '@/components/ui/icons';
+import { Input } from '@/components/ui/input';
+import { Show } from '@/components/utility/Show';
+import { cn } from '@/lib/utils';
+import http from '@/utils/http';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { FormPhonePassword } from "./form-phone-pass";
+import { FormPhonePassword } from './form-phone-pass';
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isUsePhone, setIsUsePhone] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUsePhone, setIsUsePhone] = useState<boolean>(false);
 
-    const schema_phone = z.object({
-        phone: z.string().trim()
-            .min(1, {
-                message: 'Vui lòng nhập số điện thoại',
-            }).max(11, { message: 'Số điện thoại không đúng định dạng', })
-            .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, {
-                message: 'Số điện thoại không đúng định dạng',
-            }),
-    })
+  const schema_phone = z.object({
+    phone: z
+      .string()
+      .trim()
+      .min(1, {
+        message: 'Vui lòng nhập số điện thoại',
+      })
+      .max(11, { message: 'Số điện thoại không đúng định dạng' })
+      .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, {
+        message: 'Số điện thoại không đúng định dạng',
+      }),
+  });
 
-    const form_phone = useForm<z.infer<typeof schema_phone>>({
-        resolver: zodResolver(schema_phone),
-        defaultValues: {
-            phone: "",
-        },
-    })
+  const form_phone = useForm<z.infer<typeof schema_phone>>({
+    resolver: zodResolver(schema_phone),
+    defaultValues: {
+      phone: '',
+    },
+  });
 
-    function onSubmitPhone(values: z.infer<typeof schema_phone>) {
-        setIsLoading(true)
-        http.post('/exe/users/phone-check', values, false).then((res) => {
-            if (!res.resp.code) {
-                toast.warning(res.resp.message, { position: "top-right" });
-                setIsLoading(false)
-            } else {
-                setIsUsePhone(true)
-            }
-        }).catch(err => {
-            setIsLoading(false)
-            toast.error('Có lỗi xảy ra, vui lòng thử lại sau');
-        });
-    }
+  function onSubmitPhone(values: z.infer<typeof schema_phone>) {
+    setIsLoading(true);
+    http
+      .post('/exe/users/phone-check', values, false)
+      .then((res) => {
+        if (!res.resp.code) {
+          toast.warning(res.resp.message, { position: 'top-right' });
+          setIsLoading(false);
+        } else {
+          setIsUsePhone(true);
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        toast.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      });
+  }
 
-    return (
-        <div className={cn("grid gap-6 mx-2", className)} {...props}>
-            <div hidden={isUsePhone}>
-                <Form {...form_phone}>
-                    <form onSubmit={form_phone.handleSubmit(onSubmitPhone)}>
-                        <div className="grid gap-2">
-                            <div>
-                                <FormField
-                                    control={form_phone.control}
-                                    name="phone"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Số điện thoại</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="0912345678" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <Button disabled={isLoading}>
-                                <Show>
-                                    <Show.When isTrue={isLoading}>
-                                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                                    </Show.When>
-                                </Show>
-                                Đăng ký bằng số điện thoại
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
+  return (
+    <div
+      className={cn('grid gap-6 mx-2', className)}
+      {...props}
+    >
+      <div hidden={isUsePhone}>
+        <Form {...form_phone}>
+          <form onSubmit={form_phone.handleSubmit(onSubmitPhone)}>
+            <div className="grid gap-2">
+              <div>
+                <FormField
+                  control={form_phone.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Số điện thoại</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="0912345678"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button disabled={isLoading}>
+                <Show>
+                  <Show.When isTrue={isLoading}>
+                    <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                  </Show.When>
+                </Show>
+                Đăng ký bằng số điện thoại
+              </Button>
             </div>
-            <div hidden={!isUsePhone}>
-                <FormPhonePassword phone={form_phone.getValues('phone')} />
-            </div>
-        </div>
-    );
+          </form>
+        </Form>
+      </div>
+      <div hidden={!isUsePhone}>
+        <FormPhonePassword phone={form_phone.getValues('phone')} />
+      </div>
+    </div>
+  );
 }

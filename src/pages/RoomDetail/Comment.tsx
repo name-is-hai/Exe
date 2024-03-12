@@ -1,3 +1,3 @@
 export const Comment = () => {
-    return (<>hellpp</>)
-}
+  return <>hellpp</>;
+};

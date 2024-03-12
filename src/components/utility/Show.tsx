@@ -1,17 +1,17 @@
-import { Children } from "react";
+import { Children } from 'react';
 
-export const Show = props => {
-    let when = null;
-    let otherwise = null;
-    Children.forEach(props.children, children => {
-        if (children.props.isTrue === undefined) {
-            otherwise = children;
-        } else if (!when && children.props.isTrue) {
-            when = children;
-        }
-    });
-    return when || otherwise;
+export const Show = (props) => {
+  let when = null;
+  let otherwise = null;
+  Children.forEach(props.children, (children) => {
+    if (children.props.isTrue === undefined) {
+      otherwise = children;
+    } else if (!when && children.props.isTrue) {
+      when = children;
+    }
+  });
+  return when || otherwise;
 };
 
-Show.When = ({ isTrue, children }) => isTrue && children
-Show.Else = ({ children }) => children
+Show.When = ({ isTrue, children }) => isTrue && children;
+Show.Else = ({ children }) => children;

@@ -1,10 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import React, {
-  ReactNode,
-  createContext,
-  useContext,
-  useState,
-} from 'react';
+import React, { ReactNode, createContext, useContext, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -19,9 +14,7 @@ interface CarouselContextProps {
   setSlideWidth: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const CarouselContext = createContext<CarouselContextProps | null>(
-  null,
-);
+const CarouselContext = createContext<CarouselContextProps | null>(null);
 
 export const useCarousel = () => {
   const context = useContext(CarouselContext);
@@ -36,10 +29,7 @@ interface CarouselProps {
   className?: string;
 }
 
-export const Carousel: React.FC<CarouselProps> = ({
-  children,
-  className,
-}) => {
+export const Carousel: React.FC<CarouselProps> = ({ children, className }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [totalSlides, setTotalSlides] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
@@ -72,7 +62,10 @@ export const Carousel: React.FC<CarouselProps> = ({
         setSlideWidth,
       }}
     >
-      <div onClick={handleClick} className={cn(className)}>
+      <div
+        onClick={handleClick}
+        className={cn(className)}
+      >
         {children}
       </div>
     </CarouselContext.Provider>
@@ -80,8 +73,7 @@ export const Carousel: React.FC<CarouselProps> = ({
 };
 
 export const CarouselSlider: React.FC = () => {
-  const { currentSlide, setCurrentSlide, totalSlides } =
-    useCarousel();
+  const { currentSlide, setCurrentSlide, totalSlides } = useCarousel();
 
   const handleSliderChange = (value: number[]) => {
     setCurrentSlide(value[0]);
@@ -102,9 +94,7 @@ interface CarouselButtonProps {
   className?: string;
 }
 
-export const CarouselPrevious: React.FC<CarouselButtonProps> = ({
-  className,
-}) => {
+export const CarouselPrevious: React.FC<CarouselButtonProps> = ({ className }) => {
   const { setCurrentSlide, totalSlides } = useCarousel();
 
   const handlePrevious = () => {
@@ -122,9 +112,7 @@ export const CarouselPrevious: React.FC<CarouselButtonProps> = ({
   );
 };
 
-export const CarouselNext: React.FC<CarouselButtonProps> = ({
-  className,
-}) => {
+export const CarouselNext: React.FC<CarouselButtonProps> = ({ className }) => {
   const { setCurrentSlide, totalSlides } = useCarousel();
 
   const handleNext = () => {
@@ -134,10 +122,7 @@ export const CarouselNext: React.FC<CarouselButtonProps> = ({
   return (
     <Button
       onClick={() => handleNext()}
-      className={cn(
-        'absolute right-0 h-full',
-        className,
-      )}
+      className={cn('absolute right-0 h-full', className)}
       variant="ghost"
     >
       <ArrowRight className="w-4 h-4" />
@@ -150,12 +135,8 @@ interface CarouselSlideListProps {
   className?: string;
 }
 
-export const CarouselSlideList: React.FC<CarouselSlideListProps> = ({
-  children,
-  className,
-}) => {
-  const { slideListRef, setTotalSlides, setSlideWidth } =
-    useCarousel();
+export const CarouselSlideList: React.FC<CarouselSlideListProps> = ({ children, className }) => {
+  const { slideListRef, setTotalSlides, setSlideWidth } = useCarousel();
   const totalSlides = React.Children.count(children);
   React.useEffect(() => {
     setTotalSlides(totalSlides);
@@ -167,10 +148,7 @@ export const CarouselSlideList: React.FC<CarouselSlideListProps> = ({
   return (
     <div
       ref={slideListRef}
-      className={cn(
-        'flex overflow-hidden snap-mandatory snap-x pointer-events-none',
-        className,
-      )}
+      className={cn('flex overflow-hidden snap-mandatory snap-x pointer-events-none', className)}
     >
       {children}
     </div>
@@ -183,13 +161,6 @@ interface CarouselSlideProps {
   className?: string;
 }
 
-export const CarouselSlide: React.FC<CarouselSlideProps> = ({
-  children,
-  className,
-}) => {
-  return (
-    <div className={cn('flex-none snap-center', className)}>
-      {children}
-    </div>
-  );
+export const CarouselSlide: React.FC<CarouselSlideProps> = ({ children, className }) => {
+  return <div className={cn('flex-none snap-center', className)}>{children}</div>;
 };

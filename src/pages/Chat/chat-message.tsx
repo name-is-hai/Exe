@@ -1,9 +1,9 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { cn, getLSData } from "@/lib/utils";
-import { Message, UserMessage } from "@/types";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useRef } from "react";
-import ChatBottombar from "./chat-bottombar";
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { cn, getLSData } from '@/lib/utils';
+import { Message, UserMessage } from '@/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import ChatBottombar from './chat-bottombar';
 
 interface ChatMessageProps {
   messages?: Message[];
@@ -16,13 +16,11 @@ export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: R
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
-
     <div className="flex flex-col w-full h-full overflow-x-hidden overflow-y-hidden">
       <div
         ref={messagesContainerRef}
@@ -39,7 +37,7 @@ export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: R
               transition={{
                 opacity: { duration: 0.1 },
                 layout: {
-                  type: "spring",
+                  type: 'spring',
                   bounce: 0.3,
                   duration: messages.indexOf(message) * 0.05 + 0.2,
                 },
@@ -49,27 +47,33 @@ export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: R
                 originY: 0.5,
               }}
               className={cn(
-                "flex flex-col gap-2 p-4 whitespace-pre-wrap",
-                (getLSData('user').uid === message.senderId) ? "items-end" : "items-start"
+                'flex flex-col gap-2 p-4 whitespace-pre-wrap',
+                getLSData('user').uid === message.senderId ? 'items-end' : 'items-start'
               )}
             >
               <div className="flex items-center gap-3">
                 {message.senderId === selectedUser.uid && (
                   <Avatar className="flex items-center justify-center">
                     <AvatarImage
-                      src={getLSData('user').uid === message.senderId ? (getLSData('user').photo ?? "https://shadcn-chat.vercel.app/User1.png") : selectedUser.avatar}
+                      src={
+                        getLSData('user').uid === message.senderId
+                          ? getLSData('user').photo ?? 'https://shadcn-chat.vercel.app/User1.png'
+                          : selectedUser.avatar
+                      }
                       width={6}
                       height={6}
                     />
                   </Avatar>
                 )}
-                <span className="max-w-xs p-3 rounded-md bg-accent">
-                  {message.message}
-                </span>
+                <span className="max-w-xs p-3 rounded-md bg-accent">{message.message}</span>
                 {message.senderId !== selectedUser.uid && (
                   <Avatar className="flex items-center justify-center">
                     <AvatarImage
-                      src={getLSData('user').uid === message.senderId ? (getLSData('user').photo ?? "https://shadcn-chat.vercel.app/User1.png") : selectedUser.avatar}
+                      src={
+                        getLSData('user').uid === message.senderId
+                          ? getLSData('user').photo ?? 'https://shadcn-chat.vercel.app/User1.png'
+                          : selectedUser.avatar
+                      }
                       width={6}
                       height={6}
                     />
@@ -80,7 +84,10 @@ export function ChatMessage({ messages, selectedUser, sendMessage, isMobile }: R
           ))}
         </AnimatePresence>
       </div>
-      <ChatBottombar sendMessage={sendMessage} isMobile={isMobile} />
+      <ChatBottombar
+        sendMessage={sendMessage}
+        isMobile={isMobile}
+      />
     </div>
   );
 }

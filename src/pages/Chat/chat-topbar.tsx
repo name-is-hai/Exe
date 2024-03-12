@@ -1,7 +1,6 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { UserMessage } from '@/types';
 
-
 interface ChatTopbarProps {
   selectedUser: UserMessage;
 }
@@ -24,5 +23,5 @@ export default function ChatTopbar({ selectedUser }: Readonly<ChatTopbarProps>) 
         </div>
       </div>
     </div>
-  )
+  );
 }
