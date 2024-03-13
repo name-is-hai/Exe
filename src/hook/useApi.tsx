@@ -54,7 +54,7 @@ const useGet = (queryKey: [string, ...any[]], url: string, params: string | '' =
     },
   });
 };
-const usePost = (queryKey: [string, ...any[]], url: string, params: Object | {} = {}, needAuth = false) => {
+const usePost = (queryKey: [string, ...any[]], url: string, params: object | {} = {}, needAuth = false) => {
   return useQuery({
     queryKey: queryKey,
     queryFn: async () => {
@@ -73,7 +73,7 @@ const usePost = (queryKey: [string, ...any[]], url: string, params: Object | {} 
     refetchOnMount: true,
   });
 };
-const usePut = (queryKey: [string, ...any[]], url: string, params: Object | {} = {}, needAuth = false) => {
+const usePut = (queryKey: [string, ...any[]], url: string, params: object | {} = {}, needAuth = false) => {
   return useQuery({
     queryKey: queryKey,
     queryFn: async () => {

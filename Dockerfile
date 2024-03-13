@@ -8,8 +8,6 @@ RUN npm run build
 FROM node:21-alpine3.18 AS PROD_IMAGE
 WORKDIR /app/exe-app
 COPY --from=BUILD_IMAGE /app/exe-app/dist/ /app/exe-app/dist/
+RUN npm install -g serve
 EXPOSE 8888
-COPY vite.config.ts .
-RUN npm install vite @vitejs/plugin-react path
-COPY package.json .
-CMD ["npm", "run", "preview"]
+CMD ["serve", "-p", "8888", "/app/exe-app/dist"]

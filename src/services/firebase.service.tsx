@@ -2,7 +2,6 @@ import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
-  QueryConstraint,
   arrayUnion,
   doc,
   getDoc,
@@ -59,7 +58,7 @@ export const subscribeToQueryUserChats = (
   return unsubscribe;
 };
 
-export const setQueryChats = (path: string[], condition?: QueryConstraint[]) => {
+export const setQueryChats = (path: string[]) => {
   return doc(fireStore, 'chats', ...path);
 };
 

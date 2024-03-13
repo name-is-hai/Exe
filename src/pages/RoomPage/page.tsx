@@ -77,7 +77,7 @@ const RoomPage = () => {
   const notFound = (data) => {
     let notFound: any = false;
     if (!isLoading) {
-      notFound = data.data.list.length > 0 ? true : false;
+      notFound = data.data.list.length > 0;
     }
     return notFound;
   };
@@ -108,12 +108,15 @@ const RoomPage = () => {
   const handleChange = (event: any) => {
     if (event.target) {
       const { name, value, type, checked } = event.target;
-      const newValue =
-        type === 'checkbox'
-          ? checked
-          : name === 'endPrice' || name === 'startPrice'
-            ? Number(value.replace(/\D/g, ''))
-            : value;
+      let newValue;
+      if (type === 'checkbox') {
+        newValue = checked;
+      } else if (name === 'endPrice' || name === 'startPrice') {
+        newValue = Number(value.replace(/\D/g, ''));
+      } else {
+        newValue = value;
+      }
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: newValue,

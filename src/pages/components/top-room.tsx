@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { RoomElement } from './room';
 import { useScreenDetector } from '@/hook/useScreenDetector';
