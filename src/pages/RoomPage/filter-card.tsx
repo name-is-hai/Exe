@@ -184,7 +184,7 @@ export const FilterCard = ({ formData, isMobile, warnList, handleChange }: Filte
               >
                 Nhỏ hơn&nbsp;&nbsp;20
                 <sub>
-                  M<sup>2</sup>
+                  m<sup>2</sup>
                 </sub>
               </Label>
             </div>
@@ -199,11 +199,11 @@ export const FilterCard = ({ formData, isMobile, warnList, handleChange }: Filte
               >
                 Từ:&nbsp;&nbsp;21
                 <sub>
-                  M<sup>2</sup>
+                  m<sup>2</sup>
                 </sub>
                 &nbsp;&nbsp;&nbsp;&nbsp;Đến:&nbsp;&nbsp;30
                 <sub>
-                  M<sup>2</sup>
+                  m<sup>2</sup>
                 </sub>
               </Label>
             </div>
@@ -218,7 +218,7 @@ export const FilterCard = ({ formData, isMobile, warnList, handleChange }: Filte
               >
                 Lớn hơn&nbsp;&nbsp;30
                 <sub>
-                  M<sup>2</sup>
+                  m<sup>2</sup>
                 </sub>
               </Label>
             </div>

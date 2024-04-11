@@ -62,10 +62,10 @@ const HomePage = () => {
     if (!isLoading) {
       data.data.list.forEach((room: any) => {
         images.push({
-          name: room.name,
+          name: room.boarding_houses.name,
           price: room.price,
           src: room.image,
-          alt: room.rooms_id,
+          alt: room.id,
         });
       });
     }
@@ -76,10 +76,10 @@ const HomePage = () => {
     if (!isLoading) {
       data.data.list.forEach((room: any) => {
         images.push({
-          name: room.name,
+          name: room.boarding_houses.name,
           price: room.price,
           src: room.image,
-          alt: room.rooms_id,
+          alt: room.id,
         });
       });
     }
@@ -111,11 +111,11 @@ const HomePage = () => {
 
   const slides = [
     {
-      src: 'https://firebasestorage.googleapis.com/v0/b/exe-final.appspot.com/o/boarding-houses%2Fimage%2F7_1706809901189.jpg?alt=media&token=6fbbc037-81f8-4f8a-aae2-e976166866f3',
+      src: 'https://exe-api.nameishai.id.vn/img/ROOM/1/hoang1.jpg',
       alt: 'Placeholder 1',
     },
     {
-      src: 'https://firebasestorage.googleapis.com/v0/b/exe-final.appspot.com/o/boarding-houses%2Fimage%2F7_1706810025561.jpg?alt=media&token=87aed554-4ec9-4990-8ae3-e26f04886bf6',
+      src: 'https://exe-api.nameishai.id.vn/img/ROOM/3/House3.jpg',
       alt: 'Placeholder 2',
     },
   ];

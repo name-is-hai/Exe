@@ -10,4 +10,4 @@ WORKDIR /app/exe-app
 COPY --from=BUILD_IMAGE /app/exe-app/dist/ /app/exe-app/dist/
 RUN npm install -g serve
 EXPOSE 8888
-CMD ["serve", "-p", "8888", "/app/exe-app/dist"]
+CMD ["serve", "-s" ,"-p", "8888", "/app/exe-app/dist"]

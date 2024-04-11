@@ -41,10 +41,10 @@ export function RoomDetail() {
     if (!isLoadingRooms) {
       data.data.list.forEach((room: any) => {
         images.push({
-          name: room.name,
+          name: room.boarding_houses.name,
           price: room.price,
           src: room.image,
-          alt: room.rooms_id,
+          alt: room.id,
         });
       });
     }

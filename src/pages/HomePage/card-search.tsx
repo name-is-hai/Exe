@@ -77,11 +77,10 @@ export default function CardSearch({ className, sizeList, warnList, priceList, f
                             key={index}
                             value={item.value}
                           >
-                            {item.title}&nbsp;(&nbsp;
+                            {item.title}
                             <sub>
                               m<sup>2</sup>
                             </sub>
-                            )
                           </SelectItem>
                         ))}
                       </SelectContent>

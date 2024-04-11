@@ -54,7 +54,7 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
         />
       </div>
       <div className="absolute block -translate-x-1/2 -translate-y-1/2 left-1/2 md:hidden">
-        <Drawer>
+        <Drawer shouldScaleBackground>
           <DrawerTrigger asChild>
             <Button
               className="rounded-full w-72"
@@ -64,13 +64,15 @@ const CarouselRooms = ({ silder, real_width, height, sizeList, warnList, priceLi
             </Button>
           </DrawerTrigger>
           <DrawerContent>
-            <CardSearch
-              findRoom={findRoom}
-              priceList={priceList}
-              sizeList={sizeList}
-              warnList={warnList}
-              className="border-none"
-            />
+            <div className="w-full max-w-sm mx-auto">
+              <CardSearch
+                findRoom={findRoom}
+                priceList={priceList}
+                sizeList={sizeList}
+                warnList={warnList}
+                className="border-none"
+              />
+            </div>
           </DrawerContent>
         </Drawer>
       </div>
