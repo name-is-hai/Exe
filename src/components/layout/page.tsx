@@ -7,6 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Footer } from './Footer/Footer';
 
 function Page({ children }: any) {
+  
   return (
     <ThemeProvider
       defaultTheme="light"
